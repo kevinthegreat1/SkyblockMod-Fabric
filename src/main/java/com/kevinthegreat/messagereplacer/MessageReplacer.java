@@ -1,23 +1,37 @@
 package com.kevinthegreat.messagereplacer;
 
-import java.util.*;
-
+import com.kevinthegreat.messagereplacer.util.Util;
 import net.fabricmc.api.ModInitializer;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.util.Pair;
+import org.apache.logging.log4j.LogManager;
+
+import java.io.*;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.Map;
+import java.util.Queue;
 
 public class MessageReplacer implements ModInitializer {
 
     public static final String MOD_ID = "messagereplacer";
     public static MessageReplacer messageReplacer;
-    public static final Map<String, String> commands = new HashMap<>();
-    public static final Map<String, String> commandsArgs = new HashMap<>();
-    public static Queue<Pair<String, Long>> messageQueue = new LinkedList<>();
-    public static final Reparty reparty = new Reparty();
+    public int tick = 0;
+    public final Map<String, String> commands = new HashMap<>();
+    public final Map<String, String> commandsArgs = new HashMap<>();
+    public Queue<Pair<String, Long>> messageQueue = new LinkedList<>();
+    public final Util util = new Util();
+    public final Reparty reparty = new Reparty();
+
+    public float mapScale = 1;
+    public int mapOffsetx = 0;
+    public int mapOffsety = 0;
 
     @Override
     public void onInitialize() {
         messageReplacer = this;
+        load();
+        DungeonMap.register();
 
         commands.put("/s", "/skyblock");
         commands.put("/sk", "/skyblock");
@@ -97,7 +111,7 @@ public class MessageReplacer implements ModInitializer {
         commands.put("/co", "/chat officer");
         commands.put("/cc", "/chat coop");
 
-        commandsArgs.put("/m","/msg");
+        commandsArgs.put("/m", "/msg");
 
         commandsArgs.put("/pa", "/p accept");
         commands.put("/pv", "/p leave");
@@ -108,14 +122,34 @@ public class MessageReplacer implements ModInitializer {
         commandsArgs.put("/v", "/visit");
         commands.put("/vp", "/visit portalhub");
         commands.put("/visit p", "/visit portalhub");
-        System.out.println("MessageReplacer Initialized");
+
+        LogManager.getLogger().info("MessageReplacer Initialized");
     }
 
-    public void queueMessage(String message, long millis) {
-        messageQueue.add(new Pair<>(message, millis / 50));
+    public void load() {
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader(MOD_ID + ".txt"));
+            String line = reader.readLine();
+            while (line != null) {
+                String[] args = line.split(":");
+                assert args.length == 2;
+                switch (args[0]) {
+                    case "mapScale" -> mapScale = Float.parseFloat(args[1]);
+                    case "mapOffsetX" -> mapOffsetx = Integer.parseInt(args[1]);
+                    case "mapOffsetY" -> mapOffsety = Integer.parseInt(args[1]);
+                }
+                line = reader.readLine();
+            }
+            reader.close();
+        } catch (IOException ignored) {
+        }
     }
 
     public void tick() {
+        if (tick % 20 == 0) {
+            util.check();
+            tick = 0;
+        }
         if (!messageQueue.isEmpty()) {
             messageQueue.peek().setRight(messageQueue.peek().getRight() - 1);
             assert messageQueue.peek() != null;
@@ -125,5 +159,27 @@ public class MessageReplacer implements ModInitializer {
                 MinecraftClient.getInstance().player.sendChatMessage(messageQueue.poll().getLeft());
             }
         }
+        tick++;
+    }
+
+    public void stop() {
+        try {
+            PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(MOD_ID + ".txt")));
+            if (mapScale != 1) {
+                writer.println("mapScale:" + mapScale);
+            }
+            if (mapOffsetx != 0) {
+                writer.println("mapOffsetX:" + mapOffsetx);
+            }
+            if (mapOffsety != 0) {
+                writer.println("mapOffsetY:" + mapOffsety);
+            }
+            writer.close();
+        } catch (IOException ignored) {
+        }
+    }
+
+    public void queueMessage(String message, long millis) {
+        messageQueue.add(new Pair<>(message, millis / 50));
     }
 }

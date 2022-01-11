@@ -9,9 +9,9 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 
 @Mixin(ChatHudListener.class)
 public class ChatHudListenerMixin {
-    @ModifyVariable(method = "onChatMessage(Lnet/minecraft/network/MessageType;Lnet/minecraft/text/Text;Ljava/util/UUID;)V", at = @At(value = "HEAD"))
+    @ModifyVariable(method = "onChatMessage(Lnet/minecraft/network/MessageType;Lnet/minecraft/text/Text;Ljava/util/UUID;)V", at = @At(value = "HEAD"), argsOnly = true)
     private Text onChatMessage(Text message) {
-        MessageReplacer.reparty.onChatMessage(message.getString());
+        MessageReplacer.messageReplacer.reparty.onChatMessage(message.getString());
         return message;
     }
 }

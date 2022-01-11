@@ -7,14 +7,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Reparty {
-    private boolean reparty = false;
+    public boolean reparty = false;
     private int memberCount = 0;
     private final List<String> members = new ArrayList<>();
     private String leader = "";
-
-    public void startReparty() {
-        this.reparty = true;
-    }
 
     public void onChatMessage(String message) {
         if (reparty) {
