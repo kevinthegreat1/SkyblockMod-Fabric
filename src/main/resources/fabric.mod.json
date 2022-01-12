@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "id": "messagereplacer",
+  "id": "fabrictils",
   "version": "${version}",
 
   "name": "",
@@ -18,11 +18,11 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-      "com.kevinthegreat.messagereplacer.MessageReplacer"
+      "com.kevinthegreat.skyblockmod.SkyblockMod"
     ]
   },
   "mixins": [
-    "messagereplacer.mixins.json"
+    "skyblockmod.mixins.json"
   ],
 
   "depends": {

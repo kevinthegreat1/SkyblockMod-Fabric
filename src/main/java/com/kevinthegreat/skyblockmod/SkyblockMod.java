@@ -1,6 +1,6 @@
-package com.kevinthegreat.messagereplacer;
+package com.kevinthegreat.skyblockmod;
 
-import com.kevinthegreat.messagereplacer.util.Util;
+import com.kevinthegreat.skyblockmod.util.Util;
 import net.fabricmc.api.ModInitializer;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.util.Pair;
@@ -12,15 +12,17 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.Queue;
 
-public class MessageReplacer implements ModInitializer {
+public class SkyblockMod implements ModInitializer {
 
-    public static final String MOD_ID = "messagereplacer";
-    public static MessageReplacer messageReplacer;
+    public static final String MOD_ID = "skyblockmod";
+    public static final String MOD_NAME = "SkyblockMod";
+    public static SkyblockMod skyblockMod;
     public int tick = 0;
     public final Map<String, String> commands = new HashMap<>();
     public final Map<String, String> commandsArgs = new HashMap<>();
     public Queue<Pair<String, Long>> messageQueue = new LinkedList<>();
     public final Util util = new Util();
+    public final Fishing fishing = new Fishing();
     public final Reparty reparty = new Reparty();
 
     public float mapScale = 1;
@@ -29,9 +31,10 @@ public class MessageReplacer implements ModInitializer {
 
     @Override
     public void onInitialize() {
-        messageReplacer = this;
+        skyblockMod = this;
         load();
         DungeonMap.register();
+        fishing.register();
 
         commands.put("/s", "/skyblock");
         commands.put("/sk", "/skyblock");
@@ -123,7 +126,7 @@ public class MessageReplacer implements ModInitializer {
         commands.put("/vp", "/visit portalhub");
         commands.put("/visit p", "/visit portalhub");
 
-        LogManager.getLogger().info("MessageReplacer Initialized");
+        LogManager.getLogger().info(MOD_NAME + " Initialized");
     }
 
     public void load() {

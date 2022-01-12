@@ -1,4 +1,4 @@
-package com.kevinthegreat.messagereplacer;
+package com.kevinthegreat.skyblockmod;
 
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.text.Text;
@@ -37,9 +37,9 @@ public class Reparty {
                     }
                 }
                 if (members.size() == memberCount) {
-                    MessageReplacer.messageReplacer.queueMessage("/p disband", 200);
+                    SkyblockMod.skyblockMod.queueMessage("/p disband", 200);
                     for (String player : members) {
-                        MessageReplacer.messageReplacer.queueMessage("/p invite " + player, 300);
+                        SkyblockMod.skyblockMod.queueMessage("/p invite " + player, 300);
                     }
                     members.clear();
                     reparty = false;
@@ -57,7 +57,7 @@ public class Reparty {
         } else if (!leader.isEmpty() && message.contains(leader + " has invited you to join their party!")) {
             assert MinecraftClient.getInstance().player != null;
             if (!leader.equals(MinecraftClient.getInstance().player.getEntityName())) {
-                MessageReplacer.messageReplacer.queueMessage("/p accept " + leader, 200);
+                SkyblockMod.skyblockMod.queueMessage("/p accept " + leader, 200);
                 leader = "";
             }
         }

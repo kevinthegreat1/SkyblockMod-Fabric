@@ -4,6 +4,18 @@ QOL features for Hypixel Skyblock ([Fabric](https://fabricmc.net/) 1.17.1)
 
 ##Features
 
+###Fishing
+
+Notifies you to reel in
+
+###Dungeon Map
+
+Configurable dungeon map
+- /sbm map scale \[number\]
+- /sbm map scale -> show current scale
+- /sbm map offset \[number\] \[number\]
+- /sbm map offset -> show current offset
+
 ###Party
 - /pa \[Player\] -> /p accept \[Player\]
 - /pv -> /p leave
@@ -57,3 +69,6 @@ QOL features for Hypixel Skyblock ([Fabric](https://fabricmc.net/) 1.17.1)
 ###Visit
 - /v \[Player\] -> /visit \[Player\]
 - /vp, /visit p -> /visit portalhub
+
+###Misc
+- /sbm reload -> reload config file

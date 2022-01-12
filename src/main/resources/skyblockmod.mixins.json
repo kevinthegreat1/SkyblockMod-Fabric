@@ -1,14 +1,15 @@
 {
   "required": true,
   "minVersion": "0.8",
-  "package": "com.kevinthegreat.messagereplacer.mixins",
+  "package": "com.kevinthegreat.skyblockmod.mixins",
   "compatibilityLevel": "JAVA_16",
   "mixins": [
   ],
   "client": [
+    "MinecraftClientMixin",
     "ScreenMixin",
     "ChatHudListenerMixin",
-    "MinecraftClientMixin"
+    "ClientPlayNetworkHandlerMixin"
   ],
   "injectors": {
     "defaultRequire": 1
