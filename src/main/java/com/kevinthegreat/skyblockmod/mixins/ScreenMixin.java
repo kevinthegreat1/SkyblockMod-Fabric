@@ -16,14 +16,14 @@ public class ScreenMixin {
     @ModifyVariable(method = "sendMessage(Ljava/lang/String;Z)V", at = @At(value = "HEAD"), argsOnly = true)
     private String modifyMessage(String message) {
         if (message.startsWith("/")) {
-            message = SkyblockMod.skyblockMod.commands.getOrDefault(message, message);
+            message = SkyblockMod.skyblockMod.modifyMessage.commands.getOrDefault(message, message);
             if (message.equals("/reparty")) {
                 SkyblockMod.skyblockMod.reparty.reparty = true;
                 return "/pl";
             }
             String[] messageArgs = message.split(" ");
             for (int i = 0; i < messageArgs.length; i++) {
-                messageArgs[i] = SkyblockMod.skyblockMod.commandsArgs.getOrDefault(messageArgs[i], messageArgs[i]);
+                messageArgs[i] = SkyblockMod.skyblockMod.modifyMessage.commandsArgs.getOrDefault(messageArgs[i], messageArgs[i]);
             }
             message = String.join(" ", messageArgs);
         }
@@ -36,23 +36,23 @@ public class ScreenMixin {
             String[] messageArgs = message.split(" ");
             if (messageArgs[0].equals("/sbm") && messageArgs.length >= 2) {
                 if (messageArgs[1].equals("reload")) {
-                    SkyblockMod.skyblockMod.load();
+                    SkyblockMod.skyblockMod.config.load();
                     MinecraftClient.getInstance().inGameHud.getChatHud().addMessage(Text.of("Reloaded Config File."));
                 } else if (messageArgs[1].equals("map") && messageArgs.length >= 3) {
                     if (messageArgs[2].equals("scale")) {
                         try {
-                            SkyblockMod.skyblockMod.mapScale = Float.parseFloat(messageArgs[3]);
+                            SkyblockMod.skyblockMod.dungeonMap.mapScale = Float.parseFloat(messageArgs[3]);
                             MinecraftClient.getInstance().inGameHud.getChatHud().addMessage(Text.of("Map size set to " + messageArgs[3]));
                         } catch (ArrayIndexOutOfBoundsException | NumberFormatException e) {
-                            MinecraftClient.getInstance().inGameHud.getChatHud().addMessage(Text.of("Map size is " + SkyblockMod.skyblockMod.mapScale));
+                            MinecraftClient.getInstance().inGameHud.getChatHud().addMessage(Text.of("Map size is " + SkyblockMod.skyblockMod.dungeonMap.mapScale));
                         }
                     } else if (messageArgs[2].equals("offset")) {
                         try {
-                            SkyblockMod.skyblockMod.mapOffsetx = Integer.parseInt(messageArgs[3]);
-                            SkyblockMod.skyblockMod.mapOffsety = Integer.parseInt(messageArgs[4]);
+                            SkyblockMod.skyblockMod.dungeonMap.mapOffsetx = Integer.parseInt(messageArgs[3]);
+                            SkyblockMod.skyblockMod.dungeonMap.mapOffsety = Integer.parseInt(messageArgs[4]);
                             MinecraftClient.getInstance().inGameHud.getChatHud().addMessage(Text.of("Map offset set to " + messageArgs[3] + ", " + messageArgs[4]));
                         } catch (ArrayIndexOutOfBoundsException | NumberFormatException e) {
-                            MinecraftClient.getInstance().inGameHud.getChatHud().addMessage(Text.of("Map offset is " + SkyblockMod.skyblockMod.mapOffsetx + ", " + SkyblockMod.skyblockMod.mapOffsety));
+                            MinecraftClient.getInstance().inGameHud.getChatHud().addMessage(Text.of("Map offset is " + SkyblockMod.skyblockMod.dungeonMap.mapOffsetx + ", " + SkyblockMod.skyblockMod.dungeonMap.mapOffsety));
                         }
                     }
                 }

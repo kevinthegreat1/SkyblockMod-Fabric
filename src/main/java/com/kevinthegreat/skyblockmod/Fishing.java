@@ -9,7 +9,7 @@ public class Fishing {
     public boolean fishing = false;
     public long startTime;
 
-    public void register() {
+    public Fishing() {
         UseItemCallback.EVENT.register((player, world, hand) -> {
             ItemStack itemStack = player.getStackInHand(hand);
             if (itemStack.isOf(Items.FISHING_ROD)) {

@@ -1,4 +1,4 @@
-# Message Replacer Fabric
+# Skyblock Mod Fabric
 
 QOL features for Hypixel Skyblock ([Fabric](https://fabricmc.net/) 1.17.1)
 
@@ -7,6 +7,7 @@ QOL features for Hypixel Skyblock ([Fabric](https://fabricmc.net/) 1.17.1)
 ###Fishing
 
 Notifies you to reel in
+(Only works if you are not near other players)
 
 ###Dungeon Map
 
@@ -72,3 +73,5 @@ Configurable dungeon map
 
 ###Misc
 - /sbm reload -> reload config file
+
+Configuration will be printed to the log if writing to the configuration file fails.
