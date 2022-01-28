@@ -1,6 +1,6 @@
 package com.kevinthegreat.skyblockmod.util;
 
-import com.kevinthegreat.skyblockmod.DungeonMap;
+import com.kevinthegreat.skyblockmod.dungeons.DungeonMap;
 import com.kevinthegreat.skyblockmod.SkyblockMod;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

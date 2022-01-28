@@ -1,8 +1,8 @@
-package com.kevinthegreat.skyblockmod;
+package com.kevinthegreat.skyblockmod.dungeons;
 
+import com.kevinthegreat.skyblockmod.SkyblockMod;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.text.Text;
-import net.minecraft.util.Pair;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,9 +38,9 @@ public class Reparty {
                     }
                 }
                 if (members.size() == memberCount) {
-                    SkyblockMod.skyblockMod.messageQueue.add(new Pair<>("/p disband", 4));
+                    SkyblockMod.skyblockMod.message.queueMessage("/p disband", 4);
                     for (String player : members) {
-                        SkyblockMod.skyblockMod.messageQueue.add(new Pair<>("/p invite " + player, 6));
+                        SkyblockMod.skyblockMod.message.queueMessage("/p invite " + player, 6);
                     }
                     members.clear();
                     reparty = false;
@@ -58,7 +58,7 @@ public class Reparty {
         } else if (!leader.isEmpty() && message.contains(leader + " has invited you to join their party!")) {
             assert MinecraftClient.getInstance().player != null;
             if (!leader.equals(MinecraftClient.getInstance().player.getEntityName())) {
-                SkyblockMod.skyblockMod.messageQueue.add(new Pair<>("/p accept " + leader, 4));
+                SkyblockMod.skyblockMod.message.sendMessage("/p accept " + leader);
                 leader = "";
             }
         }

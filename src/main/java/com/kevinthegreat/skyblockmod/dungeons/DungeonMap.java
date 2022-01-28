@@ -1,14 +1,13 @@
-package com.kevinthegreat.skyblockmod;
+package com.kevinthegreat.skyblockmod.dungeons;
 
+import com.kevinthegreat.skyblockmod.SkyblockMod;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.item.FilledMapItem;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.item.map.MapState;
-import net.minecraft.nbt.NbtCompound;
 
 //from skyfabric
 public class DungeonMap {
