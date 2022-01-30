@@ -1,6 +1,7 @@
 package com.kevinthegreat.skyblockmod;
 
 import com.kevinthegreat.skyblockmod.dungeons.DungeonMap;
+import com.kevinthegreat.skyblockmod.dungeons.LividColor;
 import com.kevinthegreat.skyblockmod.dungeons.Reparty;
 import com.kevinthegreat.skyblockmod.util.Config;
 import com.kevinthegreat.skyblockmod.util.Message;
@@ -21,6 +22,7 @@ public class SkyblockMod implements ModInitializer {
 
     public final DungeonMap dungeonMap = new DungeonMap();
     public final Fishing fishing = new Fishing();
+    public final LividColor lividColor = new LividColor();
     public final ModifyMessage modifyMessage = new ModifyMessage();
     public final Reparty reparty = new Reparty();
 
@@ -37,6 +39,7 @@ public class SkyblockMod implements ModInitializer {
             tick = 0;
         }
         message.tick();
+        lividColor.tick();
         tick++;
     }
 }

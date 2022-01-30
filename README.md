@@ -1,6 +1,6 @@
 # Skyblock Mod Fabric
 
-QOL features for Hypixel Skyblock ([Fabric](https://fabricmc.net/) 1.17.1)
+Helpful features for Hypixel Skyblock ([Fabric](https://fabricmc.net/) 1.17.1)
 
 ##Features
 
@@ -9,13 +9,18 @@ QOL features for Hypixel Skyblock ([Fabric](https://fabricmc.net/) 1.17.1)
 Notifies you to reel in
 (Only works if you are not near other players)
 
-###Dungeon Map
+###Dungeon
 
-Configurable dungeon map
-- /sbm map scale \[number\]
+####Configurable dungeon map
+- /sbm map scale \[number]
 - /sbm map scale -> show current scale
-- /sbm map offset \[number\] \[number\]
+- /sbm map offset \[number] \[number]
 - /sbm map offset -> show current offset
+
+####Livid color
+- send livid color in chat
+- /sbm livid \[message before] "\[color]" \[message after]
+- Ex: /sbm livid \[color] is sus -> red is sus
 
 ###Party
 - /pa \[Player\] -> /p accept \[Player\]

@@ -10,12 +10,12 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(MinecraftClient.class)
 public class MinecraftClientMixin {
     @Inject(method = "tick()V", at = @At("RETURN"))
-    private void onEndTick(CallbackInfo callbackInfo) {
+    private void onEndTick(CallbackInfo ci) {
         SkyblockMod.skyblockMod.tick();
     }
 
     @Inject(method = "stop()V", at = @At(value = "INVOKE", target = "Lorg/apache/logging/log4j/Logger;info(Ljava/lang/String;)V", shift = At.Shift.AFTER))
-    private void onStopping(CallbackInfo callbackInfo) {
+    private void onStopping(CallbackInfo ci) {
         SkyblockMod.skyblockMod.config.save();
     }
 }

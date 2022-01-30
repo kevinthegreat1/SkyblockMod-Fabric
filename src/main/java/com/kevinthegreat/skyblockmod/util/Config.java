@@ -6,6 +6,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.*;
+import java.util.Arrays;
 
 public class Config {
 
@@ -21,6 +22,15 @@ public class Config {
                         case "mapScale" -> dungeonMap.mapScale = Float.parseFloat(args[1]);
                         case "mapOffsetX" -> dungeonMap.mapOffsetx = Integer.parseInt(args[1]);
                         case "mapOffsetY" -> dungeonMap.mapOffsety = Integer.parseInt(args[1]);
+                        case "lividColorText" -> {
+                            SkyblockMod.skyblockMod.lividColor.text = Arrays.copyOf(args[1].split("\\[color]"), 2);
+                            if (SkyblockMod.skyblockMod.lividColor.text[0] == null) {
+                                SkyblockMod.skyblockMod.lividColor.text[0] = "";
+                            }
+                            if (SkyblockMod.skyblockMod.lividColor.text[1] == null) {
+                                SkyblockMod.skyblockMod.lividColor.text[1] = "";
+                            }
+                        }
                     }
                 } catch (ArrayIndexOutOfBoundsException | NumberFormatException e) {
                     LogManager.getLogger().error("Unable to parse configuration \"" + args[0] + "\".");
@@ -42,6 +52,7 @@ public class Config {
             writer.println("mapScale:" + dungeonMap.mapScale);
             writer.println("mapOffsetX:" + dungeonMap.mapOffsetx);
             writer.println("mapOffsetY:" + dungeonMap.mapOffsety);
+            writer.println("lividColorText:" + SkyblockMod.skyblockMod.lividColor.text[0] + "[color]" + SkyblockMod.skyblockMod.lividColor.text[1]);
             writer.close();
         } catch (IOException e) {
             Logger logger = LogManager.getLogger();
@@ -49,6 +60,7 @@ public class Config {
             logger.info("mapScale:" + dungeonMap.mapScale);
             logger.info("mapOffsetX:" + dungeonMap.mapOffsetx);
             logger.info("mapOffsetY:" + dungeonMap.mapOffsety);
+            logger.info("lividColorText:" + SkyblockMod.skyblockMod.lividColor.text[0] + "[color]" + SkyblockMod.skyblockMod.lividColor.text[1]);
         }
     }
 }
