@@ -11,13 +11,14 @@ import net.minecraft.item.map.MapState;
 
 //from skyfabric
 public class DungeonMap {
+    public boolean on = true;
     public float mapScale = 1;
     public int mapOffsetx = 0;
     public int mapOffsety = 0;
 
     public DungeonMap() {
         HudRenderCallback.EVENT.register((matrixStack, tickDelta) -> {
-            if (SkyblockMod.skyblockMod.util.catacombs) {
+            if (on && SkyblockMod.skyblockMod.util.catacombs) {
                 MinecraftClient minecraftClient = MinecraftClient.getInstance();
                 if (minecraftClient == null || minecraftClient.player == null || minecraftClient.world == null) {
                     return;

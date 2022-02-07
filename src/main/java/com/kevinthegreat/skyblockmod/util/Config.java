@@ -2,8 +2,8 @@ package com.kevinthegreat.skyblockmod.util;
 
 import com.kevinthegreat.skyblockmod.dungeons.DungeonMap;
 import com.kevinthegreat.skyblockmod.SkyblockMod;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import com.kevinthegreat.skyblockmod.dungeons.DungeonScore;
+import org.slf4j.Logger;
 
 import java.io.*;
 import java.util.Arrays;
@@ -19,9 +19,12 @@ public class Config {
                 String[] args = line.split(":");
                 try {
                     switch (args[0]) {
+                        case "map" -> dungeonMap.on = Boolean.parseBoolean(args[1]);
                         case "mapScale" -> dungeonMap.mapScale = Float.parseFloat(args[1]);
                         case "mapOffsetX" -> dungeonMap.mapOffsetx = Integer.parseInt(args[1]);
                         case "mapOffsetY" -> dungeonMap.mapOffsety = Integer.parseInt(args[1]);
+                        case "reparty" -> SkyblockMod.skyblockMod.reparty.on = Boolean.parseBoolean(args[1]);
+                        case "lividColor" -> SkyblockMod.skyblockMod.lividColor.on = Boolean.parseBoolean(args[1]);
                         case "lividColorText" -> {
                             SkyblockMod.skyblockMod.lividColor.text = Arrays.copyOf(args[1].split("\\[color]"), 2);
                             if (SkyblockMod.skyblockMod.lividColor.text[0] == null) {
@@ -31,36 +34,55 @@ public class Config {
                                 SkyblockMod.skyblockMod.lividColor.text[1] = "";
                             }
                         }
+                        case "score270" -> SkyblockMod.skyblockMod.dungeonScore.on270 = Boolean.parseBoolean(args[1]);
+                        case "score270Text" -> SkyblockMod.skyblockMod.dungeonScore.text270 = args[1];
+                        case "score300" -> SkyblockMod.skyblockMod.dungeonScore.on300 = Boolean.parseBoolean(args[1]);
+                        case "score300Text" -> SkyblockMod.skyblockMod.dungeonScore.text300 = args[1];
                     }
                 } catch (ArrayIndexOutOfBoundsException | NumberFormatException e) {
-                    LogManager.getLogger().error("Unable to parse configuration \"" + args[0] + "\".");
+                    SkyblockMod.skyblockMod.LOGGER.error("Unable to parse configuration \"" + args[0] + "\".");
                 }
                 line = reader.readLine();
             }
             reader.close();
         } catch (FileNotFoundException e) {
-            LogManager.getLogger().info("Configuration file not found.");
+            SkyblockMod.skyblockMod.LOGGER.info("Configuration file not found.");
         } catch (IOException e) {
-            LogManager.getLogger().error("Failed to read configuration file.");
+            SkyblockMod.skyblockMod.LOGGER.error("Error while reading configuration file.");
         }
     }
 
     public void save() {
         DungeonMap dungeonMap = SkyblockMod.skyblockMod.dungeonMap;
+        DungeonScore dungeonScore = SkyblockMod.skyblockMod.dungeonScore;
         try {
             PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(SkyblockMod.MOD_ID + ".txt")));
+            writer.println("lividColor:" + SkyblockMod.skyblockMod.lividColor.on);
+            writer.println("lividColorText:" + SkyblockMod.skyblockMod.lividColor.text[0] + "[color]" + SkyblockMod.skyblockMod.lividColor.text[1]);
+            writer.println("map:" + dungeonMap.on);
             writer.println("mapScale:" + dungeonMap.mapScale);
             writer.println("mapOffsetX:" + dungeonMap.mapOffsetx);
             writer.println("mapOffsetY:" + dungeonMap.mapOffsety);
-            writer.println("lividColorText:" + SkyblockMod.skyblockMod.lividColor.text[0] + "[color]" + SkyblockMod.skyblockMod.lividColor.text[1]);
+            writer.println("reparty:" + SkyblockMod.skyblockMod.reparty.on);
+            writer.println("score270:" + dungeonScore.on270);
+            writer.println("score270Text:" + dungeonScore.text270);
+            writer.println("score300:" + dungeonScore.on300);
+            writer.println("score300Text:" + dungeonScore.text300);
             writer.close();
         } catch (IOException e) {
-            Logger logger = LogManager.getLogger();
-            logger.error("Failed to write configuration file. Logging configuration.");
+            Logger logger = SkyblockMod.skyblockMod.LOGGER;
+            logger.error("Error while writing configuration file. Logging configuration.");
+            logger.info("lividColor:" + SkyblockMod.skyblockMod.lividColor.on);
+            logger.info("lividColorText:" + SkyblockMod.skyblockMod.lividColor.text[0] + "[color]" + SkyblockMod.skyblockMod.lividColor.text[1]);
+            logger.info("map:" + dungeonMap.on);
             logger.info("mapScale:" + dungeonMap.mapScale);
             logger.info("mapOffsetX:" + dungeonMap.mapOffsetx);
             logger.info("mapOffsetY:" + dungeonMap.mapOffsety);
-            logger.info("lividColorText:" + SkyblockMod.skyblockMod.lividColor.text[0] + "[color]" + SkyblockMod.skyblockMod.lividColor.text[1]);
+            logger.info("reparty:" + SkyblockMod.skyblockMod.reparty.on);
+            logger.info("score270:" + dungeonScore.on270);
+            logger.info("score270Text:" + dungeonScore.text270);
+            logger.info("score300:" + dungeonScore.on300);
+            logger.info("score300Text:" + dungeonScore.text300);
         }
     }
 }

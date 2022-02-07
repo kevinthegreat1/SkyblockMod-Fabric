@@ -7,6 +7,7 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.util.math.BlockPos;
 
 public class LividColor {
+    public boolean on = true;
     public String[] text = {"", ""};
     private int ticks = 0;
 
@@ -15,7 +16,7 @@ public class LividColor {
     }
 
     public void tick() {
-        if (SkyblockMod.skyblockMod.util.catacombs && MinecraftClient.getInstance().world != null) {
+        if (on && SkyblockMod.skyblockMod.util.catacombs && MinecraftClient.getInstance().world != null) {
             if (ticks == 1) {
                 SkyblockMod.skyblockMod.message.sendMessage(text[0] + "red" + text[1]);
                 ticks = 0;
