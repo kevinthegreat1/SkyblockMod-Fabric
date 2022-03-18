@@ -1,7 +1,5 @@
 package com.kevinthegreat.skyblockmod.util;
 
-import com.google.common.collect.Iterables;
-import com.google.common.collect.Lists;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.scoreboard.Scoreboard;
 import net.minecraft.scoreboard.ScoreboardObjective;
@@ -9,10 +7,8 @@ import net.minecraft.scoreboard.ScoreboardPlayerScore;
 import net.minecraft.scoreboard.Team;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 //from skyblocker / skyfabric
 public class Util {
@@ -34,15 +30,11 @@ public class Util {
         if (scoreboardObjective == null) {
             return;
         }
-        Collection<ScoreboardPlayerScore> scores = scoreboard.getAllPlayerScores(scoreboardObjective);
-        List<ScoreboardPlayerScore> scoreList = scores.stream().filter(input -> input != null && input.getPlayerName() != null && !input.getPlayerName().startsWith("#")).collect(Collectors.toList());
-        if (scoreList.size() > 15) {
-            scores = Lists.newArrayList(Iterables.skip(scoreList, scores.size() - 15));
-        } else {
-            scores = scoreList;
-        }
         List<String> list = new ArrayList<>();
-        for (ScoreboardPlayerScore score : scores) {
+        for (ScoreboardPlayerScore score : scoreboard.getAllPlayerScores(scoreboardObjective)) {
+            if (score == null || score.getPlayerName() == null || score.getPlayerName().startsWith("#")) {
+                return;
+            }
             Team team = scoreboard.getPlayerTeam(score.getPlayerName());
             if (team == null) {
                 return;
@@ -64,7 +56,13 @@ public class Util {
             } else {
                 skyblock = false;
                 catacombs = false;
+                crystalHollows = false;
             }
+        } else {
+            hypixel = false;
+            skyblock = false;
+            catacombs = false;
+            crystalHollows = false;
         }
     }
 }

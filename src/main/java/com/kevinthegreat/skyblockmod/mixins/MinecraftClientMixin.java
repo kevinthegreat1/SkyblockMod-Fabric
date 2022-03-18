@@ -14,7 +14,7 @@ public class MinecraftClientMixin {
         SkyblockMod.skyblockMod.tick();
     }
 
-    @Inject(method = "stop()V", at = @At(value = "INVOKE", target = "Lorg/apache/logging/log4j/Logger;info(Ljava/lang/String;)V", shift = At.Shift.AFTER))
+    @Inject(method = "stop()V", at = @At(value = "INVOKE", target = "Lorg/slf4j/Logger;info(Ljava/lang/String;)V", shift = At.Shift.AFTER))
     private void onStopping(CallbackInfo ci) {
         SkyblockMod.skyblockMod.config.save();
     }

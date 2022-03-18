@@ -4,10 +4,13 @@ Helpful features for Hypixel Skyblock ([Fabric](https://fabricmc.net/) 1.17+)
 
 ##Features
 
-###Fishing
+###Chat
 
-Notifies you to reel in
-(Only works if you are not near other players)
+- /ca -> /chat all
+- /cp -> /chat party
+- /cg -> /chat guild
+- /co -> /chat officer
+- /cc -> /chat coop
 
 ###Dungeon
 
@@ -19,7 +22,6 @@ Notifies you to reel in
 - /sbm map scale \[number]
 - /sbm map offset: show current offset
 - /sbm map offset \[number] \[number]
-
 
 ####Dungeon Score
 
@@ -37,6 +39,16 @@ Notifies you to reel in
 - /sbm livid \[message before] "\[color]" \[message after]
 - Ex: /sbm livid \[color] is sus: red is sus
 
+###Fishing
+
+Notifies you to reel in
+(Only works if you are not near other players)
+
+###Message
+
+- /m \[player\] -> /msg \[Player\]
+
+
 ###Party
 
 - /pa \[Player\] -> /p accept \[Player\]
@@ -49,6 +61,11 @@ Notifies you to reel in
 - Auto join reparty
 - /sbm reparty: show current state (on or off)
 - /sbm reparty on/off: turn reparty on or off
+
+###Visit
+
+- /v \[Player\] -> /visit \[Player\]
+- /vp, /visit p -> /visit portalhub
 
 ###Warp
 
@@ -81,23 +98,6 @@ Notifies you to reel in
 - /drag, /dragon -> /warp drag
 - /jungle -> /warp jungle
 - /howl -> /warp howl
-
-###Chat
-
-- /ca -> /chat all
-- /cp -> /chat party
-- /cg -> /chat guild
-- /co -> /chat officer
-- /cc -> /chat coop
-
-###Message
-
-- /m \[player\] -> /msg \[Player\]
-
-###Visit
-
-- /v \[Player\] -> /visit \[Player\]
-- /vp, /visit p -> /visit portalhub
 
 ###Misc
 
