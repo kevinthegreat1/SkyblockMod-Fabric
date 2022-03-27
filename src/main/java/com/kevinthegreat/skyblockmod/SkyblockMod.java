@@ -28,6 +28,7 @@ public class SkyblockMod implements ModInitializer {
     public final Fishing fishing = new Fishing();
     public final LividColor lividColor = new LividColor();
     public final ModifyMessage modifyMessage = new ModifyMessage();
+    public final QuiverWarning quiverWarning = new QuiverWarning();
     public final Reparty reparty = new Reparty();
 
     @Override

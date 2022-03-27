@@ -106,6 +106,23 @@ public class ScreenMixin {
                             }
                         }
                     }
+                    case "quiver" -> {
+                        if (messageArgs.length == 2) {
+                            MinecraftClient.getInstance().inGameHud.getChatHud().addMessage(Text.of("Quiver warning is " + (SkyblockMod.skyblockMod.quiverWarning.on ? "on" : "off")));
+                        } else {
+                            switch (messageArgs[2]) {
+                                case "on", "true" -> {
+                                    SkyblockMod.skyblockMod.quiverWarning.on = true;
+                                    MinecraftClient.getInstance().inGameHud.getChatHud().addMessage(Text.of("Quiver warning turned on"));
+                                }
+                                case "off", "false" -> {
+                                    SkyblockMod.skyblockMod.quiverWarning.on = false;
+                                    MinecraftClient.getInstance().inGameHud.getChatHud().addMessage(Text.of("Quiver warning turned off"));
+                                }
+                                default -> MinecraftClient.getInstance().inGameHud.getChatHud().addMessage(Text.of("Reparty is " + (SkyblockMod.skyblockMod.reparty.on ? "on" : "off")));
+                            }
+                        }
+                    }
                     case "reparty" -> {
                         if (messageArgs.length == 2) {
                             MinecraftClient.getInstance().inGameHud.getChatHud().addMessage(Text.of("Reparty is " + (SkyblockMod.skyblockMod.reparty.on ? "on" : "off")));

@@ -48,6 +48,10 @@ Notifies you to reel in
 
 - /m \[player\] -> /msg \[Player\]
 
+###Quiver Low Warning
+- Notifies you when you only have 50 Arrows left in your Quiver
+- /sbm quiver: show current state (on or off)
+- /sbm quiver on/off: turn quiver warning on or off
 
 ###Party
 
