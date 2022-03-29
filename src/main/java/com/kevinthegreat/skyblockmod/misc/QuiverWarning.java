@@ -1,4 +1,4 @@
-package com.kevinthegreat.skyblockmod;
+package com.kevinthegreat.skyblockmod.misc;
 
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.text.Text;

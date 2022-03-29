@@ -105,8 +105,10 @@ Notifies you to reel in
 
 ###Misc
 
-- /sbm reload: reload config file
-- Useful when you accidentally override something
+- /sbm config reload: reload config file
+- Useful when you accidentally override a setting
+- /sbm config save: manually save config file
+- Config file will automatically save when you quit the game
 
-Configuration file is in minecraft run directory
+Configuration file is in config folder in minecraft run directory
 Configuration will be printed to the log if writing to the configuration file fails.

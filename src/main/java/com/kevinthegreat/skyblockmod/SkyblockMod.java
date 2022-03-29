@@ -4,6 +4,8 @@ import com.kevinthegreat.skyblockmod.dungeons.DungeonMap;
 import com.kevinthegreat.skyblockmod.dungeons.DungeonScore;
 import com.kevinthegreat.skyblockmod.dungeons.LividColor;
 import com.kevinthegreat.skyblockmod.dungeons.Reparty;
+import com.kevinthegreat.skyblockmod.misc.Fishing;
+import com.kevinthegreat.skyblockmod.misc.QuiverWarning;
 import com.kevinthegreat.skyblockmod.util.Config;
 import com.kevinthegreat.skyblockmod.util.Message;
 import com.kevinthegreat.skyblockmod.util.Util;
@@ -27,7 +29,6 @@ public class SkyblockMod implements ModInitializer {
     public final DungeonMap dungeonMap = new DungeonMap();
     public final Fishing fishing = new Fishing();
     public final LividColor lividColor = new LividColor();
-    public final ModifyMessage modifyMessage = new ModifyMessage();
     public final QuiverWarning quiverWarning = new QuiverWarning();
     public final Reparty reparty = new Reparty();
 

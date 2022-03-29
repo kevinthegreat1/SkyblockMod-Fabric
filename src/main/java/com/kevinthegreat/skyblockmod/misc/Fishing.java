@@ -1,4 +1,4 @@
-package com.kevinthegreat.skyblockmod;
+package com.kevinthegreat.skyblockmod.misc;
 
 import net.fabricmc.fabric.api.event.player.UseItemCallback;
 import net.minecraft.item.ItemStack;
