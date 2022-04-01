@@ -40,9 +40,10 @@ Helpful features for Hypixel Skyblock ([Fabric](https://fabricmc.net/) 1.17+)
 - Ex: /sbm livid \[color] is sus: red is sus
 
 ###Fishing
-
-Notifies you to reel in
-(Only works if you are not near other players)
+- Notifies you to reel in
+- (Only works if you are not near other players)
+- /sbm fishing: show current state (on or off)
+- /sbm fishing on/off: turn fishing helper on or off
 
 ###Message
 

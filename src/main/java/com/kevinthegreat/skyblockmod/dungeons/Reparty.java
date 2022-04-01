@@ -69,7 +69,7 @@ public class Reparty {
             } else if (!leader.isEmpty() && message.contains(leader + " has invited you to join their party!")) {
                 assert MinecraftClient.getInstance().player != null;
                 if (!leader.equals(MinecraftClient.getInstance().player.getEntityName())) {
-                    SkyblockMod.skyblockMod.message.sendMessage("/p accept " + leader);
+                    SkyblockMod.skyblockMod.message.sendMessageAfterCooldown("/p accept " + leader);
                     leader = "";
                 }
                 return true;

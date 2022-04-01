@@ -12,9 +12,9 @@ import net.minecraft.item.map.MapState;
 //from skyfabric
 public class DungeonMap {
     public boolean on = true;
-    public float mapScale = 1;
-    public int mapOffsetx = 0;
-    public int mapOffsety = 0;
+    public float scale = 1;
+    public int offsetX = 0;
+    public int offsetY = 0;
 
     public DungeonMap() {
         HudRenderCallback.EVENT.register((matrixStack, tickDelta) -> {
@@ -33,8 +33,8 @@ public class DungeonMap {
                 }
                 VertexConsumerProvider.Immediate vertices = minecraftClient.getBufferBuilders().getEffectVertexConsumers();
                 matrixStack.push();
-                matrixStack.translate(mapOffsetx, mapOffsety, 0);
-                matrixStack.scale(mapScale, mapScale, 0);
+                matrixStack.translate(offsetX, offsetY, 0);
+                matrixStack.scale(scale, scale, 0);
                 minecraftClient.gameRenderer.getMapRenderer().draw(matrixStack, vertices, FilledMapItem.getMapId(itemStack), mapState, false, 15728880);
                 vertices.draw();
                 matrixStack.pop();

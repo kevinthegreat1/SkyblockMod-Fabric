@@ -14,7 +14,7 @@ public class Message {
     private final Queue<Pair<String, Integer>> messageQueue = new LinkedList<>();
     private long lastMessage;
 
-    public Message(){
+    public Message() {
         commands.put("/s", "/skyblock");
         commands.put("/sk", "/skyblock");
         commands.put("/sky", "/skyblock");
@@ -106,13 +106,18 @@ public class Message {
         commands.put("/visit p", "/visit portalhub");
     }
 
-    public void sendMessage(String message) {
+    public void sendMessageAfterCooldown(String message) {
         if (lastMessage + 200 < System.currentTimeMillis()) {
-            MinecraftClient.getInstance().currentScreen.sendMessage(message);
+            sendMessage(message);
             lastMessage = System.currentTimeMillis();
         } else {
             messageQueue.add(new Pair<>(message, 0));
         }
+    }
+
+    private void sendMessage(String message) {
+        MinecraftClient.getInstance().inGameHud.getChatHud().addToMessageHistory(message);
+        MinecraftClient.getInstance().player.sendChatMessage(message);
     }
 
     public void queueMessage(String message, int ticks) {
@@ -122,7 +127,7 @@ public class Message {
     public void tick() {
         if (!messageQueue.isEmpty()) {
             if (messageQueue.peek().getRight() <= 0 && lastMessage + 200 < System.currentTimeMillis()) {
-                MinecraftClient.getInstance().currentScreen.sendMessage(messageQueue.poll().getLeft());
+                sendMessage(messageQueue.poll().getLeft());
                 lastMessage = System.currentTimeMillis();
             } else {
                 messageQueue.peek().setRight(messageQueue.peek().getRight() - 1);

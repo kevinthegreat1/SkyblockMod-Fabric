@@ -50,6 +50,22 @@ public class ScreenMixin {
                                 SkyblockMod.skyblockMod.config.save();
                                 MinecraftClient.getInstance().inGameHud.getChatHud().addMessage(Text.of("Saved config file"));
                             }
+                            default -> MinecraftClient.getInstance().inGameHud.getChatHud().addMessage(Text.of("Add reload or save to reload or save config file"));
+                        }
+                    }
+                    case "fishing" -> {
+                        if (messageArgs.length == 2) {
+                            MinecraftClient.getInstance().inGameHud.getChatHud().addMessage(Text.of(SkyblockMod.skyblockMod.fishing.on ? "Fishing helper is on" : "Fishing helper is off"));
+                        } else switch (messageArgs[2]) {
+                            case "on", "true" -> {
+                                SkyblockMod.skyblockMod.fishing.on = true;
+                                MinecraftClient.getInstance().inGameHud.getChatHud().addMessage(Text.of("Fishing helper turned on"));
+                            }
+                            case "off", "false" -> {
+                                SkyblockMod.skyblockMod.fishing.on = false;
+                                MinecraftClient.getInstance().inGameHud.getChatHud().addMessage(Text.of("Fishing helper turned off"));
+                            }
+                            default -> MinecraftClient.getInstance().inGameHud.getChatHud().addMessage(Text.of(SkyblockMod.skyblockMod.fishing.on ? "Fishing helper is on" : "Fishing helper is off"));
                         }
                     }
                     case "livid" -> {
@@ -78,7 +94,7 @@ public class ScreenMixin {
                     }
                     case "map" -> {
                         if (messageArgs.length == 2) {
-                            MinecraftClient.getInstance().inGameHud.getChatHud().addMessage(Text.of("Map is " + (SkyblockMod.skyblockMod.dungeonMap.on ? "on" : "off")));
+                            MinecraftClient.getInstance().inGameHud.getChatHud().addMessage(Text.of((SkyblockMod.skyblockMod.dungeonMap.on ? "Map is on" : "Map is off")));
                         } else switch (messageArgs[2]) {
                             case "on", "true" -> {
                                 SkyblockMod.skyblockMod.dungeonMap.on = true;
@@ -90,27 +106,27 @@ public class ScreenMixin {
                             }
                             case "scale" -> {
                                 try {
-                                    SkyblockMod.skyblockMod.dungeonMap.mapScale = Float.parseFloat(messageArgs[3]);
+                                    SkyblockMod.skyblockMod.dungeonMap.scale = Float.parseFloat(messageArgs[3]);
                                     MinecraftClient.getInstance().inGameHud.getChatHud().addMessage(Text.of("Map size set to: " + messageArgs[3]));
                                 } catch (ArrayIndexOutOfBoundsException | NumberFormatException e) {
-                                    MinecraftClient.getInstance().inGameHud.getChatHud().addMessage(Text.of("Map size: " + SkyblockMod.skyblockMod.dungeonMap.mapScale));
+                                    MinecraftClient.getInstance().inGameHud.getChatHud().addMessage(Text.of("Map size: " + SkyblockMod.skyblockMod.dungeonMap.scale));
                                 }
                             }
                             case "offset" -> {
                                 try {
-                                    SkyblockMod.skyblockMod.dungeonMap.mapOffsetx = Integer.parseInt(messageArgs[3]);
-                                    SkyblockMod.skyblockMod.dungeonMap.mapOffsety = Integer.parseInt(messageArgs[4]);
+                                    SkyblockMod.skyblockMod.dungeonMap.offsetX = Integer.parseInt(messageArgs[3]);
+                                    SkyblockMod.skyblockMod.dungeonMap.offsetY = Integer.parseInt(messageArgs[4]);
                                     MinecraftClient.getInstance().inGameHud.getChatHud().addMessage(Text.of("Map offset set to: " + messageArgs[3] + ", " + messageArgs[4]));
                                 } catch (ArrayIndexOutOfBoundsException | NumberFormatException e) {
-                                    MinecraftClient.getInstance().inGameHud.getChatHud().addMessage(Text.of("Map offset: " + SkyblockMod.skyblockMod.dungeonMap.mapOffsetx + ", " + SkyblockMod.skyblockMod.dungeonMap.mapOffsety));
+                                    MinecraftClient.getInstance().inGameHud.getChatHud().addMessage(Text.of("Map offset: " + SkyblockMod.skyblockMod.dungeonMap.offsetX + ", " + SkyblockMod.skyblockMod.dungeonMap.offsetY));
                                 }
                             }
-                            default -> MinecraftClient.getInstance().inGameHud.getChatHud().addMessage(Text.of("Map is " + (SkyblockMod.skyblockMod.dungeonMap.on ? "on" : "off")));
+                            default -> MinecraftClient.getInstance().inGameHud.getChatHud().addMessage(Text.of((SkyblockMod.skyblockMod.dungeonMap.on ? "Map is on" : "Map is off")));
                         }
                     }
                     case "quiver" -> {
                         if (messageArgs.length == 2) {
-                            MinecraftClient.getInstance().inGameHud.getChatHud().addMessage(Text.of("Quiver warning is " + (SkyblockMod.skyblockMod.quiverWarning.on ? "on" : "off")));
+                            MinecraftClient.getInstance().inGameHud.getChatHud().addMessage(Text.of((SkyblockMod.skyblockMod.quiverWarning.on ? "Quiver warning is on" : "Quiver warning is off")));
                         } else switch (messageArgs[2]) {
                             case "on", "true" -> {
                                 SkyblockMod.skyblockMod.quiverWarning.on = true;
@@ -120,12 +136,12 @@ public class ScreenMixin {
                                 SkyblockMod.skyblockMod.quiverWarning.on = false;
                                 MinecraftClient.getInstance().inGameHud.getChatHud().addMessage(Text.of("Quiver warning turned off"));
                             }
-                            default -> MinecraftClient.getInstance().inGameHud.getChatHud().addMessage(Text.of("Reparty is " + (SkyblockMod.skyblockMod.reparty.on ? "on" : "off")));
+                            default -> MinecraftClient.getInstance().inGameHud.getChatHud().addMessage(Text.of((SkyblockMod.skyblockMod.reparty.on ? "Quiver warning is on" : "Quiver warning is off")));
                         }
                     }
                     case "reparty" -> {
                         if (messageArgs.length == 2) {
-                            MinecraftClient.getInstance().inGameHud.getChatHud().addMessage(Text.of("Reparty is " + (SkyblockMod.skyblockMod.reparty.on ? "on" : "off")));
+                            MinecraftClient.getInstance().inGameHud.getChatHud().addMessage(Text.of((SkyblockMod.skyblockMod.reparty.on ? "Reparty is on" : "Reparty is off")));
                         } else switch (messageArgs[2]) {
                             case "on", "true" -> {
                                 SkyblockMod.skyblockMod.reparty.on = true;
@@ -135,7 +151,7 @@ public class ScreenMixin {
                                 SkyblockMod.skyblockMod.reparty.on = false;
                                 MinecraftClient.getInstance().inGameHud.getChatHud().addMessage(Text.of("Reparty turned off"));
                             }
-                            default -> MinecraftClient.getInstance().inGameHud.getChatHud().addMessage(Text.of("Reparty is " + (SkyblockMod.skyblockMod.reparty.on ? "on" : "off")));
+                            default -> MinecraftClient.getInstance().inGameHud.getChatHud().addMessage(Text.of((SkyblockMod.skyblockMod.reparty.on ? "Reparty is on" : "Reparty is off")));
                         }
                     }
                     case "score" -> {
@@ -184,6 +200,7 @@ public class ScreenMixin {
                                     }
                                 }
                             }
+                            default -> MinecraftClient.getInstance().inGameHud.getChatHud().addMessage(Text.of("/sbm score [270 or 300] [on, off, or message]"));
                         }
                     }
                 }
