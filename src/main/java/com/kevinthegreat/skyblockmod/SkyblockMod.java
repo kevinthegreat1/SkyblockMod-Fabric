@@ -46,6 +46,7 @@ public class SkyblockMod implements ModInitializer {
     public void tick() {
         if (tick % 20 == 0) {
             util.check();
+            quiverWarning.check();
             tick = 0;
         }
         message.tick();

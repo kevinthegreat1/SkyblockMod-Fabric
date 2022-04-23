@@ -20,23 +20,28 @@ public class Util {
     public void check() {
         MinecraftClient minecraftClient = MinecraftClient.getInstance();
         if (minecraftClient == null || minecraftClient.world == null || minecraftClient.isInSingleplayer()) {
+            reset();
             return;
         }
         Scoreboard scoreboard = minecraftClient.world.getScoreboard();
         if (scoreboard == null) {
+            reset();
             return;
         }
         ScoreboardObjective scoreboardObjective = scoreboard.getObjectiveForSlot(1);
         if (scoreboardObjective == null) {
+            reset();
             return;
         }
         List<String> list = new ArrayList<>();
         for (ScoreboardPlayerScore score : scoreboard.getAllPlayerScores(scoreboardObjective)) {
             if (score == null || score.getPlayerName() == null || score.getPlayerName().startsWith("#")) {
+                reset();
                 return;
             }
             Team team = scoreboard.getPlayerTeam(score.getPlayerName());
             if (team == null) {
+                reset();
                 return;
             }
             String text = team.getPrefix().getString() + team.getSuffix().getString();
@@ -59,10 +64,14 @@ public class Util {
                 crystalHollows = false;
             }
         } else {
-            hypixel = false;
-            skyblock = false;
-            catacombs = false;
-            crystalHollows = false;
+            reset();
         }
+    }
+
+    private void reset(){
+        hypixel = false;
+        skyblock = false;
+        catacombs = false;
+        crystalHollows = false;
     }
 }
