@@ -14,7 +14,7 @@ public class Config {
 
     public void load() {
         try {
-            BufferedReader reader = new BufferedReader(new FileReader(new File(new File(MinecraftClient.getInstance().runDirectory,"config"),SkyblockMod.MOD_ID + ".txt")));
+            BufferedReader reader = new BufferedReader(new FileReader(new File(new File(MinecraftClient.getInstance().runDirectory, "config"), SkyblockMod.MOD_ID + ".txt")));
             String line;
             LividColor lividColor = SkyblockMod.skyblockMod.lividColor;
             DungeonMap dungeonMap = SkyblockMod.skyblockMod.dungeonMap;
@@ -61,7 +61,7 @@ public class Config {
         DungeonMap dungeonMap = SkyblockMod.skyblockMod.dungeonMap;
         DungeonScore dungeonScore = SkyblockMod.skyblockMod.dungeonScore;
         try {
-            PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(new File(new File(MinecraftClient.getInstance().runDirectory,"config"),SkyblockMod.MOD_ID + ".txt"))));
+            PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(new File(new File(MinecraftClient.getInstance().runDirectory, "config"), SkyblockMod.MOD_ID + ".txt"))));
             writer.println("fishing:" + SkyblockMod.skyblockMod.fishing.on);
             writer.println("lividColor:" + SkyblockMod.skyblockMod.lividColor.on);
             writer.println("lividColorText:" + SkyblockMod.skyblockMod.lividColor.text[0] + "[color]" + SkyblockMod.skyblockMod.lividColor.text[1]);

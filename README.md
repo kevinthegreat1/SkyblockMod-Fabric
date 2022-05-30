@@ -2,9 +2,9 @@
 
 Helpful features for Hypixel Skyblock ([Fabric](https://fabricmc.net/) 1.17+)
 
-##Features
+## Features
 
-###Chat
+### Chat
 
 - /ca -> /chat all
 - /cp -> /chat party
@@ -12,9 +12,9 @@ Helpful features for Hypixel Skyblock ([Fabric](https://fabricmc.net/) 1.17+)
 - /co -> /chat officer
 - /cc -> /chat coop
 
-###Dungeon
+### Dungeon
 
-####Configurable dungeon map
+#### Configurable dungeon map
 
 - /sbm map: show current state (on or off)
 - /sbm map on/off: turn dungeon map on or off
@@ -23,7 +23,7 @@ Helpful features for Hypixel Skyblock ([Fabric](https://fabricmc.net/) 1.17+)
 - /sbm map offset: show current offset
 - /sbm map offset \[number] \[number]
 
-####Dungeon Score
+#### Dungeon Score
 
 - send 300 score in chat
 - /sbm score: show current state (on or off)
@@ -31,7 +31,7 @@ Helpful features for Hypixel Skyblock ([Fabric](https://fabricmc.net/) 1.17+)
 - /sbm score \[message before] "\[score]" \[message after]
 - Ex: /sbm score \[score] score: 300 score
 
-####Livid color
+#### Livid color
 
 - send livid color in chat
 - /sbm livid: show current state (on or off)
@@ -39,40 +39,42 @@ Helpful features for Hypixel Skyblock ([Fabric](https://fabricmc.net/) 1.17+)
 - /sbm livid \[message before] "\[color]" \[message after]
 - Ex: /sbm livid \[color] is sus: red is sus
 
-###Fishing
+### Fishing
+
 - Notifies you to reel in
 - (Only works if you are not near other players)
 - /sbm fishing: show current state (on or off)
 - /sbm fishing on/off: turn fishing helper on or off
 
-###Message
+### Message
 
 - /m \[player\] -> /msg \[Player\]
 
-###Quiver Low Warning
+### Quiver Low Warning
+
 - Notifies you when you only have 50 Arrows left in your Quiver
 - /sbm quiver: show current state (on or off)
 - /sbm quiver on/off: turn quiver warning on or off
 
-###Party
+### Party
 
 - /pa \[Player\] -> /p accept \[Player\]
 - /pv -> /p leave
 - /pd -> /p disband
 
-####Reparty
+#### Reparty
 
 - /pr, /rp -> Reparty: disbands the party and invites everyone back
 - Auto join reparty
 - /sbm reparty: show current state (on or off)
 - /sbm reparty on/off: turn reparty on or off
 
-###Visit
+### Visit
 
 - /v \[Player\] -> /visit \[Player\]
 - /vp, /visit p -> /visit portalhub
 
-###Warp
+### Warp
 
 - /sk, /sky -> /skyblock
 - /i -> /is
@@ -104,7 +106,7 @@ Helpful features for Hypixel Skyblock ([Fabric](https://fabricmc.net/) 1.17+)
 - /jungle -> /warp jungle
 - /howl -> /warp howl
 
-###Misc
+### Misc
 
 - /sbm config reload: reload config file
 - Useful when you accidentally override a setting
@@ -112,4 +114,5 @@ Helpful features for Hypixel Skyblock ([Fabric](https://fabricmc.net/) 1.17+)
 - Config file will automatically save when you quit the game
 
 Configuration file is in config folder in minecraft run directory
+<br>
 Configuration will be printed to the log if writing to the configuration file fails.
