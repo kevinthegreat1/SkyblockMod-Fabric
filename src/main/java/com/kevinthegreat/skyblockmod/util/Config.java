@@ -23,6 +23,7 @@ public class Config {
                 String[] args = line.split(":");
                 try {
                     switch (args[0]) {
+                        case "apiKey" -> SkyblockMod.skyblockMod.api.apiKey = args[1];
                         case "fishing" -> SkyblockMod.skyblockMod.fishing.on = Boolean.parseBoolean(args[1]);
                         case "lividColor" -> lividColor.on = Boolean.parseBoolean(args[1]);
                         case "lividColorText" -> {
@@ -62,6 +63,7 @@ public class Config {
         DungeonScore dungeonScore = SkyblockMod.skyblockMod.dungeonScore;
         try {
             PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(new File(new File(MinecraftClient.getInstance().runDirectory, "config"), SkyblockMod.MOD_ID + ".txt"))));
+            writer.println("apiKey:" + SkyblockMod.skyblockMod.api.apiKey);
             writer.println("fishing:" + SkyblockMod.skyblockMod.fishing.on);
             writer.println("lividColor:" + SkyblockMod.skyblockMod.lividColor.on);
             writer.println("lividColorText:" + SkyblockMod.skyblockMod.lividColor.text[0] + "[color]" + SkyblockMod.skyblockMod.lividColor.text[1]);
@@ -80,6 +82,7 @@ public class Config {
             e.printStackTrace();
             Logger logger = SkyblockMod.skyblockMod.LOGGER;
             logger.error("Error while writing configuration file. Logging configuration.");
+            logger.info("apiKey:" + SkyblockMod.skyblockMod.api.apiKey);
             logger.info("fishing:" + SkyblockMod.skyblockMod.fishing.on);
             logger.info("lividColor:" + SkyblockMod.skyblockMod.lividColor.on);
             logger.info("lividColorText:" + SkyblockMod.skyblockMod.lividColor.text[0] + "[color]" + SkyblockMod.skyblockMod.lividColor.text[1]);

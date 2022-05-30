@@ -16,6 +16,10 @@ public class ChatHudListenerMixin {
     @Inject(method = "onChatMessage(Lnet/minecraft/network/MessageType;Lnet/minecraft/text/Text;Ljava/util/UUID;)V", at = @At(value = "HEAD"))
     private void onChatMessage(MessageType messageType, Text text, UUID sender, CallbackInfo ci) {
         String message = text.getString();
+        if (message.startsWith("Your new API key is ")) {
+            SkyblockMod.skyblockMod.api.apiKey = message.substring(20);
+            return;
+        }
         if (SkyblockMod.skyblockMod.dungeonScore.onChatMessage(message)) {
             return;
         }

@@ -6,6 +6,7 @@ import com.kevinthegreat.skyblockmod.dungeons.LividColor;
 import com.kevinthegreat.skyblockmod.dungeons.Reparty;
 import com.kevinthegreat.skyblockmod.misc.Fishing;
 import com.kevinthegreat.skyblockmod.misc.QuiverWarning;
+import com.kevinthegreat.skyblockmod.util.Api;
 import com.kevinthegreat.skyblockmod.util.Config;
 import com.kevinthegreat.skyblockmod.util.Message;
 import com.kevinthegreat.skyblockmod.util.Util;
@@ -23,6 +24,7 @@ public class SkyblockMod implements ModInitializer {
     public final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
     public int tick = 0;
 
+    public final Api api = new Api();
     public final Config config = new Config();
     public final Message message = new Message();
     public final Util util = new Util();
