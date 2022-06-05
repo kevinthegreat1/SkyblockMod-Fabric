@@ -2,6 +2,8 @@
 
 Helpful features for Hypixel Skyblock ([Fabric](https://fabricmc.net/) 1.17+)
 
+Forge 1.8.9 version at [SkyblockMod-Forge-1.8.9](https://github.com/kevinthegreat1/SkyblockMod-Forge-1.8.9)
+
 ## Features
 
 ### Chat
