@@ -8,7 +8,7 @@ import net.minecraft.util.math.BlockPos;
 
 public class LividColor {
     public boolean on = true;
-    public String[] text = {"", ""};
+    public String text = "";
     private int ticks = 0;
 
     public void start() {
@@ -18,33 +18,33 @@ public class LividColor {
     public void tick() {
         if (on && SkyblockMod.skyblockMod.util.catacombs && MinecraftClient.getInstance().world != null) {
             if (ticks == 1) {
-                SkyblockMod.skyblockMod.message.sendMessageAfterCooldown(text[0] + "red" + text[1]);
+                SkyblockMod.skyblockMod.message.sendMessageAfterCooldown(text.replace("[color]", "red"));
                 ticks = 0;
             } else if (ticks % 10 == 1) {
                 BlockState blockState = MinecraftClient.getInstance().world.getBlockState(new BlockPos(5, 110, 42));
                 if (blockState.isOf(Blocks.BLUE_WOOL)) {
-                    SkyblockMod.skyblockMod.message.sendMessageAfterCooldown(text[0] + "blue" + text[1]);
+                    SkyblockMod.skyblockMod.message.sendMessageAfterCooldown(text.replace("[color]", "blue"));
                     ticks = 0;
                 } else if (blockState.isOf(Blocks.GRAY_WOOL)) {
-                    SkyblockMod.skyblockMod.message.sendMessageAfterCooldown(text[0] + "gray" + text[1]);
+                    SkyblockMod.skyblockMod.message.sendMessageAfterCooldown(text.replace("[color]", "gray"));
                     ticks = 0;
                 } else if (blockState.isOf(Blocks.GREEN_WOOL)) {
-                    SkyblockMod.skyblockMod.message.sendMessageAfterCooldown(text[0] + "green" + text[1]);
+                    SkyblockMod.skyblockMod.message.sendMessageAfterCooldown(text.replace("[color]", "green"));
                     ticks = 0;
                 } else if (blockState.isOf(Blocks.LIME_WOOL)) {
-                    SkyblockMod.skyblockMod.message.sendMessageAfterCooldown(text[0] + "lime" + text[1]);
+                    SkyblockMod.skyblockMod.message.sendMessageAfterCooldown(text.replace("[color]", "lime"));
                     ticks = 0;
                 } else if (blockState.isOf(Blocks.MAGENTA_WOOL)) {
-                    SkyblockMod.skyblockMod.message.sendMessageAfterCooldown(text[0] + "magenta" + text[1]);
+                    SkyblockMod.skyblockMod.message.sendMessageAfterCooldown(text.replace("[color]", "magenta"));
                     ticks = 0;
                 } else if (blockState.isOf(Blocks.PURPLE_WOOL)) {
-                    SkyblockMod.skyblockMod.message.sendMessageAfterCooldown(text[0] + "purple" + text[1]);
+                    SkyblockMod.skyblockMod.message.sendMessageAfterCooldown(text.replace("[color]", "purple"));
                     ticks = 0;
                 } else if (blockState.isOf(Blocks.WHITE_WOOL)) {
-                    SkyblockMod.skyblockMod.message.sendMessageAfterCooldown(text[0] + "white" + text[1]);
+                    SkyblockMod.skyblockMod.message.sendMessageAfterCooldown(text.replace("[color]", "white"));
                     ticks = 0;
                 } else if (blockState.isOf(Blocks.YELLOW_WOOL)) {
-                    SkyblockMod.skyblockMod.message.sendMessageAfterCooldown(text[0] + "yellow" + text[1]);
+                    SkyblockMod.skyblockMod.message.sendMessageAfterCooldown(text.replace("[color]", "yellow"));
                     ticks = 0;
                 }
             }

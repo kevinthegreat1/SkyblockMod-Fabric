@@ -1,14 +1,13 @@
 package com.kevinthegreat.skyblockmod.util;
 
-import com.kevinthegreat.skyblockmod.dungeons.DungeonMap;
 import com.kevinthegreat.skyblockmod.SkyblockMod;
+import com.kevinthegreat.skyblockmod.dungeons.DungeonMap;
 import com.kevinthegreat.skyblockmod.dungeons.DungeonScore;
 import com.kevinthegreat.skyblockmod.dungeons.LividColor;
 import net.minecraft.client.MinecraftClient;
 import org.slf4j.Logger;
 
 import java.io.*;
-import java.util.Arrays;
 
 public class Config {
 
@@ -25,15 +24,7 @@ public class Config {
                     switch (args[0]) {
                         case "fishing" -> SkyblockMod.skyblockMod.fishing.on = Boolean.parseBoolean(args[1]);
                         case "lividColor" -> lividColor.on = Boolean.parseBoolean(args[1]);
-                        case "lividColorText" -> {
-                            lividColor.text = Arrays.copyOf(args[1].split("\\[color]"), 2);
-                            if (lividColor.text[0] == null) {
-                                lividColor.text[0] = "";
-                            }
-                            if (lividColor.text[1] == null) {
-                                lividColor.text[1] = "";
-                            }
-                        }
+                        case "lividColorText" -> lividColor.text = args[1];
                         case "map" -> dungeonMap.on = Boolean.parseBoolean(args[1]);
                         case "mapScale" -> dungeonMap.scale = Float.parseFloat(args[1]);
                         case "mapOffsetX" -> dungeonMap.offsetX = Integer.parseInt(args[1]);
@@ -64,7 +55,7 @@ public class Config {
             PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(new File(new File(MinecraftClient.getInstance().runDirectory, "config"), SkyblockMod.MOD_ID + ".txt"))));
             writer.println("fishing:" + SkyblockMod.skyblockMod.fishing.on);
             writer.println("lividColor:" + SkyblockMod.skyblockMod.lividColor.on);
-            writer.println("lividColorText:" + SkyblockMod.skyblockMod.lividColor.text[0] + "[color]" + SkyblockMod.skyblockMod.lividColor.text[1]);
+            writer.println("lividColorText:" + SkyblockMod.skyblockMod.lividColor.text);
             writer.println("map:" + dungeonMap.on);
             writer.println("mapScale:" + dungeonMap.scale);
             writer.println("mapOffsetX:" + dungeonMap.offsetX);
@@ -82,7 +73,7 @@ public class Config {
             logger.error("Error while writing configuration file. Logging configuration.");
             logger.info("fishing:" + SkyblockMod.skyblockMod.fishing.on);
             logger.info("lividColor:" + SkyblockMod.skyblockMod.lividColor.on);
-            logger.info("lividColorText:" + SkyblockMod.skyblockMod.lividColor.text[0] + "[color]" + SkyblockMod.skyblockMod.lividColor.text[1]);
+            logger.info("lividColorText:" + SkyblockMod.skyblockMod.lividColor.text);
             logger.info("map:" + dungeonMap.on);
             logger.info("mapScale:" + dungeonMap.scale);
             logger.info("mapOffsetX:" + dungeonMap.offsetX);

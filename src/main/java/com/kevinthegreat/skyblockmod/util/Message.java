@@ -1,6 +1,7 @@
 package com.kevinthegreat.skyblockmod.util;
 
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.text.Text;
 import net.minecraft.util.Pair;
 
 import java.util.HashMap;
@@ -70,7 +71,6 @@ public class Message {
         commands.put("/e", "/warp end");
         commands.put("/end", "/warp end");
 
-        commands.put("/p", "/warp park");
         commands.put("/park", "/warp park");
 
         commands.put("/castle", "/warp castle");
@@ -106,6 +106,10 @@ public class Message {
         commands.put("/visit p", "/visit portalhub");
     }
 
+    public void addMessage(Text message){
+        MinecraftClient.getInstance().inGameHud.getChatHud().addMessage(message);
+    }
+
     public void sendMessageAfterCooldown(String message) {
         if (lastMessage + 200 < System.currentTimeMillis()) {
             sendMessage(message);
@@ -116,8 +120,7 @@ public class Message {
     }
 
     private void sendMessage(String message) {
-        MinecraftClient.getInstance().inGameHud.getChatHud().addToMessageHistory(message);
-        MinecraftClient.getInstance().player.sendChatMessage(message);
+        MinecraftClient.getInstance().currentScreen.sendMessage(message);
     }
 
     public void queueMessage(String message, int ticks) {

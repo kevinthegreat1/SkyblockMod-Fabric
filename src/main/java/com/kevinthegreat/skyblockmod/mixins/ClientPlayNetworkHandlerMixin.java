@@ -1,7 +1,6 @@
 package com.kevinthegreat.skyblockmod.mixins;
 
 import com.kevinthegreat.skyblockmod.SkyblockMod;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.network.packet.s2c.play.PlaySoundIdS2CPacket;
 import net.minecraft.text.Text;
@@ -17,7 +16,7 @@ public class ClientPlayNetworkHandlerMixin {
         if (packet.getSoundId().getPath().equals("entity.generic.splash") || packet.getSoundId().getPath().equals("entity.player.splash")) {
             System.out.println(packet.getSoundId().getPath());
             if (SkyblockMod.skyblockMod.fishing.fishing && System.currentTimeMillis() >= SkyblockMod.skyblockMod.fishing.startTime + 2000) {
-                MinecraftClient.getInstance().inGameHud.getChatHud().addMessage(Text.of("Reel in now!"));
+                SkyblockMod.skyblockMod.message.addMessage(Text.of("Reel in now!"));
                 SkyblockMod.skyblockMod.fishing.fishing = false;
             }
         }

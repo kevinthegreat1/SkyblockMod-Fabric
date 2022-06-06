@@ -6,6 +6,7 @@ import com.kevinthegreat.skyblockmod.dungeons.LividColor;
 import com.kevinthegreat.skyblockmod.dungeons.Reparty;
 import com.kevinthegreat.skyblockmod.misc.Fishing;
 import com.kevinthegreat.skyblockmod.misc.QuiverWarning;
+import com.kevinthegreat.skyblockmod.util.Commands;
 import com.kevinthegreat.skyblockmod.util.Config;
 import com.kevinthegreat.skyblockmod.util.Message;
 import com.kevinthegreat.skyblockmod.util.Util;
@@ -23,16 +24,16 @@ public class SkyblockMod implements ModInitializer {
     public final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
     public int tick = 0;
 
+    public final Commands commands = new Commands();
     public final Config config = new Config();
-    public final Message message = new Message();
-    public final Util util = new Util();
-
     public final DungeonScore dungeonScore = new DungeonScore();
     public final DungeonMap dungeonMap = new DungeonMap();
     public final Fishing fishing = new Fishing();
     public final LividColor lividColor = new LividColor();
+    public final Message message = new Message();
     public final QuiverWarning quiverWarning = new QuiverWarning();
     public final Reparty reparty = new Reparty();
+    public final Util util = new Util();
 
     @Override
     public void onInitialize() {
@@ -40,6 +41,7 @@ public class SkyblockMod implements ModInitializer {
         config.load();
         ClientTickEvents.END_CLIENT_TICK.register(minecraftClient -> tick());
         ClientLifecycleEvents.CLIENT_STOPPING.register(minecraftClient -> skyblockMod.config.save());
+        commands.registerCommands();
         LOGGER.info(MOD_NAME + " initialized.");
     }
 

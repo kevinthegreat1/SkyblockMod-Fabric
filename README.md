@@ -16,49 +16,49 @@ Helpful features for Hypixel Skyblock ([Fabric](https://fabricmc.net/) 1.17+)
 
 #### Configurable dungeon map
 
-- /sbm map: show current state (on or off)
-- /sbm map on/off: turn dungeon map on or off
-- /sbm map scale: show current scale
-- /sbm map scale \[number]
-- /sbm map offset: show current offset
-- /sbm map offset \[number] \[number]
+- /sbm dungeonMap: show current state (on or off)
+- /sbm dungeonMap [true|false]: turn dungeon map on or off
+- /sbm dungeonMap scale: show current scale
+- /sbm dungeonMap scale [scale]
+- /sbm dungeonMap offset: show current offset
+- /sbm dungeonMap offset [offsetX] [offsetY]
 
 #### Dungeon Score
 
-- send 300 score in chat
-- /sbm score: show current state (on or off)
-- /sbm score on/off: turn dungeon score on or off
-- /sbm score \[message before] "\[score]" \[message after]
-- Ex: /sbm score \[score] score: 300 score
+- send 270 and 300 score in chat
+- /sbm dungeonScore 270|300: show current state (on or off)
+- /sbm dungeonScore 270|300 [true|false]: turn dungeon score on or off
+- /sbm dungeonScore 270|300 message [message]
+  - Ex: /sbm dungeonScore 300 message 300 score reached!
 
 #### Livid color
 
 - send livid color in chat
-- /sbm livid: show current state (on or off)
-- /sbm livid on/off: turn livid color on or off
-- /sbm livid \[message before] "\[color]" \[message after]
-- Ex: /sbm livid \[color] is sus: red is sus
+- /sbm lividColor: show current state (on or off)
+- /sbm lividColor [true|false]: turn livid color on or off
+- /sbm lividColor [message before] "[color]" [message after]
+  - Ex: /sbm lividColor [color] is sus
 
 ### Fishing
 
 - Notifies you to reel in
 - (Only works if you are not near other players)
-- /sbm fishing: show current state (on or off)
-- /sbm fishing on/off: turn fishing helper on or off
+- /sbm fishingHelper: show current state (on or off)
+- /sbm fishingHelper [true|false]: turn fishing helper on or off
 
 ### Message
 
-- /m \[player\] -> /msg \[Player\]
+- /m [player] -> /msg [player]
 
 ### Quiver Low Warning
 
 - Notifies you when you only have 50 Arrows left in your Quiver
-- /sbm quiver: show current state (on or off)
-- /sbm quiver on/off: turn quiver warning on or off
+- /sbm quiverWarning: show current state (on or off)
+- /sbm quiverWarning [true|false]: turn quiver warning on or off
 
 ### Party
 
-- /pa \[Player\] -> /p accept \[Player\]
+- /pa [Player] -> /p accept [Player]
 - /pv -> /p leave
 - /pd -> /p disband
 
@@ -67,11 +67,11 @@ Helpful features for Hypixel Skyblock ([Fabric](https://fabricmc.net/) 1.17+)
 - /pr, /rp -> Reparty: disbands the party and invites everyone back
 - Auto join reparty
 - /sbm reparty: show current state (on or off)
-- /sbm reparty on/off: turn reparty on or off
+- /sbm reparty [true|false]: turn reparty on or off
 
 ### Visit
 
-- /v \[Player\] -> /visit \[Player\]
+- /v [Player] -> /visit [Player]
 - /vp, /visit p -> /visit portalhub
 
 ### Warp
