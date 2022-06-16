@@ -39,6 +39,12 @@ Helpful features for Hypixel Skyblock ([Fabric](https://fabricmc.net/) 1.17+)
 - /sbm lividColor [message before] "[color]" [message after]
   - Ex: /sbm lividColor [color] is sus
 
+### Experiments
+
+- Solvers for Enchanting Experiments
+- /sbm experiment [chronomatron|ultrasequencer|superpairs]: show current state (on or off)
+- /sbm experiment [chronomatron|ultrasequencer|superpairs] [true|false]: turn experiment solvers on or off
+
 ### Fishing
 
 - Notifies you to reel in

@@ -10,7 +10,6 @@ import org.slf4j.Logger;
 import java.io.*;
 
 public class Config {
-
     public void load() {
         try {
             BufferedReader reader = new BufferedReader(new FileReader(new File(new File(MinecraftClient.getInstance().runDirectory, "config"), SkyblockMod.MOD_ID + ".txt")));
@@ -22,6 +21,9 @@ public class Config {
                 String[] args = line.split(":");
                 try {
                     switch (args[0]) {
+                        case "experimentChronomatron" -> SkyblockMod.skyblockMod.experiments.toggleChronomatron = Boolean.parseBoolean(args[1]);
+                        case "experimentSuperpairs" -> SkyblockMod.skyblockMod.experiments.toggleSuperpairs = Boolean.parseBoolean(args[1]);
+                        case "experimentUltrasequencer" -> SkyblockMod.skyblockMod.experiments.toggleUltrasequencer = Boolean.parseBoolean(args[1]);
                         case "fishing" -> SkyblockMod.skyblockMod.fishing.on = Boolean.parseBoolean(args[1]);
                         case "lividColor" -> lividColor.on = Boolean.parseBoolean(args[1]);
                         case "lividColorText" -> lividColor.text = args[1];
@@ -53,6 +55,9 @@ public class Config {
         DungeonScore dungeonScore = SkyblockMod.skyblockMod.dungeonScore;
         try {
             PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(new File(new File(MinecraftClient.getInstance().runDirectory, "config"), SkyblockMod.MOD_ID + ".txt"))));
+            writer.println("experimentChronomatron:" + SkyblockMod.skyblockMod.experiments.toggleChronomatron);
+            writer.println("experimentSuperpairs:" + SkyblockMod.skyblockMod.experiments.toggleSuperpairs);
+            writer.println("experimentUltrasequencer:" + SkyblockMod.skyblockMod.experiments.toggleUltrasequencer);
             writer.println("fishing:" + SkyblockMod.skyblockMod.fishing.on);
             writer.println("lividColor:" + SkyblockMod.skyblockMod.lividColor.on);
             writer.println("lividColorText:" + SkyblockMod.skyblockMod.lividColor.text);
@@ -71,6 +76,9 @@ public class Config {
             e.printStackTrace();
             Logger logger = SkyblockMod.skyblockMod.LOGGER;
             logger.error("Error while writing configuration file. Logging configuration.");
+            logger.info("experimentChronomatron:" + SkyblockMod.skyblockMod.experiments.toggleChronomatron);
+            logger.info("experimentSuperpairs:" + SkyblockMod.skyblockMod.experiments.toggleSuperpairs);
+            logger.info("experimentUltrasequencer:" + SkyblockMod.skyblockMod.experiments.toggleUltrasequencer);
             logger.info("fishing:" + SkyblockMod.skyblockMod.fishing.on);
             logger.info("lividColor:" + SkyblockMod.skyblockMod.lividColor.on);
             logger.info("lividColorText:" + SkyblockMod.skyblockMod.lividColor.text);

@@ -4,6 +4,7 @@ import com.kevinthegreat.skyblockmod.dungeons.DungeonMap;
 import com.kevinthegreat.skyblockmod.dungeons.DungeonScore;
 import com.kevinthegreat.skyblockmod.dungeons.LividColor;
 import com.kevinthegreat.skyblockmod.dungeons.Reparty;
+import com.kevinthegreat.skyblockmod.misc.Experiments;
 import com.kevinthegreat.skyblockmod.misc.Fishing;
 import com.kevinthegreat.skyblockmod.misc.QuiverWarning;
 import com.kevinthegreat.skyblockmod.util.Commands;
@@ -28,6 +29,7 @@ public class SkyblockMod implements ModInitializer {
     public final Config config = new Config();
     public final DungeonScore dungeonScore = new DungeonScore();
     public final DungeonMap dungeonMap = new DungeonMap();
+    public final Experiments experiments = new Experiments();
     public final Fishing fishing = new Fishing();
     public final LividColor lividColor = new LividColor();
     public final Message message = new Message();
@@ -51,8 +53,9 @@ public class SkyblockMod implements ModInitializer {
             quiverWarning.check();
             tick = 0;
         }
-        message.tick();
+        experiments.tick();
         lividColor.tick();
+        message.tick();
         tick++;
     }
 }

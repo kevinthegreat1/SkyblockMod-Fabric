@@ -120,6 +120,37 @@ public class Commands {
                                             SkyblockMod.skyblockMod.message.addMessage(Text.of("Dungeon score 300 text set to " + SkyblockMod.skyblockMod.dungeonScore.text300));
                                             return 1;
                                         })))))
+                .then(literal("experiments").executes(context -> {
+                            SkyblockMod.skyblockMod.message.addMessage(Text.of("/sbm experiments [chronomatron|ultrasequencer|superpairs] [on|off]"));
+                            return 1;
+                        })
+                        .then(literal("chronomatron").executes(context -> {
+                                    SkyblockMod.skyblockMod.message.addMessage(Text.of((SkyblockMod.skyblockMod.experiments.toggleChronomatron ? "Chronomatron solver is on" : "Chronomatron solver is off")));
+                                    return 1;
+                                })
+                                .then(argument("value", BoolArgumentType.bool()).executes(context -> {
+                                    SkyblockMod.skyblockMod.experiments.toggleChronomatron = BoolArgumentType.getBool(context, "value");
+                                    SkyblockMod.skyblockMod.message.addMessage(Text.of(SkyblockMod.skyblockMod.experiments.toggleChronomatron ? "Chronomatron solver turned on" : "Chronomatron solver turned off"));
+                                    return 1;
+                                })))
+                        .then(literal("superpairs").executes(context -> {
+                                    SkyblockMod.skyblockMod.message.addMessage(Text.of((SkyblockMod.skyblockMod.experiments.toggleSuperpairs ? "Superpairs solver is on" : "Superpairs solver is off")));
+                                    return 1;
+                                })
+                                .then(argument("value", BoolArgumentType.bool()).executes(context -> {
+                                    SkyblockMod.skyblockMod.experiments.toggleSuperpairs = BoolArgumentType.getBool(context, "value");
+                                    SkyblockMod.skyblockMod.message.addMessage(Text.of(SkyblockMod.skyblockMod.experiments.toggleSuperpairs ? "Superpairs solver turned on" : "Superpairs solver turned off"));
+                                    return 1;
+                                })))
+                        .then(literal("ultrasequencer").executes(context -> {
+                                    SkyblockMod.skyblockMod.message.addMessage(Text.of((SkyblockMod.skyblockMod.experiments.toggleUltrasequencer ? "Ultrasequencer solver is on" : "Ultrasequencer solver is off")));
+                                    return 1;
+                                })
+                                .then(argument("value", BoolArgumentType.bool()).executes(context -> {
+                                    SkyblockMod.skyblockMod.experiments.toggleUltrasequencer = BoolArgumentType.getBool(context, "value");
+                                    SkyblockMod.skyblockMod.message.addMessage(Text.of(SkyblockMod.skyblockMod.experiments.toggleUltrasequencer ? "Ultrasequencer solver turned on" : "Ultrasequencer solver turned off"));
+                                    return 1;
+                                }))))
                 .then(literal("fishingHelper").executes(context -> {
                             SkyblockMod.skyblockMod.message.addMessage(Text.of(SkyblockMod.skyblockMod.fishing.on ? "Fishing helper is on" : "Fishing helper is off"));
                             return 1;
