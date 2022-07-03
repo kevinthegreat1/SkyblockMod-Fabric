@@ -48,7 +48,7 @@ Helpful features for Hypixel Skyblock ([Fabric](https://fabricmc.net/) 1.17+)
 ### Fishing
 
 - Notifies you to reel in
-- (Only works if you are not near other players)
+- (Only works when nothing is in the water in the line through the player and the bobber*)
 - /sbm fishingHelper: show current state (on or off)
 - /sbm fishingHelper [true|false]: turn fishing helper on or off
 
