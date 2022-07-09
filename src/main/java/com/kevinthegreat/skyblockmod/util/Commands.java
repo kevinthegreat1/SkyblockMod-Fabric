@@ -7,6 +7,7 @@ import com.mojang.brigadier.arguments.FloatArgumentType;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.text.Text;
 
@@ -42,7 +43,7 @@ public class Commands {
                             return 1;
                         }))
                         .then(literal("save").executes(context -> {
-                            SkyblockMod.skyblockMod.config.save();
+                            SkyblockMod.skyblockMod.config.save(MinecraftClient.getInstance());
                             SkyblockMod.skyblockMod.message.addMessage(Text.of("Saved config file"));
                             return 1;
                         })))

@@ -1,8 +1,8 @@
 package com.kevinthegreat.skyblockmod.misc;
 
 import com.google.common.collect.ImmutableMap;
-import net.fabricmc.fabric.api.client.screen.v1.ScreenEvents;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.ingame.GenericContainerScreen;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.Item;
@@ -51,59 +51,57 @@ public class Experiments {
             new AbstractMap.SimpleImmutableEntry<>(Items.PINK_TERRACOTTA, Items.PINK_STAINED_GLASS)
     );
 
-    public Experiments() {
-        ScreenEvents.AFTER_INIT.register((minecraftClient, screen, scaledWidth, scaledHeight) -> {
-            if ((toggleChronomatron || toggleSuperpairs || toggleUltrasequencer) && screen instanceof GenericContainerScreen genericContainerScreen) {
-                String title = genericContainerScreen.getTitle().getString();
-                int index = title.indexOf('(');
-                if (11 <= index && index <= 15) {
-                    switch (title.substring(0, index)) {
-                        case "Chronomatron " -> {
-                            if (toggleChronomatron) {
-                                type = Type.CHRONOMATRON;
-                                state = State.REMEMBER;
-                                chronomatron(genericContainerScreen);
-                            }
+    public void start(MinecraftClient minecraftClient, Screen screen, int scaledWidth, int scaledHeight) {
+        if ((toggleChronomatron || toggleSuperpairs || toggleUltrasequencer) && screen instanceof GenericContainerScreen genericContainerScreen) {
+            String title = genericContainerScreen.getTitle().getString();
+            int index = title.indexOf('(');
+            if (11 <= index && index <= 15) {
+                switch (title.substring(0, index)) {
+                    case "Chronomatron " -> {
+                        if (toggleChronomatron) {
+                            type = Type.CHRONOMATRON;
+                            state = State.REMEMBER;
+                            chronomatron(genericContainerScreen);
                         }
-                        case "Superpairs " -> {
-                            if (toggleSuperpairs) {
-                                type = Type.SUPERPAIRS;
-                                state = State.SHOW;
-                                superpairs(genericContainerScreen);
-                            }
+                    }
+                    case "Superpairs " -> {
+                        if (toggleSuperpairs) {
+                            type = Type.SUPERPAIRS;
+                            state = State.SHOW;
+                            superpairs(genericContainerScreen);
                         }
-                        case "Ultrasequencer " -> {
-                            if (toggleUltrasequencer) {
-                                type = Type.ULTRASEQUENCER;
-                                state = State.REMEMBER;
-                                ultrasequencer(genericContainerScreen);
-                            }
+                    }
+                    case "Ultrasequencer " -> {
+                        if (toggleUltrasequencer) {
+                            type = Type.ULTRASEQUENCER;
+                            state = State.REMEMBER;
+                            ultrasequencer(genericContainerScreen);
                         }
                     }
                 }
             }
-        });
+        }
     }
 
-    public void tick() {
+    public void tick(MinecraftClient minecraftClient) {
         if (type != Type.NONE) {
             switch (type) {
                 case CHRONOMATRON -> {
-                    if (toggleChronomatron && MinecraftClient.getInstance().currentScreen instanceof GenericContainerScreen genericContainerScreen && genericContainerScreen.getTitle().getString().startsWith("Chronomatron (")) {
+                    if (toggleChronomatron && minecraftClient.currentScreen instanceof GenericContainerScreen genericContainerScreen && genericContainerScreen.getTitle().getString().startsWith("Chronomatron (")) {
                         chronomatron(genericContainerScreen);
                     } else {
                         resetChronomatron();
                     }
                 }
                 case SUPERPAIRS -> {
-                    if (toggleSuperpairs && MinecraftClient.getInstance().currentScreen instanceof GenericContainerScreen genericContainerScreen && genericContainerScreen.getTitle().getString().startsWith("Superpairs (")) {
+                    if (toggleSuperpairs && minecraftClient.currentScreen instanceof GenericContainerScreen genericContainerScreen && genericContainerScreen.getTitle().getString().startsWith("Superpairs (")) {
                         superpairs(genericContainerScreen);
                     } else {
                         resetSuperpairs();
                     }
                 }
                 case ULTRASEQUENCER -> {
-                    if (toggleUltrasequencer && MinecraftClient.getInstance().currentScreen instanceof GenericContainerScreen genericContainerScreen && genericContainerScreen.getTitle().getString().startsWith("Ultrasequencer (")) {
+                    if (toggleUltrasequencer && minecraftClient.currentScreen instanceof GenericContainerScreen genericContainerScreen && genericContainerScreen.getTitle().getString().startsWith("Ultrasequencer (")) {
                         ultrasequencer(genericContainerScreen);
                     } else {
                         resetUltrasequencer();

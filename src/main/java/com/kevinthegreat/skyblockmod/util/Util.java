@@ -17,8 +17,7 @@ public class Util {
     public boolean catacombs = false;
     public boolean crystalHollows = false;
 
-    public void check() {
-        MinecraftClient minecraftClient = MinecraftClient.getInstance();
+    public void check(MinecraftClient minecraftClient) {
         if (minecraftClient == null || minecraftClient.world == null || minecraftClient.isInSingleplayer()) {
             reset();
             return;

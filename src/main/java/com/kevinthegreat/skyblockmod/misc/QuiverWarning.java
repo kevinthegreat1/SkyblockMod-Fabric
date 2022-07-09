@@ -32,13 +32,13 @@ public class QuiverWarning {
         return false;
     }
 
-    public void check() {
+    public void check(MinecraftClient minecraftClient) {
         if (on && warning != 0 && !SkyblockMod.skyblockMod.util.catacombs) {
-            MinecraftClient.getInstance().inGameHud.setDefaultTitleFade();
+            minecraftClient.inGameHud.setDefaultTitleFade();
             switch (warning) {
-                case 1 -> MinecraftClient.getInstance().inGameHud.setTitle(Text.of("§cYou only have 50 Arrows left in your Quiver!"));
-                case 2 -> MinecraftClient.getInstance().inGameHud.setTitle(Text.of("§cYou only have 10 Arrows left in your Quiver!"));
-                case 3 -> MinecraftClient.getInstance().inGameHud.setTitle(Text.of("§cYou don't have any more Arrows left in your Quiver!"));
+                case 1 -> minecraftClient.inGameHud.setTitle(Text.of("§cYou only have 50 Arrows left in your Quiver!"));
+                case 2 -> minecraftClient.inGameHud.setTitle(Text.of("§cYou only have 10 Arrows left in your Quiver!"));
+                case 3 -> minecraftClient.inGameHud.setTitle(Text.of("§cYou don't have any more Arrows left in your Quiver!"));
             }
             warning = 0;
         }

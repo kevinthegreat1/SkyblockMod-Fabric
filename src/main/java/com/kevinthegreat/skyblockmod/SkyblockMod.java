@@ -15,11 +15,13 @@ import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
+import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
+import net.fabricmc.fabric.api.client.screen.v1.ScreenEvents;
+import net.minecraft.client.MinecraftClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class SkyblockMod implements ModInitializer {
-
     public static final String MOD_ID = "skyblockmod";
     public static final String MOD_NAME = "SkyblockMod";
     public static SkyblockMod skyblockMod;
@@ -42,20 +44,26 @@ public class SkyblockMod implements ModInitializer {
     public void onInitialize() {
         skyblockMod = this;
         config.load();
-        ClientTickEvents.END_CLIENT_TICK.register(minecraftClient -> tick());
-        ClientLifecycleEvents.CLIENT_STOPPING.register(minecraftClient -> skyblockMod.config.save());
-        ClientCommandRegistrationCallback.EVENT.register(commands::registerCommands);
+        registerEvents();
         LOGGER.info(MOD_NAME + " initialized.");
     }
 
-    public void tick() {
+    private void registerEvents() {
+        ClientCommandRegistrationCallback.EVENT.register(commands::registerCommands);
+        ClientLifecycleEvents.CLIENT_STOPPING.register(config::save);
+        ClientTickEvents.END_CLIENT_TICK.register(this::tick);
+        HudRenderCallback.EVENT.register(dungeonMap::render);
+        ScreenEvents.AFTER_INIT.register(experiments::start);
+    }
+
+    private void tick(MinecraftClient minecraftClient) {
         if (tick % 20 == 0) {
-            util.check();
-            quiverWarning.check();
+            util.check(minecraftClient);
+            quiverWarning.check(minecraftClient);
             tick = 0;
         }
-        experiments.tick();
-        lividColor.tick();
+        experiments.tick(minecraftClient);
+        lividColor.tick(minecraftClient);
         message.tick();
         tick++;
     }

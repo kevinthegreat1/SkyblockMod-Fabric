@@ -1,9 +1,9 @@
 package com.kevinthegreat.skyblockmod.dungeons;
 
 import com.kevinthegreat.skyblockmod.SkyblockMod;
-import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.VertexConsumerProvider;
+import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.FilledMapItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -16,29 +16,27 @@ public class DungeonMap {
     public int offsetX = 0;
     public int offsetY = 0;
 
-    public DungeonMap() {
-        HudRenderCallback.EVENT.register((matrixStack, tickDelta) -> {
-            if (on && SkyblockMod.skyblockMod.util.catacombs) {
-                MinecraftClient minecraftClient = MinecraftClient.getInstance();
-                if (minecraftClient == null || minecraftClient.player == null || minecraftClient.world == null) {
-                    return;
-                }
-                ItemStack itemStack = minecraftClient.player.getInventory().main.get(8);
-                if (!itemStack.isOf(Items.FILLED_MAP)) {
-                    return;
-                }
-                MapState mapState = FilledMapItem.getMapState(FilledMapItem.getMapId(itemStack), minecraftClient.world);
-                if (mapState == null) {
-                    return;
-                }
-                VertexConsumerProvider.Immediate vertices = minecraftClient.getBufferBuilders().getEffectVertexConsumers();
-                matrixStack.push();
-                matrixStack.translate(offsetX, offsetY, 0);
-                matrixStack.scale(scale, scale, 0);
-                minecraftClient.gameRenderer.getMapRenderer().draw(matrixStack, vertices, FilledMapItem.getMapId(itemStack), mapState, false, 15728880);
-                vertices.draw();
-                matrixStack.pop();
+    public void render(MatrixStack matrixStack, float tickDelta) {
+        if (on && SkyblockMod.skyblockMod.util.catacombs) {
+            MinecraftClient minecraftClient = MinecraftClient.getInstance();
+            if (minecraftClient == null || minecraftClient.player == null || minecraftClient.world == null) {
+                return;
             }
-        });
+            ItemStack itemStack = minecraftClient.player.getInventory().main.get(8);
+            if (!itemStack.isOf(Items.FILLED_MAP)) {
+                return;
+            }
+            MapState mapState = FilledMapItem.getMapState(FilledMapItem.getMapId(itemStack), minecraftClient.world);
+            if (mapState == null) {
+                return;
+            }
+            VertexConsumerProvider.Immediate vertices = minecraftClient.getBufferBuilders().getEffectVertexConsumers();
+            matrixStack.push();
+            matrixStack.translate(offsetX, offsetY, 0);
+            matrixStack.scale(scale, scale, 0);
+            minecraftClient.gameRenderer.getMapRenderer().draw(matrixStack, vertices, FilledMapItem.getMapId(itemStack), mapState, false, 15728880);
+            vertices.draw();
+            matrixStack.pop();
+        }
     }
 }

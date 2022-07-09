@@ -50,11 +50,11 @@ public class Config {
         }
     }
 
-    public void save() {
+    public void save(MinecraftClient minecraftClient) {
         DungeonMap dungeonMap = SkyblockMod.skyblockMod.dungeonMap;
         DungeonScore dungeonScore = SkyblockMod.skyblockMod.dungeonScore;
         try {
-            PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(new File(new File(MinecraftClient.getInstance().runDirectory, "config"), SkyblockMod.MOD_ID + ".txt"))));
+            PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(new File(new File(minecraftClient.runDirectory, "config"), SkyblockMod.MOD_ID + ".txt"))));
             writer.println("experimentChronomatron:" + SkyblockMod.skyblockMod.experiments.toggleChronomatron);
             writer.println("experimentSuperpairs:" + SkyblockMod.skyblockMod.experiments.toggleSuperpairs);
             writer.println("experimentUltrasequencer:" + SkyblockMod.skyblockMod.experiments.toggleUltrasequencer);
