@@ -31,6 +31,10 @@ public class Message {
         commands.put("/bl", "/warp nether");
         commands.put("/blazing", "/warp nether");
         commands.put("/fortress", "/warp nether");
+        commands.put("/crimson", "/warp nether");
+        commands.put("/isles", "/warp nether");
+        commands.put("/ci", "/warp nether");
+        commands.put("/crimson isles", "/warp nether");
         commands.put("/n", "/warp nether");
         commands.put("/nether", "/warp nether");
 
@@ -47,11 +51,12 @@ public class Message {
         commands.put("/for", "/warp forge");
         commands.put("/forge", "/warp forge");
 
-        commands.put("/c", "/warp crystals");
+        commands.put("/cry", "/warp crystals");
         commands.put("/crystal", "/warp crystals");
         commands.put("/ho", "/warp crystals");
         commands.put("/hollows", "/warp crystals");
         commands.put("/ch", "/warp crystals");
+        commands.put("/crystal hollows", "/warp crystals");
 
         commands.put("/g", "/warp gold");
         commands.put("/gold", "/warp gold");

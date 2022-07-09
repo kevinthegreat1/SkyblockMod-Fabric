@@ -88,11 +88,11 @@ Helpful features for Hypixel Skyblock ([Fabric](https://fabricmc.net/) 1.17+)
 - /d, /dn, /dun, /dungeon -> /warp dungeon_hub
 
 
-- /bl, /blazing, /fortress, /n, /nether -> /warp nether
+- /bl, /blazing, /fortress, /crimson, /isles, /ci, /crimson isles, /n, /nether -> /warp nether
 - /deep, /cavern, /caverns -> /warp deep
 - /dw, /dwarven, /mi, /mines -> /warp mines
 - /f, /for, /forge -> /warpforge
-- /c, /crystal, /ho, /hollows, /hc -> /warp crystals
+- /cry, /crystal, /ho, /hollows, /ch, /chrystal hollows -> /warp crystals
 - /g, /gold -> /warp gold
 - /des, /desert, /mu, /mushroom -> /warp desert
 - /sp, /spider, /spiders -> /warp spider
