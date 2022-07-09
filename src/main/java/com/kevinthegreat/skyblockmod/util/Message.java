@@ -111,7 +111,7 @@ public class Message {
         commands.put("/visit p", "/visit portalhub");
     }
 
-    public void addMessage(Text message){
+    public void addMessage(Text message) {
         MinecraftClient.getInstance().inGameHud.getChatHud().addMessage(message);
     }
 
@@ -125,7 +125,14 @@ public class Message {
     }
 
     private void sendMessage(String message) {
-        MinecraftClient.getInstance().currentScreen.sendMessage(message);
+        if (MinecraftClient.getInstance().player != null) {
+            MinecraftClient.getInstance().inGameHud.getChatHud().addToMessageHistory(message);
+            if (message.startsWith("/")) {
+                MinecraftClient.getInstance().player.sendCommand(message.substring(1));
+            } else {
+                MinecraftClient.getInstance().player.sendChatMessage(message);
+            }
+        }
     }
 
     public void queueMessage(String message, int ticks) {

@@ -12,6 +12,7 @@ import com.kevinthegreat.skyblockmod.util.Config;
 import com.kevinthegreat.skyblockmod.util.Message;
 import com.kevinthegreat.skyblockmod.util.Util;
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import org.slf4j.Logger;
@@ -43,7 +44,7 @@ public class SkyblockMod implements ModInitializer {
         config.load();
         ClientTickEvents.END_CLIENT_TICK.register(minecraftClient -> tick());
         ClientLifecycleEvents.CLIENT_STOPPING.register(minecraftClient -> skyblockMod.config.save());
-        commands.registerCommands();
+        ClientCommandRegistrationCallback.EVENT.register(commands::registerCommands);
         LOGGER.info(MOD_NAME + " initialized.");
     }
 

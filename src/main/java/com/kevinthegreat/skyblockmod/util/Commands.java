@@ -6,33 +6,32 @@ import com.mojang.brigadier.arguments.BoolArgumentType;
 import com.mojang.brigadier.arguments.FloatArgumentType;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
-import net.fabricmc.fabric.api.client.command.v1.ClientCommandManager;
-import net.fabricmc.fabric.api.client.command.v1.FabricClientCommandSource;
+import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
+import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.text.Text;
 
-import static net.fabricmc.fabric.api.client.command.v1.ClientCommandManager.argument;
-import static net.fabricmc.fabric.api.client.command.v1.ClientCommandManager.literal;
+import static net.fabricmc.fabric.api.client.command.v2.ClientCommandManager.argument;
+import static net.fabricmc.fabric.api.client.command.v2.ClientCommandManager.literal;
 
 public class Commands {
-    public void registerCommands() {
-        CommandDispatcher<FabricClientCommandSource> DISPATCHER = ClientCommandManager.DISPATCHER;
+    public void registerCommands(CommandDispatcher<FabricClientCommandSource> dispatcher, CommandRegistryAccess registryAccess) {
         for (String key : SkyblockMod.skyblockMod.message.commands.keySet()) {
             if (key.startsWith("/")) {
-                DISPATCHER.register(literal(key.substring(1)));
+                dispatcher.register(literal(key.substring(1)));
             }
         }
         for (String key : SkyblockMod.skyblockMod.message.commandsArgs.keySet()) {
             if (key.startsWith("/")) {
-                DISPATCHER.register(literal(key.substring(1)));
+                dispatcher.register(literal(key.substring(1)));
             }
         }
-        DISPATCHER.register(literal("reparty").executes(context -> {
+        dispatcher.register(literal("reparty").executes(context -> {
             SkyblockMod.skyblockMod.reparty.start();
             SkyblockMod.skyblockMod.message.sendMessageAfterCooldown("/pl");
             SkyblockMod.skyblockMod.message.addMessage(Text.of("Reparting..."));
             return 1;
         }));
-        DISPATCHER.register(literal("sbm")
+        dispatcher.register(literal("sbm")
                 .then(literal("config").executes(context -> {
                             SkyblockMod.skyblockMod.message.addMessage(Text.of("/sbm config [save|load]"));
                             return 1;

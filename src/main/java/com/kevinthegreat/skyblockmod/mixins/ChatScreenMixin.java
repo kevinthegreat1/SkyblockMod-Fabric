@@ -1,15 +1,14 @@
 package com.kevinthegreat.skyblockmod.mixins;
 
 import com.kevinthegreat.skyblockmod.SkyblockMod;
-import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.screen.ChatScreen;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.ModifyArg;
+import org.spongepowered.asm.mixin.injection.ModifyVariable;
 
-@Mixin(Screen.class)
-public class ScreenMixin {
-
-    @ModifyArg(method = "sendMessage(Ljava/lang/String;Z)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;sendChatMessage(Ljava/lang/String;)V"))
+@Mixin(ChatScreen.class)
+public class ChatScreenMixin {
+    @ModifyVariable(method = "sendMessage(Ljava/lang/String;Z)V", at = @At(value = "LOAD", ordinal = 3), argsOnly = true)
     private String modifyMessage(String message) {
         if (message.startsWith("/")) {
             message = SkyblockMod.skyblockMod.message.commands.getOrDefault(message, message);

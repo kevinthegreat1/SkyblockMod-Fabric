@@ -2,15 +2,15 @@
   "required": true,
   "minVersion": "0.8",
   "package": "com.kevinthegreat.skyblockmod.mixins",
-  "compatibilityLevel": "JAVA_16",
+  "compatibilityLevel": "JAVA_17",
   "mixins": [
   ],
   "client": [
     "ChatHudListenerMixin",
+    "ChatScreenMixin",
     "ClientPlayNetworkHandlerMixin",
     "FishingRodItemMixin",
-    "HandledScreenMixin",
-    "ScreenMixin"
+    "HandledScreenMixin"
   ],
   "injectors": {
     "defaultRequire": 1
