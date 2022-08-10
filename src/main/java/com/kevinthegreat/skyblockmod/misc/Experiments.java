@@ -1,6 +1,7 @@
 package com.kevinthegreat.skyblockmod.misc;
 
 import com.google.common.collect.ImmutableMap;
+import net.fabricmc.fabric.api.client.screen.v1.ScreenEvents;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.ingame.GenericContainerScreen;
@@ -61,50 +62,22 @@ public class Experiments {
                         if (toggleChronomatron) {
                             type = Type.CHRONOMATRON;
                             state = State.REMEMBER;
-                            chronomatron(genericContainerScreen);
+                            ScreenEvents.afterTick(screen).register(this::chronomatron);
                         }
                     }
                     case "Superpairs " -> {
                         if (toggleSuperpairs) {
                             type = Type.SUPERPAIRS;
                             state = State.SHOW;
-                            superpairs(genericContainerScreen);
+                            ScreenEvents.afterTick(screen).register(this::superpairs);
                         }
                     }
                     case "Ultrasequencer " -> {
                         if (toggleUltrasequencer) {
                             type = Type.ULTRASEQUENCER;
                             state = State.REMEMBER;
-                            ultrasequencer(genericContainerScreen);
+                            ScreenEvents.afterTick(screen).register(this::ultrasequencer);
                         }
-                    }
-                }
-            }
-        }
-    }
-
-    public void tick(MinecraftClient minecraftClient) {
-        if (type != Type.NONE) {
-            switch (type) {
-                case CHRONOMATRON -> {
-                    if (toggleChronomatron && minecraftClient.currentScreen instanceof GenericContainerScreen genericContainerScreen && genericContainerScreen.getTitle().getString().startsWith("Chronomatron (")) {
-                        chronomatron(genericContainerScreen);
-                    } else {
-                        resetChronomatron();
-                    }
-                }
-                case SUPERPAIRS -> {
-                    if (toggleSuperpairs && minecraftClient.currentScreen instanceof GenericContainerScreen genericContainerScreen && genericContainerScreen.getTitle().getString().startsWith("Superpairs (")) {
-                        superpairs(genericContainerScreen);
-                    } else {
-                        resetSuperpairs();
-                    }
-                }
-                case ULTRASEQUENCER -> {
-                    if (toggleUltrasequencer && minecraftClient.currentScreen instanceof GenericContainerScreen genericContainerScreen && genericContainerScreen.getTitle().getString().startsWith("Ultrasequencer (")) {
-                        ultrasequencer(genericContainerScreen);
-                    } else {
-                        resetUltrasequencer();
                     }
                 }
             }
@@ -134,96 +107,108 @@ public class Experiments {
         state = State.REMEMBER;
     }
 
-    private void chronomatron(GenericContainerScreen screen) {
-        switch (state) {
-            case REMEMBER -> {
-                Inventory inventory = screen.getScreenHandler().getInventory();
-                if (chronomatronCurrentSlot == 0) {
-                    for (int index = 10; index < 43; index++) {
-                        if (inventory.getStack(index).hasEnchantments()) {
-                            if (chronomatronSlots.size() <= chronomatronChainLengthCount) {
-                                chronomatronSlots.add(terracottaToGlass.get(inventory.getStack(index).getItem()));
-                                state = State.WAIT;
-                            } else {
-                                chronomatronChainLengthCount++;
+    private void chronomatron(Screen screen) {
+        if (toggleChronomatron && screen instanceof GenericContainerScreen genericContainerScreen && genericContainerScreen.getTitle().getString().startsWith("Chronomatron (")) {
+            switch (state) {
+                case REMEMBER -> {
+                    Inventory inventory = genericContainerScreen.getScreenHandler().getInventory();
+                    if (chronomatronCurrentSlot == 0) {
+                        for (int index = 10; index < 43; index++) {
+                            if (inventory.getStack(index).hasEnchantments()) {
+                                if (chronomatronSlots.size() <= chronomatronChainLengthCount) {
+                                    chronomatronSlots.add(terracottaToGlass.get(inventory.getStack(index).getItem()));
+                                    state = State.WAIT;
+                                } else {
+                                    chronomatronChainLengthCount++;
+                                }
+                                chronomatronCurrentSlot = index;
+                                return;
                             }
-                            chronomatronCurrentSlot = index;
-                            return;
+                        }
+                    } else if (!inventory.getStack(chronomatronCurrentSlot).hasEnchantments()) {
+                        chronomatronCurrentSlot = 0;
+                    }
+                }
+                case WAIT -> {
+                    if (genericContainerScreen.getScreenHandler().getInventory().getStack(49).getName().getString().startsWith("Timer: ")) {
+                        state = State.SHOW;
+                    }
+                }
+                case END -> {
+                    String name = genericContainerScreen.getScreenHandler().getInventory().getStack(49).getName().getString();
+                    if (!name.startsWith("Timer: ")) {
+                        if (name.equals("Remember the pattern!")) {
+                            chronomatronChainLengthCount = 0;
+                            chronomatronCurrentOrdinal = 0;
+                            state = State.REMEMBER;
+                        } else {
+                            resetChronomatron();
                         }
                     }
-                } else if (!inventory.getStack(chronomatronCurrentSlot).hasEnchantments()) {
-                    chronomatronCurrentSlot = 0;
                 }
             }
-            case WAIT -> {
-                if (screen.getScreenHandler().getInventory().getStack(49).getName().getString().startsWith("Timer: ")) {
-                    state = State.SHOW;
-                }
-            }
-            case END -> {
-                String name = screen.getScreenHandler().getInventory().getStack(49).getName().getString();
-                if (!name.startsWith("Timer: ")) {
-                    if (name.equals("Remember the pattern!")) {
-                        chronomatronChainLengthCount = 0;
-                        chronomatronCurrentOrdinal = 0;
-                        state = State.REMEMBER;
-                    } else {
-                        resetChronomatron();
-                    }
-                }
-            }
+        } else {
+            resetChronomatron();
         }
     }
 
-    private void superpairs(GenericContainerScreen screen) {
-        if (state == State.SHOW) {
-            if (screen.getScreenHandler().getInventory().getStack(4).isOf(Items.CAULDRON)) {
-                resetSuperpairs();
-            } else if (superpairsSlots.get(superpairsPrevClickedSlot) == null) {
-                ItemStack itemStack = screen.getScreenHandler().getInventory().getStack(superpairsPrevClickedSlot);
-                if (!(itemStack.isOf(Items.CYAN_STAINED_GLASS) || itemStack.isOf(Items.BLACK_STAINED_GLASS_PANE) || itemStack.isOf(Items.AIR))) {
-                    superpairsSlots.entrySet().stream().filter((entry -> ItemStack.areEqual(entry.getValue(), itemStack))).findAny().ifPresent(entry -> superpairsDuplicatedSlots.add(entry.getKey()));
-                    superpairsSlots.put(superpairsPrevClickedSlot, itemStack);
-                    superpairsCurrentSlot = itemStack;
+    private void superpairs(Screen screen) {
+        if (toggleSuperpairs && screen instanceof GenericContainerScreen genericContainerScreen && genericContainerScreen.getTitle().getString().startsWith("Superpairs (")) {
+            if (state == State.SHOW) {
+                if (genericContainerScreen.getScreenHandler().getInventory().getStack(4).isOf(Items.CAULDRON)) {
+                    resetSuperpairs();
+                } else if (superpairsSlots.get(superpairsPrevClickedSlot) == null) {
+                    ItemStack itemStack = genericContainerScreen.getScreenHandler().getInventory().getStack(superpairsPrevClickedSlot);
+                    if (!(itemStack.isOf(Items.CYAN_STAINED_GLASS) || itemStack.isOf(Items.BLACK_STAINED_GLASS_PANE) || itemStack.isOf(Items.AIR))) {
+                        superpairsSlots.entrySet().stream().filter((entry -> ItemStack.areEqual(entry.getValue(), itemStack))).findAny().ifPresent(entry -> superpairsDuplicatedSlots.add(entry.getKey()));
+                        superpairsSlots.put(superpairsPrevClickedSlot, itemStack);
+                        superpairsCurrentSlot = itemStack;
+                    }
                 }
             }
+        } else {
+            resetSuperpairs();
         }
     }
 
-    private void ultrasequencer(GenericContainerScreen screen) {
-        switch (state) {
-            case REMEMBER -> {
-                Inventory inventory = screen.getScreenHandler().getInventory();
-                if (inventory.getStack(49).getName().getString().equals("Remember the pattern!")) {
-                    for (int index = 9; index < 45; index++) {
-                        ItemStack itemStack = inventory.getStack(index);
-                        String name = itemStack.getName().getString();
-                        if (name.matches("\\d+")) {
-                            if (name.equals("1")) {
-                                ultrasequencerNextSlot = index;
+    private void ultrasequencer(Screen screen) {
+        if (toggleUltrasequencer && screen instanceof GenericContainerScreen genericContainerScreen && genericContainerScreen.getTitle().getString().startsWith("Ultrasequencer (")) {
+            switch (state) {
+                case REMEMBER -> {
+                    Inventory inventory = genericContainerScreen.getScreenHandler().getInventory();
+                    if (inventory.getStack(49).getName().getString().equals("Remember the pattern!")) {
+                        for (int index = 9; index < 45; index++) {
+                            ItemStack itemStack = inventory.getStack(index);
+                            String name = itemStack.getName().getString();
+                            if (name.matches("\\d+")) {
+                                if (name.equals("1")) {
+                                    ultrasequencerNextSlot = index;
+                                }
+                                ultrasequencerSlots.put(index, itemStack);
                             }
-                            ultrasequencerSlots.put(index, itemStack);
+                        }
+                        state = State.WAIT;
+                    }
+                }
+                case WAIT -> {
+                    if (genericContainerScreen.getScreenHandler().getInventory().getStack(49).getName().getString().startsWith("Timer: ")) {
+                        state = State.SHOW;
+                    }
+                }
+                case END -> {
+                    String name = genericContainerScreen.getScreenHandler().getInventory().getStack(49).getName().getString();
+                    if (!name.startsWith("Timer: ")) {
+                        if (name.equals("Remember the pattern!")) {
+                            ultrasequencerSlots.clear();
+                            state = State.REMEMBER;
+                        } else {
+                            resetUltrasequencer();
                         }
                     }
-                    state = State.WAIT;
                 }
             }
-            case WAIT -> {
-                if (screen.getScreenHandler().getInventory().getStack(49).getName().getString().startsWith("Timer: ")) {
-                    state = State.SHOW;
-                }
-            }
-            case END -> {
-                String name = screen.getScreenHandler().getInventory().getStack(49).getName().getString();
-                if (!name.startsWith("Timer: ")) {
-                    if (name.equals("Remember the pattern!")) {
-                        ultrasequencerSlots.clear();
-                        state = State.REMEMBER;
-                    } else {
-                        resetUltrasequencer();
-                    }
-                }
-            }
+        } else {
+            resetUltrasequencer();
         }
     }
 }

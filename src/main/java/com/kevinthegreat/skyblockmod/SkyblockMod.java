@@ -62,7 +62,6 @@ public class SkyblockMod implements ModInitializer {
             quiverWarning.check(minecraftClient);
             tick = 0;
         }
-        experiments.tick(minecraftClient);
         lividColor.tick(minecraftClient);
         message.tick();
         tick++;
