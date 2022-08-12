@@ -14,7 +14,7 @@
     "issues": "https://github.com/kevinthegreat1/SkyblockMod-Fabric/issues"
   },
 
-  "license": "CC0-1.0",
+  "license": "MIT",
   "icon": "assets/skyblockmod/icon.png",
 
   "environment": "client",
