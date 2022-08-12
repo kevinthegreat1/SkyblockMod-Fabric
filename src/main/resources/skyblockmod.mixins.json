@@ -6,7 +6,6 @@
   "mixins": [
   ],
   "client": [
-    "ChatHudListenerMixin",
     "ChatScreenMixin",
     "ClientPlayNetworkHandlerMixin",
     "FishingRodItemMixin",

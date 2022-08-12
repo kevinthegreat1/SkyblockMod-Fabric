@@ -8,7 +8,7 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 
 @Mixin(ChatScreen.class)
 public class ChatScreenMixin {
-    @ModifyVariable(method = "sendMessage(Ljava/lang/String;Z)V", at = @At(value = "LOAD", ordinal = 3), argsOnly = true)
+    @ModifyVariable(method = "sendMessage", at = @At(value = "LOAD", ordinal = 5), argsOnly = true)
     private String modifyMessage(String message) {
         if (message.startsWith("/")) {
             message = SkyblockMod.skyblockMod.message.commands.getOrDefault(message, message);
@@ -19,5 +19,10 @@ public class ChatScreenMixin {
             return String.join(" ", messageArgs);
         }
         return message;
+    }
+
+    @ModifyVariable(method = "sendMessage", at = @At(value = "LOAD", ordinal = 2), argsOnly = true)
+    private String modifyMessagePreviewConfirm(String message) {
+        return modifyMessage(message);
     }
 }

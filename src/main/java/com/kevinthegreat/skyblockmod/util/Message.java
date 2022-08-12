@@ -130,7 +130,7 @@ public class Message {
             if (message.startsWith("/")) {
                 MinecraftClient.getInstance().player.sendCommand(message.substring(1));
             } else {
-                MinecraftClient.getInstance().player.sendChatMessage(message);
+                MinecraftClient.getInstance().player.sendChatMessage(message, null);
             }
         }
     }
