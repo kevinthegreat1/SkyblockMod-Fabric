@@ -16,9 +16,6 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import java.util.Map;
-import java.util.Optional;
-
 @Mixin(HandledScreen.class)
 public class HandledScreenMixin {
     final Experiments experiments = SkyblockMod.skyblockMod.experiments;
@@ -105,12 +102,7 @@ public class HandledScreenMixin {
                     case ULTRASEQUENCER -> {
                         if (slot.getIndex() == experiments.ultrasequencerNextSlot) {
                             int count = experiments.ultrasequencerSlots.get(experiments.ultrasequencerNextSlot).getCount() + 1;
-                            Optional<Map.Entry<Integer, ItemStack>> ultrasequencerNextSlotEntry = experiments.ultrasequencerSlots.entrySet().stream().filter(entry -> entry.getValue().getCount() == count).findAny();
-                            if (ultrasequencerNextSlotEntry.isPresent()) {
-                                experiments.ultrasequencerNextSlot = ultrasequencerNextSlotEntry.get().getKey();
-                            } else {
-                                experiments.state = Experiments.State.END;
-                            }
+                            experiments.ultrasequencerSlots.entrySet().stream().filter(entry -> entry.getValue().getCount() == count).findAny().ifPresentOrElse((entry) -> experiments.ultrasequencerNextSlot = entry.getKey(), () -> experiments.state = Experiments.State.END);
                         }
                     }
                 }

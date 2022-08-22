@@ -63,6 +63,7 @@ public class Experiments {
                             type = Type.CHRONOMATRON;
                             state = State.REMEMBER;
                             ScreenEvents.afterTick(screen).register(this::chronomatron);
+                            ScreenEvents.remove(screen).register(this::resetChronomatron);
                         }
                     }
                     case "Superpairs " -> {
@@ -70,6 +71,7 @@ public class Experiments {
                             type = Type.SUPERPAIRS;
                             state = State.SHOW;
                             ScreenEvents.afterTick(screen).register(this::superpairs);
+                            ScreenEvents.remove(screen).register(this::resetSuperpairs);
                         }
                     }
                     case "Ultrasequencer " -> {
@@ -77,6 +79,7 @@ public class Experiments {
                             type = Type.ULTRASEQUENCER;
                             state = State.REMEMBER;
                             ScreenEvents.afterTick(screen).register(this::ultrasequencer);
+                            ScreenEvents.remove(screen).register(this::resetUltrasequencer);
                         }
                     }
                 }
@@ -84,7 +87,7 @@ public class Experiments {
         }
     }
 
-    private void resetChronomatron() {
+    private void resetChronomatron(Screen screen) {
         chronomatronSlots.clear();
         chronomatronChainLengthCount = 0;
         chronomatronCurrentSlot = 0;
@@ -92,12 +95,12 @@ public class Experiments {
         reset();
     }
 
-    private void resetSuperpairs() {
+    private void resetSuperpairs(Screen screen) {
         superpairsSlots.clear();
         reset();
     }
 
-    private void resetUltrasequencer() {
+    private void resetUltrasequencer(Screen screen) {
         ultrasequencerSlots.clear();
         reset();
     }
@@ -142,13 +145,13 @@ public class Experiments {
                             chronomatronCurrentOrdinal = 0;
                             state = State.REMEMBER;
                         } else {
-                            resetChronomatron();
+                            resetChronomatron(screen);
                         }
                     }
                 }
             }
         } else {
-            resetChronomatron();
+            resetChronomatron(screen);
         }
     }
 
@@ -156,7 +159,7 @@ public class Experiments {
         if (toggleSuperpairs && screen instanceof GenericContainerScreen genericContainerScreen && genericContainerScreen.getTitle().getString().startsWith("Superpairs (")) {
             if (state == State.SHOW) {
                 if (genericContainerScreen.getScreenHandler().getInventory().getStack(4).isOf(Items.CAULDRON)) {
-                    resetSuperpairs();
+                    resetSuperpairs(screen);
                 } else if (superpairsSlots.get(superpairsPrevClickedSlot) == null) {
                     ItemStack itemStack = genericContainerScreen.getScreenHandler().getInventory().getStack(superpairsPrevClickedSlot);
                     if (!(itemStack.isOf(Items.CYAN_STAINED_GLASS) || itemStack.isOf(Items.BLACK_STAINED_GLASS_PANE) || itemStack.isOf(Items.AIR))) {
@@ -167,7 +170,7 @@ public class Experiments {
                 }
             }
         } else {
-            resetSuperpairs();
+            resetSuperpairs(screen);
         }
     }
 
@@ -202,13 +205,13 @@ public class Experiments {
                             ultrasequencerSlots.clear();
                             state = State.REMEMBER;
                         } else {
-                            resetUltrasequencer();
+                            resetUltrasequencer(screen);
                         }
                     }
                 }
             }
         } else {
-            resetUltrasequencer();
+            resetUltrasequencer(screen);
         }
     }
 }
