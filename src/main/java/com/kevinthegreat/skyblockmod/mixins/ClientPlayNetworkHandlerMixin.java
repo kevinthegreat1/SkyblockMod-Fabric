@@ -13,13 +13,13 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(ClientPlayNetworkHandler.class)
-public class ClientPlayNetworkHandlerMixin {
+public abstract class ClientPlayNetworkHandlerMixin {
     @Shadow
     @Final
     private MinecraftClient client;
 
     @Inject(method = "onChatMessage", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/message/MessageHandler;onChatMessage(Lnet/minecraft/network/message/SignedMessage;Lnet/minecraft/network/message/MessageType$Parameters;)V"))
-    private void onChatMessage(ChatMessageS2CPacket packet, CallbackInfo ci) {
+    private void skyblockmod_onChatMessage(ChatMessageS2CPacket packet, CallbackInfo ci) {
         String message = packet.message().getContent().getString();
         if (SkyblockMod.skyblockMod.dungeonScore.onChatMessage(message)) {
             return;
@@ -31,13 +31,11 @@ public class ClientPlayNetworkHandlerMixin {
         if (SkyblockMod.skyblockMod.quiverWarning.onChatMessage(message)) {
             return;
         }
-        if (SkyblockMod.skyblockMod.reparty.onChatMessage(message)) {
-            return;
-        }
+        SkyblockMod.skyblockMod.reparty.onChatMessage(message);
     }
 
     @Inject(method = "onPlaySoundId", at = @At(value = "HEAD"))
-    private void onPlaySoundId(PlaySoundIdS2CPacket packet, CallbackInfo ci) {
+    private void skyblockmod_onPlaySoundId(PlaySoundIdS2CPacket packet, CallbackInfo ci) {
         SkyblockMod.skyblockMod.fishing.onSound(client, packet);
     }
 }
