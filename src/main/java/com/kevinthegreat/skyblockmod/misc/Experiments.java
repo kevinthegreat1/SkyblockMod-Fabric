@@ -1,6 +1,5 @@
 package com.kevinthegreat.skyblockmod.misc;
 
-import com.google.common.collect.ImmutableMap;
 import net.fabricmc.fabric.api.client.screen.v1.ScreenEvents;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.ingame.GenericContainerScreen;
@@ -38,17 +37,17 @@ public class Experiments {
     public final Map<Integer, ItemStack> ultrasequencerSlots = new HashMap<>();
     public int ultrasequencerNextSlot;
 
-    public static final ImmutableMap<Item, Item> terracottaToGlass = ImmutableMap.ofEntries(
-            new AbstractMap.SimpleImmutableEntry<>(Items.RED_TERRACOTTA, Items.RED_STAINED_GLASS),
-            new AbstractMap.SimpleImmutableEntry<>(Items.ORANGE_TERRACOTTA, Items.ORANGE_STAINED_GLASS),
-            new AbstractMap.SimpleImmutableEntry<>(Items.YELLOW_TERRACOTTA, Items.YELLOW_STAINED_GLASS),
-            new AbstractMap.SimpleImmutableEntry<>(Items.LIME_TERRACOTTA, Items.LIME_STAINED_GLASS),
-            new AbstractMap.SimpleImmutableEntry<>(Items.GREEN_TERRACOTTA, Items.GREEN_STAINED_GLASS),
-            new AbstractMap.SimpleImmutableEntry<>(Items.CYAN_TERRACOTTA, Items.CYAN_STAINED_GLASS),
-            new AbstractMap.SimpleImmutableEntry<>(Items.LIGHT_BLUE_TERRACOTTA, Items.LIGHT_BLUE_STAINED_GLASS),
-            new AbstractMap.SimpleImmutableEntry<>(Items.BLUE_TERRACOTTA, Items.BLUE_STAINED_GLASS),
-            new AbstractMap.SimpleImmutableEntry<>(Items.PURPLE_TERRACOTTA, Items.PURPLE_STAINED_GLASS),
-            new AbstractMap.SimpleImmutableEntry<>(Items.PINK_TERRACOTTA, Items.PINK_STAINED_GLASS)
+    public static final Map<Item, Item> terracottaToGlass = Map.of(
+            Items.RED_TERRACOTTA, Items.RED_STAINED_GLASS,
+            Items.ORANGE_TERRACOTTA, Items.ORANGE_STAINED_GLASS,
+            Items.YELLOW_TERRACOTTA, Items.YELLOW_STAINED_GLASS,
+            Items.LIME_TERRACOTTA, Items.LIME_STAINED_GLASS,
+            Items.GREEN_TERRACOTTA, Items.GREEN_STAINED_GLASS,
+            Items.CYAN_TERRACOTTA, Items.CYAN_STAINED_GLASS,
+            Items.LIGHT_BLUE_TERRACOTTA, Items.LIGHT_BLUE_STAINED_GLASS,
+            Items.BLUE_TERRACOTTA, Items.BLUE_STAINED_GLASS,
+            Items.PURPLE_TERRACOTTA, Items.PURPLE_STAINED_GLASS,
+            Items.PINK_TERRACOTTA, Items.PINK_STAINED_GLASS
     );
 
     public Experiments() {
