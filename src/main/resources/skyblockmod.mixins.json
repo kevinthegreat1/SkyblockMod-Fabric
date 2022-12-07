@@ -9,7 +9,8 @@
     "ChatScreenMixin",
     "ClientPlayNetworkHandlerMixin",
     "FishingRodItemMixin",
-    "HandledScreenMixin"
+    "HandledScreenMixin",
+    "MessageHandlerMixin"
   ],
   "injectors": {
     "defaultRequire": 1

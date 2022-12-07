@@ -3,8 +3,7 @@ package com.kevinthegreat.skyblockmod.mixins;
 import com.kevinthegreat.skyblockmod.SkyblockMod;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
-import net.minecraft.network.packet.s2c.play.ChatMessageS2CPacket;
-import net.minecraft.network.packet.s2c.play.PlaySoundIdS2CPacket;
+import net.minecraft.network.packet.s2c.play.PlaySoundS2CPacket;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -18,24 +17,8 @@ public abstract class ClientPlayNetworkHandlerMixin {
     @Final
     private MinecraftClient client;
 
-    @Inject(method = "onChatMessage", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/message/MessageHandler;onChatMessage(Lnet/minecraft/network/message/SignedMessage;Lnet/minecraft/network/message/MessageType$Parameters;)V"))
-    private void skyblockmod_onChatMessage(ChatMessageS2CPacket packet, CallbackInfo ci) {
-        String message = packet.message().getContent().getString();
-        if (SkyblockMod.skyblockMod.dungeonScore.onChatMessage(message)) {
-            return;
-        }
-        if (SkyblockMod.skyblockMod.lividColor.on && message.equals("[BOSS] Livid: I respect you for making it to here, but I'll be your undoing.")) {
-            SkyblockMod.skyblockMod.lividColor.start();
-            return;
-        }
-        if (SkyblockMod.skyblockMod.quiverWarning.onChatMessage(message)) {
-            return;
-        }
-        SkyblockMod.skyblockMod.reparty.onChatMessage(message);
-    }
-
-    @Inject(method = "onPlaySoundId", at = @At(value = "HEAD"))
-    private void skyblockmod_onPlaySoundId(PlaySoundIdS2CPacket packet, CallbackInfo ci) {
+    @Inject(method = "onPlaySound", at = @At(value = "HEAD"))
+    private void skyblockmod_onPlaySoundId(PlaySoundS2CPacket packet, CallbackInfo ci) {
         SkyblockMod.skyblockMod.fishing.onSound(client, packet);
     }
 }

@@ -5,10 +5,16 @@ import net.minecraft.client.gui.screen.ChatScreen;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
+import org.spongepowered.asm.mixin.injection.Slice;
 
 @Mixin(ChatScreen.class)
 public abstract class ChatScreenMixin {
-    @ModifyVariable(method = "sendMessage", at = @At(value = "LOAD", ordinal = 5), argsOnly = true)
+    @ModifyVariable(method = "sendMessage",
+            slice = @Slice(
+                    from = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/hud/ChatHud;addToMessageHistory(Ljava/lang/String;)V"),
+                    to = @At(value = "INVOKE", target = "Ljava/lang/String;startsWith(Ljava/lang/String;)Z")
+            ),
+            at = @At(value = "LOAD", ordinal = 0), argsOnly = true)
     private String skyblockmod_modifyMessage(String message) {
         if (message.startsWith("/")) {
             message = SkyblockMod.skyblockMod.message.commands.getOrDefault(message, message);
@@ -19,10 +25,5 @@ public abstract class ChatScreenMixin {
             return String.join(" ", messageArgs);
         }
         return message;
-    }
-
-    @ModifyVariable(method = "sendMessage", at = @At(value = "LOAD", ordinal = 2), argsOnly = true)
-    private String skyblockmod_modifyMessagePreviewConfirm(String message) {
-        return skyblockmod_modifyMessage(message);
     }
 }
