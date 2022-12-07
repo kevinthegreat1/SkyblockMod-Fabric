@@ -11,7 +11,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(MessageHandler.class)
 public abstract class MessageHandlerMixin {
     @Inject(method = "onGameMessage", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/hud/ChatHud;addMessage(Lnet/minecraft/text/Text;)V"))
-    private void fabric_onGameMessage(Text text, boolean overlay, CallbackInfo ci) {
+    private void skyblockmod_onGameMessage(Text text, boolean overlay, CallbackInfo ci) {
         String message = text.getString();
         if (SkyblockMod.skyblockMod.dungeonScore.onChatMessage(message)) {
             return;
