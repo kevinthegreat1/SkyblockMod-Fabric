@@ -4,14 +4,12 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.text.Text;
 import net.minecraft.util.Pair;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.Map;
-import java.util.Queue;
+import java.util.*;
 
 public class Message {
     public final Map<String, String> commands = new HashMap<>();
     public final Map<String, String> commandsArgs = new HashMap<>();
+    public final SortedMap<String, String> commandsAll = new TreeMap<>();
     private final Queue<Pair<String, Integer>> messageQueue = new LinkedList<>();
     private long lastMessage;
 
@@ -109,6 +107,9 @@ public class Message {
         commandsArgs.put("/v", "/visit");
         commands.put("/vp", "/visit portalhub");
         commands.put("/visit p", "/visit portalhub");
+
+        commandsAll.putAll(commands);
+        commandsAll.putAll(commandsArgs);
     }
 
     public void addMessage(Text message) {

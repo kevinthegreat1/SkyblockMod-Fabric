@@ -29,7 +29,7 @@ Helpful features for Hypixel Skyblock ([Fabric](https://fabricmc.net/) 1.17+)
 - /sbm dungeonScore 270|300: show current state (on or off)
 - /sbm dungeonScore 270|300 [true|false]: turn dungeon score on or off
 - /sbm dungeonScore 270|300 message [message]
-  - Ex: /sbm dungeonScore 300 message 300 score reached!
+    - Ex: /sbm dungeonScore 300 message 300 score reached!
 
 #### Livid color
 
@@ -37,7 +37,7 @@ Helpful features for Hypixel Skyblock ([Fabric](https://fabricmc.net/) 1.17+)
 - /sbm lividColor: show current state (on or off)
 - /sbm lividColor [true|false]: turn livid color on or off
 - /sbm lividColor [message before] "[color]" [message after]
-  - Ex: /sbm lividColor [color] is sus
+    - Ex: /sbm lividColor [color] is sus
 
 ### Experiments
 
@@ -51,6 +51,10 @@ Helpful features for Hypixel Skyblock ([Fabric](https://fabricmc.net/) 1.17+)
 - (Only works when nothing is in the water in the line through the player and the bobber*)
 - /sbm fishingHelper: show current state (on or off)
 - /sbm fishingHelper [true|false]: turn fishing helper on or off
+
+### Help
+
+- /sbm help: show all skyblock mod commands
 
 ### Message
 
