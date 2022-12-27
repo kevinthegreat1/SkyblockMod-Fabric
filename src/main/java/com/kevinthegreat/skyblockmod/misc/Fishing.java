@@ -24,7 +24,7 @@ public class Fishing {
     }
 
     public void onSound(MinecraftClient client, PlaySoundS2CPacket packet) {
-        String path = packet.getSound().value().getId().getPath(); //TODO: test if this works
+        String path = packet.getSound().value().getId().getPath();
         if (on && startTime != 0 && System.currentTimeMillis() >= startTime + 2000 && ("entity.generic.splash".equals(path) || "entity.player.splash".equals(path))) {
             ClientPlayerEntity player = client.player;
             if (player != null && player.fishHook != null) {
