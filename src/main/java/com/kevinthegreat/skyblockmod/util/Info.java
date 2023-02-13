@@ -10,30 +10,33 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-//from skyblocker / skyfabric
-public class Util {
+public class Info {
     public boolean hypixel = false;
     public boolean skyblock = false;
     public boolean catacombs = false;
     public boolean crystalHollows = false;
 
-    public void check(MinecraftClient minecraftClient) {
-        if (minecraftClient == null || minecraftClient.world == null || minecraftClient.isInSingleplayer()) {
+    public void update(MinecraftClient client) {
+        if (client == null || client.world == null || client.isInSingleplayer()) {
             reset();
             return;
         }
-        Scoreboard scoreboard = minecraftClient.world.getScoreboard();
+        updateFromScoreboard(client);
+    }
+
+    private void updateFromScoreboard(MinecraftClient client) {
+        Scoreboard scoreboard = client.world.getScoreboard();
         if (scoreboard == null) {
             reset();
             return;
         }
-        ScoreboardObjective scoreboardObjective = scoreboard.getObjectiveForSlot(1);
-        if (scoreboardObjective == null) {
+        ScoreboardObjective objective = scoreboard.getObjectiveForSlot(1);
+        if (objective == null) {
             reset();
             return;
         }
         List<String> list = new ArrayList<>();
-        for (ScoreboardPlayerScore score : scoreboard.getAllPlayerScores(scoreboardObjective)) {
+        for (ScoreboardPlayerScore score : scoreboard.getAllPlayerScores(objective)) {
             if (score == null || score.getPlayerName() == null || score.getPlayerName().startsWith("#")) {
                 reset();
                 return;
@@ -48,7 +51,7 @@ public class Util {
                 list.add(text);
             }
         }
-        list.add(scoreboardObjective.getDisplayName().getString());
+        list.add(objective.getDisplayName().getString());
         Collections.reverse(list);
         String scoreboardString = list.toString();
         if (list.get(list.size() - 1).equals("www.hypixel.net")) {

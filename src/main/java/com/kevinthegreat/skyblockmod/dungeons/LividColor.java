@@ -15,7 +15,7 @@ public class LividColor {
 
     public void tick(MinecraftClient minecraftClient) {
         if (ticks != 0) {
-            if (on && SkyblockMod.skyblockMod.util.catacombs && minecraftClient.world != null) {
+            if (on && SkyblockMod.skyblockMod.info.catacombs && minecraftClient.world != null) {
                 if (ticks % 10 == 1) {
                     if (ticks == 1) {
                         SkyblockMod.skyblockMod.message.sendMessageAfterCooldown(text.replace("[color]", "red"));

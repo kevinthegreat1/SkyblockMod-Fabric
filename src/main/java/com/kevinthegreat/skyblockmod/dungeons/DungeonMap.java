@@ -17,7 +17,7 @@ public class DungeonMap {
     public int offsetY = 0;
 
     public void render(MatrixStack matrixStack, float tickDelta) {
-        if (on && SkyblockMod.skyblockMod.util.catacombs) {
+        if (on && SkyblockMod.skyblockMod.info.catacombs) {
             MinecraftClient minecraftClient = MinecraftClient.getInstance();
             if (minecraftClient == null || minecraftClient.player == null || minecraftClient.world == null) {
                 return;

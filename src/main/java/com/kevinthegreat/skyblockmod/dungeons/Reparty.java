@@ -19,7 +19,7 @@ public class Reparty {
     }
 
     public boolean onChatMessage(String message) {
-        if(on && SkyblockMod.skyblockMod.util.hypixel) {
+        if(on && SkyblockMod.skyblockMod.info.hypixel) {
             if (reparty) {
                 if (message.startsWith("Party Members (")) {
                     memberCount = Integer.parseInt(message.substring(15, message.length() - 1)) - 1;

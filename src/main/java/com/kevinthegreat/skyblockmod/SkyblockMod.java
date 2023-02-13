@@ -10,7 +10,7 @@ import com.kevinthegreat.skyblockmod.misc.QuiverWarning;
 import com.kevinthegreat.skyblockmod.util.Commands;
 import com.kevinthegreat.skyblockmod.util.Config;
 import com.kevinthegreat.skyblockmod.util.Message;
-import com.kevinthegreat.skyblockmod.util.Util;
+import com.kevinthegreat.skyblockmod.util.Info;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
@@ -38,7 +38,7 @@ public class SkyblockMod implements ModInitializer {
     public final Message message = new Message();
     public final QuiverWarning quiverWarning = new QuiverWarning();
     public final Reparty reparty = new Reparty();
-    public final Util util = new Util();
+    public final Info info = new Info();
 
     @Override
     public void onInitialize() {
@@ -58,7 +58,7 @@ public class SkyblockMod implements ModInitializer {
 
     private void tick(MinecraftClient minecraftClient) {
         if (tick % 20 == 0) {
-            util.check(minecraftClient);
+            info.update(minecraftClient);
             quiverWarning.check(minecraftClient);
             tick = 0;
         }
