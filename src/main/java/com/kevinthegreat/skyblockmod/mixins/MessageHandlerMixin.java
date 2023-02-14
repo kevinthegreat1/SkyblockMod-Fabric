@@ -16,6 +16,9 @@ public abstract class MessageHandlerMixin {
         if (SkyblockMod.skyblockMod.dungeonScore.onChatMessage(message)) {
             return;
         }
+        if(SkyblockMod.skyblockMod.fairySouls.onChatMessage(message)) {
+            return;
+        }
         if (SkyblockMod.skyblockMod.info.onChatMessage(message)) {
             return;
         }
