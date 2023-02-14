@@ -161,6 +161,16 @@ public class Commands {
                             SkyblockMod.skyblockMod.fairySouls.on = BoolArgumentType.getBool(context, "value");
                             context.getSource().sendFeedback(Text.of(SkyblockMod.skyblockMod.fairySouls.on ? "Fairy souls helper turned on" : "Fairy souls helper turned off"));
                             return 1;
+                        }))
+                        .then(literal("markAllInCurrentIslandFound").executes(context -> {
+                            SkyblockMod.skyblockMod.fairySouls.markAllFairiesFound();
+                            context.getSource().sendFeedback(Text.of("Marked all fairy souls in the current island as found"));
+                            return 1;
+                        }))
+                        .then(literal("markAllInCurrentIslandMissing").executes(context -> {
+                            SkyblockMod.skyblockMod.fairySouls.markAllFairiesNotFound();
+                            context.getSource().sendFeedback(Text.of("Marked all fairy souls in the current island as missing"));
+                            return 1;
                         })))
                 .then(literal("fishingHelper").executes(context -> {
                             context.getSource().sendFeedback(Text.of(SkyblockMod.skyblockMod.fishing.on ? "Fishing helper is on" : "Fishing helper is off"));

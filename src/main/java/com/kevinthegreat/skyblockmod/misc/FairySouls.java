@@ -126,7 +126,7 @@ public class FairySouls {
         return false;
     }
 
-    private void markAllFairiesFound() {
+    public void markAllFairiesFound() {
         initializeFoundFairiesForCurrentProfileAndLocation();
         foundFairies.get(SkyblockMod.skyblockMod.info.profile).get(SkyblockMod.skyblockMod.info.location).addAll(fairySouls.get(SkyblockMod.skyblockMod.info.location));
     }
@@ -143,7 +143,7 @@ public class FairySouls {
         });
     }
 
-    private void markAllFairiesNotFound() {
+    public void markAllFairiesNotFound() {
         Map<String, Set<BlockPos>> foundFairiesForProfile = foundFairies.get(SkyblockMod.skyblockMod.info.profile);
         if (foundFairiesForProfile != null) {
             foundFairiesForProfile.remove(SkyblockMod.skyblockMod.info.location);

@@ -21,9 +21,13 @@ public class Config {
                 String[] args = line.split(":");
                 try {
                     switch (args[0]) {
-                        case "experimentChronomatron" -> SkyblockMod.skyblockMod.experiments.toggleChronomatron = Boolean.parseBoolean(args[1]);
-                        case "experimentSuperpairs" -> SkyblockMod.skyblockMod.experiments.toggleSuperpairs = Boolean.parseBoolean(args[1]);
-                        case "experimentUltrasequencer" -> SkyblockMod.skyblockMod.experiments.toggleUltrasequencer = Boolean.parseBoolean(args[1]);
+                        case "experimentChronomatron" ->
+                                SkyblockMod.skyblockMod.experiments.toggleChronomatron = Boolean.parseBoolean(args[1]);
+                        case "experimentSuperpairs" ->
+                                SkyblockMod.skyblockMod.experiments.toggleSuperpairs = Boolean.parseBoolean(args[1]);
+                        case "experimentUltrasequencer" ->
+                                SkyblockMod.skyblockMod.experiments.toggleUltrasequencer = Boolean.parseBoolean(args[1]);
+                        case "fairySouls" -> SkyblockMod.skyblockMod.fairySouls.on = Boolean.parseBoolean(args[1]);
                         case "fishing" -> SkyblockMod.skyblockMod.fishing.on = Boolean.parseBoolean(args[1]);
                         case "lividColor" -> lividColor.on = Boolean.parseBoolean(args[1]);
                         case "lividColorText" -> lividColor.text = args[1];
@@ -31,7 +35,8 @@ public class Config {
                         case "mapScale" -> dungeonMap.scale = Float.parseFloat(args[1]);
                         case "mapOffsetX" -> dungeonMap.offsetX = Integer.parseInt(args[1]);
                         case "mapOffsetY" -> dungeonMap.offsetY = Integer.parseInt(args[1]);
-                        case "quiverWarning" -> SkyblockMod.skyblockMod.quiverWarning.on = Boolean.parseBoolean(args[1]);
+                        case "quiverWarning" ->
+                                SkyblockMod.skyblockMod.quiverWarning.on = Boolean.parseBoolean(args[1]);
                         case "reparty" -> SkyblockMod.skyblockMod.reparty.on = Boolean.parseBoolean(args[1]);
                         case "score270" -> dungeonScore.on270 = Boolean.parseBoolean(args[1]);
                         case "score270Text" -> dungeonScore.text270 = args[1];
@@ -58,6 +63,7 @@ public class Config {
             writer.println("experimentChronomatron:" + SkyblockMod.skyblockMod.experiments.toggleChronomatron);
             writer.println("experimentSuperpairs:" + SkyblockMod.skyblockMod.experiments.toggleSuperpairs);
             writer.println("experimentUltrasequencer:" + SkyblockMod.skyblockMod.experiments.toggleUltrasequencer);
+            writer.println("fairySouls:" + SkyblockMod.skyblockMod.fairySouls.on);
             writer.println("fishing:" + SkyblockMod.skyblockMod.fishing.on);
             writer.println("lividColor:" + SkyblockMod.skyblockMod.lividColor.on);
             writer.println("lividColorText:" + SkyblockMod.skyblockMod.lividColor.text);
@@ -79,6 +85,7 @@ public class Config {
             logger.info("experimentChronomatron:" + SkyblockMod.skyblockMod.experiments.toggleChronomatron);
             logger.info("experimentSuperpairs:" + SkyblockMod.skyblockMod.experiments.toggleSuperpairs);
             logger.info("experimentUltrasequencer:" + SkyblockMod.skyblockMod.experiments.toggleUltrasequencer);
+            logger.info("fairySouls:" + SkyblockMod.skyblockMod.fairySouls.on);
             logger.info("fishing:" + SkyblockMod.skyblockMod.fishing.on);
             logger.info("lividColor:" + SkyblockMod.skyblockMod.lividColor.on);
             logger.info("lividColorText:" + SkyblockMod.skyblockMod.lividColor.text);
