@@ -10,7 +10,9 @@
     "ClientPlayNetworkHandlerMixin",
     "FishingRodItemMixin",
     "HandledScreenMixin",
-    "MessageHandlerMixin"
+    "MessageHandlerMixin",
+    "MinecraftClientMixin",
+    "accessors.BeaconBlockEntityRendererInvoker"
   ],
   "injectors": {
     "defaultRequire": 1

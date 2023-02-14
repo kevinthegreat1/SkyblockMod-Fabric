@@ -16,6 +16,9 @@ public abstract class MessageHandlerMixin {
         if (SkyblockMod.skyblockMod.dungeonScore.onChatMessage(message)) {
             return;
         }
+        if (SkyblockMod.skyblockMod.info.onChatMessage(message)) {
+            return;
+        }
         if (SkyblockMod.skyblockMod.lividColor.on && message.equals("[BOSS] Livid: I respect you for making it to here, but I'll be your undoing.")) {
             SkyblockMod.skyblockMod.lividColor.start();
             return;

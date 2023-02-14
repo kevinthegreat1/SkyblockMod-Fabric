@@ -1,6 +1,10 @@
 package com.kevinthegreat.skyblockmod.util;
 
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import com.kevinthegreat.skyblockmod.SkyblockMod;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.network.PlayerListEntry;
 import net.minecraft.scoreboard.Scoreboard;
 import net.minecraft.scoreboard.ScoreboardObjective;
 import net.minecraft.scoreboard.ScoreboardPlayerScore;
@@ -11,39 +15,74 @@ import java.util.Collections;
 import java.util.List;
 
 public class Info {
+    private static final String PROFILE_PREFIX = "§r§e§lProfile: §r§a";
     public boolean hypixel = false;
     public boolean skyblock = false;
     public boolean catacombs = false;
     public boolean crystalHollows = false;
+    public String profile = "";
+    public String server = "";
+    public String gameType = "";
+    public String location = "";
+    public String map = "";
+    private long clientWorldJoinTime = 0;
+    private boolean sentLocRaw = false;
+    private long lastLocRaw = 0;
+
+    public void onClientWorldJoin() {
+        clientWorldJoinTime = System.currentTimeMillis();
+        resetLocRawInfo();
+    }
 
     public void update(MinecraftClient client) {
-        if (client == null || client.world == null || client.isInSingleplayer()) {
-            reset();
+        if (client == null || client.isInSingleplayer()) {
+            resetScoreboardInfo();
             return;
         }
+        updateFromPlayerList(client);
         updateFromScoreboard(client);
+        updateLocRaw();
+    }
+
+    private void updateFromPlayerList(MinecraftClient client) {
+        if (client.getNetworkHandler() == null) {
+            return;
+        }
+        for (PlayerListEntry playerListEntry : client.getNetworkHandler().getPlayerList()) {
+            if (playerListEntry.getDisplayName() == null) {
+                continue;
+            }
+            String name = playerListEntry.getDisplayName().getString();
+            if (name.startsWith(PROFILE_PREFIX)) {
+                profile = name.substring(PROFILE_PREFIX.length());
+            }
+        }
     }
 
     private void updateFromScoreboard(MinecraftClient client) {
+        if (client.world == null) {
+            resetScoreboardInfo();
+            return;
+        }
         Scoreboard scoreboard = client.world.getScoreboard();
         if (scoreboard == null) {
-            reset();
+            resetScoreboardInfo();
             return;
         }
         ScoreboardObjective objective = scoreboard.getObjectiveForSlot(1);
         if (objective == null) {
-            reset();
+            resetScoreboardInfo();
             return;
         }
         List<String> list = new ArrayList<>();
         for (ScoreboardPlayerScore score : scoreboard.getAllPlayerScores(objective)) {
             if (score == null || score.getPlayerName() == null || score.getPlayerName().startsWith("#")) {
-                reset();
+                resetScoreboardInfo();
                 return;
             }
             Team team = scoreboard.getPlayerTeam(score.getPlayerName());
             if (team == null) {
-                reset();
+                resetScoreboardInfo();
                 return;
             }
             String text = team.getPrefix().getString() + team.getSuffix().getString();
@@ -66,14 +105,55 @@ public class Info {
                 crystalHollows = false;
             }
         } else {
-            reset();
+            resetScoreboardInfo();
         }
     }
 
-    private void reset(){
+    private void updateLocRaw() {
+        if (hypixel) {
+            long currentTime = System.currentTimeMillis();
+            if (!sentLocRaw && currentTime > clientWorldJoinTime + 1000 && currentTime > lastLocRaw + 15000) {
+                SkyblockMod.skyblockMod.message.sendMessageAfterCooldown("/locraw");
+                sentLocRaw = true;
+                lastLocRaw = currentTime;
+            }
+        } else {
+            resetLocRawInfo();
+        }
+    }
+
+    public boolean onChatMessage(String message) {
+        if (message.startsWith("{\"server\":") && message.endsWith("}")) {
+            JsonObject locRaw = JsonParser.parseString(message).getAsJsonObject();
+            if (locRaw.has("server")) {
+                server = locRaw.get("server").getAsString();
+                if (locRaw.has("gameType")) {
+                    gameType = locRaw.get("gameType").getAsString();
+                }
+                if (locRaw.has("mode")) {
+                    location = locRaw.get("mode").getAsString();
+                }
+                if (locRaw.has("map")) {
+                    map = locRaw.get("map").getAsString();
+                }
+                return sentLocRaw;
+            }
+        }
+        return false;
+    }
+
+    private void resetScoreboardInfo() {
         hypixel = false;
         skyblock = false;
         catacombs = false;
         crystalHollows = false;
+    }
+
+    private void resetLocRawInfo() {
+        sentLocRaw = false;
+        server = "";
+        gameType = "";
+        location = "";
+        map = "";
     }
 }

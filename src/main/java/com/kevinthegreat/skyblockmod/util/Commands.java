@@ -153,6 +153,15 @@ public class Commands {
                                     context.getSource().sendFeedback(Text.of(SkyblockMod.skyblockMod.experiments.toggleUltrasequencer ? "Ultrasequencer solver turned on" : "Ultrasequencer solver turned off"));
                                     return 1;
                                 }))))
+                .then(literal("fairySouls").executes(context -> {
+                            context.getSource().sendFeedback(Text.of(SkyblockMod.skyblockMod.fairySouls.on ? "Fairy souls helper is on" : "Fairy souls helper is off"));
+                            return 1;
+                        })
+                        .then(argument("value", BoolArgumentType.bool()).executes(context -> {
+                            SkyblockMod.skyblockMod.fairySouls.on = BoolArgumentType.getBool(context, "value");
+                            context.getSource().sendFeedback(Text.of(SkyblockMod.skyblockMod.fairySouls.on ? "Fairy souls helper turned on" : "Fairy souls helper turned off"));
+                            return 1;
+                        })))
                 .then(literal("fishingHelper").executes(context -> {
                             context.getSource().sendFeedback(Text.of(SkyblockMod.skyblockMod.fishing.on ? "Fishing helper is on" : "Fishing helper is off"));
                             return 1;
