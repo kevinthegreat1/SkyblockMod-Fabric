@@ -33,7 +33,6 @@ public class SkyblockMod implements ModInitializer {
     public static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
     public static final Path CONFIG_DIR = FabricLoader.getInstance().getConfigDir().resolve(MOD_ID);
     public static final Path NEU_REPO_DIR = CONFIG_DIR.resolve("NEU-repo");
-    public int tick = 0;
 
     public final Commands commands = new Commands();
     public final Config config = new Config();
@@ -48,6 +47,7 @@ public class SkyblockMod implements ModInitializer {
     public final QuiverWarning quiverWarning = new QuiverWarning();
     public final Reparty reparty = new Reparty();
     public final Info info = new Info();
+    public int tick = 0;
 
     @Override
     public void onInitialize() {
