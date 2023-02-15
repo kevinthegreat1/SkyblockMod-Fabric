@@ -3,6 +3,7 @@ package com.kevinthegreat.skyblockmod.misc;
 import com.kevinthegreat.skyblockmod.SkyblockMod;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 
 public class QuiverWarning {
     public boolean on = true;
@@ -12,17 +13,17 @@ public class QuiverWarning {
         if (on && message.endsWith("left in your Quiver!")) {
             MinecraftClient.getInstance().inGameHud.setDefaultTitleFade();
             if (message.startsWith("You only have 50")) {
-                MinecraftClient.getInstance().inGameHud.setTitle(Text.of("§cYou only have 50 Arrows left in your Quiver!"));
+                MinecraftClient.getInstance().inGameHud.setTitle(Text.translatable("skyblockmod:quiver.50Left").formatted(Formatting.RED));
                 if (SkyblockMod.skyblockMod.info.catacombs) {
                     warning = 1;
                 }
             } else if (message.startsWith("You only have 10")) {
-                MinecraftClient.getInstance().inGameHud.setTitle(Text.of("§cYou only have 10 Arrows left in your Quiver!"));
+                MinecraftClient.getInstance().inGameHud.setTitle(Text.translatable("skyblockmod:quiver.10Left").formatted(Formatting.RED));
                 if (SkyblockMod.skyblockMod.info.catacombs) {
                     warning = 2;
                 }
             } else if (message.startsWith("You don't have any more")) {
-                MinecraftClient.getInstance().inGameHud.setTitle(Text.of("§cYou don't have any more Arrows left in your Quiver!"));
+                MinecraftClient.getInstance().inGameHud.setTitle(Text.translatable("skyblockmod:quiver.empty").formatted(Formatting.RED));
                 if (SkyblockMod.skyblockMod.info.catacombs) {
                     warning = 3;
                 }
@@ -36,9 +37,9 @@ public class QuiverWarning {
         if (on && warning != 0 && !SkyblockMod.skyblockMod.info.catacombs) {
             minecraftClient.inGameHud.setDefaultTitleFade();
             switch (warning) {
-                case 1 -> minecraftClient.inGameHud.setTitle(Text.of("§cYou only have 50 Arrows left in your Quiver!"));
-                case 2 -> minecraftClient.inGameHud.setTitle(Text.of("§cYou only have 10 Arrows left in your Quiver!"));
-                case 3 -> minecraftClient.inGameHud.setTitle(Text.of("§cYou don't have any more Arrows left in your Quiver!"));
+                case 1 -> minecraftClient.inGameHud.setTitle(Text.translatable("skyblockmod:quiver.50Left").formatted(Formatting.RED));
+                case 2 -> minecraftClient.inGameHud.setTitle(Text.translatable("skyblockmod:quiver.10Left").formatted(Formatting.RED));
+                case 3 -> minecraftClient.inGameHud.setTitle(Text.translatable("skyblockmod:quiver.empty").formatted(Formatting.RED));
             }
             warning = 0;
         }

@@ -5,6 +5,7 @@ import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.packet.s2c.play.PlaySoundS2CPacket;
 import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 
@@ -31,7 +32,7 @@ public class Fishing {
                 Vec3d soundToFishHook = player.fishHook.getPos().subtract(packet.getX(), 0, packet.getZ());
                 if (Math.abs(normalYawVector.x * soundToFishHook.z - normalYawVector.z * soundToFishHook.x) < 0.2D && Math.abs(normalYawVector.dotProduct(soundToFishHook)) < 4D && player.getPos().squaredDistanceTo(packet.getX(), packet.getY(), packet.getZ()) > 1D) {
                     client.inGameHud.setTitleTicks(0, 10, 5);
-                    client.inGameHud.setTitle(Text.of("§aReel in now!"));
+                    client.inGameHud.setTitle(Text.translatable("skyblockmod:fishing.reelNow").formatted(Formatting.GREEN));
                     reset();
                 }
             } else {

@@ -24,7 +24,7 @@ public class Reparty {
                 if (message.startsWith("Party Members (")) {
                     memberCount = Integer.parseInt(message.substring(15, message.length() - 1)) - 1;
                     if (memberCount == 0) {
-                        SkyblockMod.skyblockMod.message.addMessage(Text.of("The Party is empty."));
+                        SkyblockMod.skyblockMod.message.addMessage(Text.translatable("skyblockmod:party.empty"));
                         reparty = false;
                     }
                     return true;
@@ -33,7 +33,7 @@ public class Reparty {
                     MinecraftClient minecraftClient = MinecraftClient.getInstance();
                     assert minecraftClient.player != null;
                     if (!messageContents[2].equals(minecraftClient.player.getEntityName()) && !messageContents[3].equals(minecraftClient.player.getEntityName())) {
-                        SkyblockMod.skyblockMod.message.addMessage(Text.of("You are not the party leader."));
+                        SkyblockMod.skyblockMod.message.addMessage(Text.translatable("skyblockmod:party.notLeader"));
                         reparty = false;
                     }
                     return true;
