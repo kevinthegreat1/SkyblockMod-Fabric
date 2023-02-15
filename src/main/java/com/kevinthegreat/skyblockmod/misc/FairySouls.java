@@ -53,7 +53,7 @@ public class FairySouls {
                 reader.close();
             } catch (IOException e) {
                 e.printStackTrace();
-                SkyblockMod.skyblockMod.LOGGER.error("Failed to load found fairy souls.");
+                SkyblockMod.LOGGER.error("Failed to load found fairy souls.");
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -83,7 +83,7 @@ public class FairySouls {
             SkyblockMod.GSON.toJson(foundFairiesJson, writer);
             writer.close();
         } catch (IOException e) {
-            SkyblockMod.skyblockMod.LOGGER.error("Failed to write found fairy souls to file.");
+            SkyblockMod.LOGGER.error("Failed to write found fairy souls to file.");
         }
     }
 
@@ -92,7 +92,7 @@ public class FairySouls {
             return;
         }
         if (!fairySoulsLoaded.isDone()) {
-            SkyblockMod.skyblockMod.LOGGER.warn("Fairy souls are not loaded yet.");
+            SkyblockMod.LOGGER.warn("Fairy souls are not loaded yet.");
             return;
         }
         if (!fairySouls.containsKey(SkyblockMod.skyblockMod.info.location)) {
@@ -134,7 +134,7 @@ public class FairySouls {
     private void markClosestFairyFound() {
         PlayerEntity player = MinecraftClient.getInstance().player;
         if (player == null) {
-            SkyblockMod.skyblockMod.LOGGER.warn("Failed to mark closest fairy soul as found because player is null.");
+            SkyblockMod.LOGGER.warn("Failed to mark closest fairy soul as found because player is null.");
             return;
         }
         fairySouls.get(SkyblockMod.skyblockMod.info.location).stream().filter(this::isFairySoulNotFound).min(Comparator.comparingDouble(fairySoul -> fairySoul.getSquaredDistance(player.getPos()))).ifPresent(fairySoul -> {

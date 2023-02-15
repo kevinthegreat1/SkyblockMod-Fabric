@@ -24,7 +24,7 @@ public class NEURepo {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            SkyblockMod.skyblockMod.LOGGER.info("NEU Repo Initialized");
+            SkyblockMod.LOGGER.info("NEU Repo Initialized");
         });
     }
 

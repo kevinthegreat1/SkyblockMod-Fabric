@@ -44,14 +44,14 @@ public class Config {
                         case "score300Text" -> dungeonScore.text300 = args[1];
                     }
                 } catch (ArrayIndexOutOfBoundsException | NumberFormatException e) {
-                    SkyblockMod.skyblockMod.LOGGER.error("Unable to parse configuration \"" + args[0] + "\".");
+                    SkyblockMod.LOGGER.error("Unable to parse configuration \"" + args[0] + "\".");
                 }
             }
             reader.close();
         } catch (FileNotFoundException e) {
-            SkyblockMod.skyblockMod.LOGGER.info("Configuration file not found.");
+            SkyblockMod.LOGGER.info("Configuration file not found.");
         } catch (IOException e) {
-            SkyblockMod.skyblockMod.LOGGER.error("Error while reading configuration file.");
+            SkyblockMod.LOGGER.error("Error while reading configuration file.");
         }
     }
 
@@ -80,7 +80,7 @@ public class Config {
             writer.close();
         } catch (IOException e) {
             e.printStackTrace();
-            Logger logger = SkyblockMod.skyblockMod.LOGGER;
+            Logger logger = SkyblockMod.LOGGER;
             logger.error("Error while writing configuration file. Logging configuration.");
             logger.info("experimentChronomatron:" + SkyblockMod.skyblockMod.experiments.toggleChronomatron);
             logger.info("experimentSuperpairs:" + SkyblockMod.skyblockMod.experiments.toggleSuperpairs);

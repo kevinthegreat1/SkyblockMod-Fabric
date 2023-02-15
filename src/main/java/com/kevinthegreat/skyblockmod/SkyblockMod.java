@@ -29,7 +29,7 @@ public class SkyblockMod implements ModInitializer {
     public static final String MOD_ID = "skyblockmod";
     public static final String MOD_NAME = "SkyblockMod";
     public static SkyblockMod skyblockMod;
-    public final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
+    public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
     public static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
     public static final Path CONFIG_DIR = FabricLoader.getInstance().getConfigDir().resolve(MOD_ID);
     public static final Path NEU_REPO_DIR = CONFIG_DIR.resolve("NEU-repo");
