@@ -45,6 +45,14 @@ Helpful features for Hypixel Skyblock ([Fabric](https://fabricmc.net/) 1.17+)
 - /sbm experiment [chronomatron|ultrasequencer|superpairs]: show current state (on or off)
 - /sbm experiment [chronomatron|ultrasequencer|superpairs] [true|false]: turn experiment solvers on or off
 
+### Fairy Souls
+
+- Highlights all fairy souls
+- /sbm fairySouls: show current state (on or off)
+- /sbm fairySouls [true|false]: turn fairy souls helper on or off
+- /sbm fairySouls markAllInCurrentIslandFound: mark all fairy souls on the current island as found
+- /sbm fairySouls markAllInCurrentIslandMissing: mark all fairy souls on the current island as missing
+
 ### Fishing
 
 - Notifies you to reel in
