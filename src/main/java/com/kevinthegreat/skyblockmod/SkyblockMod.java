@@ -15,6 +15,7 @@ import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
 import net.fabricmc.fabric.api.client.screen.v1.ScreenEvents;
@@ -62,6 +63,7 @@ public class SkyblockMod implements ModInitializer {
         ClientCommandRegistrationCallback.EVENT.register(commands::registerCommands);
         ClientLifecycleEvents.CLIENT_STOPPING.register(config::save);
         ClientLifecycleEvents.CLIENT_STOPPING.register(fairySouls::saveFoundFairySouls);
+        ClientPlayConnectionEvents.JOIN.register(info::onClientWorldJoin);
         ClientTickEvents.END_CLIENT_TICK.register(this::tick);
         WorldRenderEvents.AFTER_ENTITIES.register(fairySouls::render);
         HudRenderCallback.EVENT.register(dungeonMap::render);

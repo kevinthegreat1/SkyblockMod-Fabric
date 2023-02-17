@@ -3,7 +3,9 @@ package com.kevinthegreat.skyblockmod.util;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.kevinthegreat.skyblockmod.SkyblockMod;
+import net.fabricmc.fabric.api.networking.v1.PacketSender;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.client.network.PlayerListEntry;
 import net.minecraft.scoreboard.Scoreboard;
 import net.minecraft.scoreboard.ScoreboardObjective;
@@ -29,7 +31,7 @@ public class Info {
     private boolean sentLocRaw = false;
     private long lastLocRaw = 0;
 
-    public void onClientWorldJoin() {
+    public void onClientWorldJoin(ClientPlayNetworkHandler handler, PacketSender sender, MinecraftClient client) {
         clientWorldJoinTime = System.currentTimeMillis();
         resetLocRawInfo();
     }
