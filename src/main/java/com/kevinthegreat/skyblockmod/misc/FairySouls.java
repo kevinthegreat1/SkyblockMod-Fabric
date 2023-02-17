@@ -7,13 +7,16 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.kevinthegreat.skyblockmod.SkyblockMod;
 import com.kevinthegreat.skyblockmod.mixins.accessors.BeaconBlockEntityRendererInvoker;
+import me.x150.renderer.render.Renderer3d;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.block.entity.BeaconBlockEntityRenderer;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.DyeColor;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 
+import java.awt.*;
 import java.io.*;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
@@ -99,9 +102,14 @@ public class FairySouls {
             return;
         }
         for (BlockPos fairySoul : fairySouls.get(SkyblockMod.skyblockMod.info.location)) {
+            boolean missing = isFairySoulNotFound(fairySoul);
+            float[] color = missing ? DyeColor.GREEN.getColorComponents() : DyeColor.RED.getColorComponents();
+            Renderer3d.renderThroughWalls();
+            Renderer3d.renderFilled(context.matrixStack(), new Color(color[0], color[1], color[2], 0.5f), Vec3d.of(fairySoul), new Vec3d(1, 1, 1));
+            Renderer3d.stopRenderThroughWalls();
             context.matrixStack().push();
             context.matrixStack().translate(fairySoul.getX() - context.camera().getPos().x, fairySoul.getY() - context.camera().getPos().y, fairySoul.getZ() - context.camera().getPos().z);
-            BeaconBlockEntityRendererInvoker.renderBeam(context.matrixStack(), context.consumers(), context.tickDelta(), context.world().getTime(), 0, BeaconBlockEntityRenderer.MAX_BEAM_HEIGHT, isFairySoulNotFound(fairySoul) ? DyeColor.LIME.getColorComponents() : DyeColor.RED.getColorComponents());
+            BeaconBlockEntityRendererInvoker.renderBeam(context.matrixStack(), context.consumers(), context.tickDelta(), context.world().getTime(), 0, BeaconBlockEntityRenderer.MAX_BEAM_HEIGHT, color);
             context.matrixStack().pop();
         }
     }
@@ -157,6 +165,5 @@ public class FairySouls {
     private void initializeFoundFairiesForProfileAndLocation(String profile, String location) {
         foundFairies.computeIfAbsent(profile, profileKey -> new HashMap<>());
         foundFairies.get(profile).computeIfAbsent(location, locationKey -> new HashSet<>());
-
     }
 }

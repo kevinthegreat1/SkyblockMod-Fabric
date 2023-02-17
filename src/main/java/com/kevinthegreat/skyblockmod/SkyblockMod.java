@@ -65,7 +65,7 @@ public class SkyblockMod implements ModInitializer {
         ClientLifecycleEvents.CLIENT_STOPPING.register(fairySouls::saveFoundFairySouls);
         ClientPlayConnectionEvents.JOIN.register(info::onClientWorldJoin);
         ClientTickEvents.END_CLIENT_TICK.register(this::tick);
-        WorldRenderEvents.AFTER_ENTITIES.register(fairySouls::render);
+        WorldRenderEvents.AFTER_TRANSLUCENT.register(fairySouls::render);
         HudRenderCallback.EVENT.register(dungeonMap::render);
         ScreenEvents.AFTER_INIT.register(experiments::start);
     }
