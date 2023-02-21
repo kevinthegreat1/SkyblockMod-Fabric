@@ -30,9 +30,9 @@ dependencies {
 	// Fabric API. This is technically optional, but you probably want it anyway.
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
-    include modImplementation("org.eclipse.jgit:org.eclipse.jgit:6.4.0.202211300538-r")
+    include modImplementation("org.eclipse.jgit:org.eclipse.jgit:${project.jgit_version}")
 
-	include modImplementation("com.github.0x3C50:Renderer:master-SNAPSHOT")
+	include modImplementation("com.github.0x3C50:Renderer:${project.renderer_version}")
 }
 
 processResources {
