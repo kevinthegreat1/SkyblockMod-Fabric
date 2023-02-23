@@ -1,25 +1,27 @@
 package com.kevinthegreat.skyblockmod.dungeons;
 
 import com.kevinthegreat.skyblockmod.SkyblockMod;
+import com.kevinthegreat.skyblockmod.util.ChatListener;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.text.Text;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Reparty {
+public class Reparty implements ChatListener {
     public boolean on = true;
     private boolean reparty = false;
     private int memberCount = 0;
     private final List<String> members = new ArrayList<>();
     private String leader = "";
 
-    public void start(){
+    public void start() {
         reparty = true;
     }
 
+    @Override
     public boolean onChatMessage(String message) {
-        if(on && SkyblockMod.skyblockMod.info.hypixel) {
+        if (on && SkyblockMod.skyblockMod.info.hypixel) {
             if (reparty) {
                 if (message.startsWith("Party Members (")) {
                     memberCount = Integer.parseInt(message.substring(15, message.length() - 1)) - 1;
@@ -27,7 +29,6 @@ public class Reparty {
                         SkyblockMod.skyblockMod.message.addMessage(Text.translatable("skyblockmod:party.empty"));
                         reparty = false;
                     }
-                    return true;
                 } else if (message.startsWith("Party Leader")) {
                     String[] messageContents = message.split(" ");
                     MinecraftClient minecraftClient = MinecraftClient.getInstance();
@@ -36,7 +37,6 @@ public class Reparty {
                         SkyblockMod.skyblockMod.message.addMessage(Text.translatable("skyblockmod:party.notLeader"));
                         reparty = false;
                     }
-                    return true;
                 } else if (message.startsWith("Party M")) {
                     String[] messageContents = message.split(" ");
                     for (int i = 2; i < messageContents.length - 1; i++) {
@@ -53,10 +53,8 @@ public class Reparty {
                         members.clear();
                         reparty = false;
                     }
-                    return true;
                 } else if (message.startsWith("You are not currently in a party.")) {
                     reparty = false;
-                    return true;
                 }
             } else if (message.endsWith("has disbanded the party!")) {
                 String[] messageContents = message.split(" ");
@@ -65,16 +63,14 @@ public class Reparty {
                 } else {
                     leader = messageContents[0];
                 }
-                return true;
             } else if (!leader.isEmpty() && message.contains(leader + " has invited you to join their party!")) {
                 assert MinecraftClient.getInstance().player != null;
                 if (!leader.equals(MinecraftClient.getInstance().player.getEntityName())) {
                     SkyblockMod.skyblockMod.message.sendMessageAfterCooldown("/p accept " + leader);
                     leader = "";
                 }
-                return true;
             }
         }
-        return false;
+        return true;
     }
 }

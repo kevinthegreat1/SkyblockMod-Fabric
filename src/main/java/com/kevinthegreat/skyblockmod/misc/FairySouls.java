@@ -6,6 +6,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.kevinthegreat.skyblockmod.SkyblockMod;
+import com.kevinthegreat.skyblockmod.util.ChatListener;
 import com.kevinthegreat.skyblockmod.util.RenderHelper;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext;
 import net.minecraft.client.MinecraftClient;
@@ -17,7 +18,7 @@ import java.io.*;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 
-public class FairySouls {
+public class FairySouls implements ChatListener {
     public boolean on = false;
     private CompletableFuture<Void> fairySoulsLoaded;
     private final Map<String, Set<BlockPos>> fairySouls = new HashMap<>();
@@ -116,12 +117,12 @@ public class FairySouls {
         return !foundFairiesForProfileAndLocation.contains(fairySoul);
     }
 
+    @Override
     public boolean onChatMessage(String message) {
         if (message.equals("You have already found that Fairy Soul!") || message.equals("SOUL! You found a Fairy Soul!")) {
             markClosestFairyFound();
-            return true;
         }
-        return false;
+        return true;
     }
 
     private void markClosestFairyFound() {

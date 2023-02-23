@@ -15,12 +15,14 @@ import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
+import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
 import net.fabricmc.fabric.api.client.screen.v1.ScreenEvents;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.text.Text;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -67,6 +69,7 @@ public class SkyblockMod implements ModInitializer {
         ClientTickEvents.END_CLIENT_TICK.register(this::tick);
         WorldRenderEvents.AFTER_TRANSLUCENT.register(fairySouls::render);
         HudRenderCallback.EVENT.register(dungeonMap::render);
+        ClientReceiveMessageEvents.ALLOW_GAME.register(this::onChatMessage);
         ScreenEvents.AFTER_INIT.register(experiments::start);
     }
 
@@ -79,5 +82,10 @@ public class SkyblockMod implements ModInitializer {
         lividColor.tick(minecraftClient);
         message.tick();
         tick++;
+    }
+
+    private boolean onChatMessage(Text text, boolean overlay) {
+        String message = text.getString();
+        return SkyblockMod.skyblockMod.dungeonScore.onChatMessage(message) && SkyblockMod.skyblockMod.fairySouls.onChatMessage(message) && SkyblockMod.skyblockMod.info.onChatMessage(message) && SkyblockMod.skyblockMod.lividColor.onChatMessage(message) && SkyblockMod.skyblockMod.quiverWarning.onChatMessage(message) && SkyblockMod.skyblockMod.reparty.onChatMessage(message);
     }
 }

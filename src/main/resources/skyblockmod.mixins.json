@@ -10,7 +10,6 @@
     "ClientPlayNetworkHandlerMixin",
     "FishingRodItemMixin",
     "HandledScreenMixin",
-    "MessageHandlerMixin",
     "accessors.BeaconBlockEntityRendererInvoker"
   ],
   "injectors": {

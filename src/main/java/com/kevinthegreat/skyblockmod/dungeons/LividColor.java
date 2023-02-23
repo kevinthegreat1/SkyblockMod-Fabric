@@ -1,16 +1,21 @@
 package com.kevinthegreat.skyblockmod.dungeons;
 
 import com.kevinthegreat.skyblockmod.SkyblockMod;
+import com.kevinthegreat.skyblockmod.util.ChatListener;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.util.math.BlockPos;
 
-public class LividColor {
+public class LividColor implements ChatListener {
     public boolean on = true;
     public String text = "[color]";
     private int ticks = 0;
 
-    public void start() {
-        ticks = 80;
+    @Override
+    public boolean onChatMessage(String message) {
+        if (on && message.equals("[BOSS] Livid: I respect you for making it to here, but I'll be your undoing.")) {
+            ticks = 80;
+        }
+        return true;
     }
 
     public void tick(MinecraftClient minecraftClient) {

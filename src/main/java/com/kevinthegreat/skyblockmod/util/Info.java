@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class Info {
+public class Info implements ChatListener {
     private static final String PROFILE_PREFIX = "§r§e§lProfile: §r§a";
     public boolean hypixel = false;
     public boolean skyblock = false;
@@ -124,6 +124,7 @@ public class Info {
         }
     }
 
+    @Override
     public boolean onChatMessage(String message) {
         if (message.startsWith("{\"server\":") && message.endsWith("}")) {
             JsonObject locRaw = JsonParser.parseString(message).getAsJsonObject();
@@ -138,10 +139,10 @@ public class Info {
                 if (locRaw.has("map")) {
                     map = locRaw.get("map").getAsString();
                 }
-                return sentLocRaw;
+                return !sentLocRaw;
             }
         }
-        return false;
+        return true;
     }
 
     private void resetScoreboardInfo() {
