@@ -56,7 +56,9 @@ public class Message {
         commands.put("/ch", "/warp crystals");
         commands.put("/crystal hollows", "/warp crystals");
 
-        commands.put("/g", "/warp gold");
+        commands.put("/g", "/warp garden");
+        commands.put("/garden", "/warp garden");
+        commands.put("/go", "/warp gold");
         commands.put("/gold", "/warp gold");
 
         commands.put("/des", "/warp desert");
