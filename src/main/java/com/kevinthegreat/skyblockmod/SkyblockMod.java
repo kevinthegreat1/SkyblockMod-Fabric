@@ -10,6 +10,7 @@ import com.kevinthegreat.skyblockmod.misc.Experiments;
 import com.kevinthegreat.skyblockmod.misc.FairySouls;
 import com.kevinthegreat.skyblockmod.misc.Fishing;
 import com.kevinthegreat.skyblockmod.misc.QuiverWarning;
+import com.kevinthegreat.skyblockmod.option.SkyblockModOptions;
 import com.kevinthegreat.skyblockmod.util.*;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
@@ -47,6 +48,7 @@ public class SkyblockMod implements ModInitializer {
     public final LividColor lividColor = new LividColor();
     public final Message message = new Message();
     public final NEURepo neuRepo = new NEURepo();
+    public final SkyblockModOptions options = new SkyblockModOptions();
     public final QuiverWarning quiverWarning = new QuiverWarning();
     public final Reparty reparty = new Reparty();
     public final Info info = new Info();

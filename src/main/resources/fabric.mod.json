@@ -21,11 +21,15 @@
   "entrypoints": {
     "main": [
       "com.kevinthegreat.skyblockmod.SkyblockMod"
+    ],
+    "modmenu": [
+      "com.kevinthegreat.skyblockmod.compatibility.ModMenuCompat"
     ]
   },
   "mixins": [
     "skyblockmod.mixins.json"
   ],
+  "accessWidener" : "skyblockmod.accesswidener",
 
   "depends": {
     "fabricloader": ">=0.14.11",

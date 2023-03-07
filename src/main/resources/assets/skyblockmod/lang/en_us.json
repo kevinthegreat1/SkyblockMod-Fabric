@@ -1,6 +1,9 @@
 {
+    "skyblockmod:dungeons" : "Dungeons",
     "skyblockmod:dungeonMap": "Dungeon map",
     "skyblockmod:dungeonMap.offset": "Dungeon map offset",
+    "skyblockmod:dungeonMap.offset.x": "Dungeon map offset X",
+    "skyblockmod:dungeonMap.offset.y": "Dungeon map offset Y",
     "skyblockmod:dungeonMap.scale": "Dungeon map scale",
     "skyblockmod:dungeonScore.270": "Dungeon score 270",
     "skyblockmod:dungeonScore.270.text": "Dungeon score 270 text",
@@ -22,6 +25,8 @@
     "skyblockmod:options.turn": " turned ",
     "skyblockmod:options.reloaded": "Reloaded options from file",
     "skyblockmod:options.saved": "Saved options to file",
+    "skyblockmod:options.title" : "Skyblock Mod Options",
+    "skyblockmod:options.other_features": "Other features",
     "skyblockmod:party.empty": "The Party is empty.",
     "skyblockmod:party.notLeader": "You are not the party leader.",
     "skyblockmod:quiver": "Quiver warning",

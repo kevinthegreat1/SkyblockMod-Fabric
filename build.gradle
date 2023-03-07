@@ -11,6 +11,10 @@ archivesBaseName = project.archives_base_name + '-' + project.minecraft_version
 version = project.mod_version
 group = project.maven_group
 
+loom {
+	accessWidenerPath = file("src/main/resources/skyblockmod.accesswidener")
+}
+
 repositories {
 	// Add repositories to retrieve artifacts from in here.
 	// You should only use this when depending on other mods because
@@ -18,7 +22,8 @@ repositories {
 	// See https://docs.gradle.org/current/userguide/declaring_repositories.html
 	// for more information about repositories.
 
-	maven { url 'https://jitpack.io' }
+	maven { url "https://maven.terraformersmc.com/releases/" }
+	maven { url "https://jitpack.io" }
 }
 
 dependencies {
@@ -32,6 +37,7 @@ dependencies {
 
     include modImplementation("org.eclipse.jgit:org.eclipse.jgit:${project.jgit_version}")
 
+	modImplementation "com.terraformersmc:modmenu:${project.modmenu_version}"
 	include modImplementation("com.github.0x3C50:Renderer:${project.renderer_version}")
 }
 
