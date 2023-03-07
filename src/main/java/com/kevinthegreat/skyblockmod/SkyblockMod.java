@@ -57,7 +57,7 @@ public class SkyblockMod implements ModInitializer {
     @Override
     public void onInitialize() {
         skyblockMod = this;
-        config.load();
+        options.load();
         fairySouls.loadFairySouls();
         registerEvents();
         LOGGER.info(MOD_NAME + " initialized.");
@@ -65,7 +65,7 @@ public class SkyblockMod implements ModInitializer {
 
     private void registerEvents() {
         ClientCommandRegistrationCallback.EVENT.register(commands::registerCommands);
-        ClientLifecycleEvents.CLIENT_STOPPING.register(config::save);
+        ClientLifecycleEvents.CLIENT_STOPPING.register(options::save);
         ClientLifecycleEvents.CLIENT_STOPPING.register(fairySouls::saveFoundFairySouls);
         ClientPlayConnectionEvents.JOIN.register(info::onClientWorldJoin);
         ClientTickEvents.END_CLIENT_TICK.register(this::tick);
