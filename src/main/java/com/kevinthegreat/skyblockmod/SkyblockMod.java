@@ -39,7 +39,6 @@ public class SkyblockMod implements ModInitializer {
     public static final Path NEU_REPO_DIR = CONFIG_DIR.resolve("NEU-repo");
 
     public final Commands commands = new Commands();
-    public final Config config = new Config();
     public final DungeonScore dungeonScore = new DungeonScore();
     public final DungeonMap dungeonMap = new DungeonMap();
     public final Experiments experiments = new Experiments();

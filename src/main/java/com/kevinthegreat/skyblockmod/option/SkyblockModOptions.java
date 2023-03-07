@@ -31,7 +31,7 @@ public class SkyblockModOptions {
     public final List<List<Pair<String, SimpleOption<?>>>> optionsList = List.of(List.of(new Pair<>("dungeonMap", dungeonMap), new Pair<>("dungeonMap.scale", dungeonMapScale), new Pair<>("dungeonMap.offset.x", dungeonMapX), new Pair<>("dungeonMap.offset.y", dungeonMapY)));
 
     public static Text getGenericValueText(Text prefix, double value) {
-        return GameOptions.getGenericValueText(prefix, Text.literal(Double.toString(value)));
+        return GameOptions.getGenericValueText(prefix, Text.literal(String.format("%.2f", value)));
     }
 
     public static int getScreenWidth() {
@@ -104,10 +104,10 @@ public class SkyblockModOptions {
                         case "fishing" -> SkyblockMod.skyblockMod.fishing.on = Boolean.parseBoolean(args[1]);
                         case "lividColor" -> SkyblockMod.skyblockMod.lividColor.on = Boolean.parseBoolean(args[1]);
                         case "lividColorText" -> SkyblockMod.skyblockMod.lividColor.text = args[1];
-                        case "map" -> SkyblockMod.skyblockMod.dungeonMap.on = Boolean.parseBoolean(args[1]);
-                        case "mapScale" -> SkyblockMod.skyblockMod.dungeonMap.scale = Float.parseFloat(args[1]);
-                        case "mapOffsetX" -> SkyblockMod.skyblockMod.dungeonMap.offsetX = Integer.parseInt(args[1]);
-                        case "mapOffsetY" -> SkyblockMod.skyblockMod.dungeonMap.offsetY = Integer.parseInt(args[1]);
+                        case "map" -> dungeonMap.setValue(Boolean.parseBoolean(args[1]));
+                        case "mapScale" -> dungeonMapScale.setValue(Double.parseDouble(args[1]));
+                        case "mapOffsetX" -> dungeonMapX.setValue(Integer.parseInt(args[1]));
+                        case "mapOffsetY" -> dungeonMapY.setValue(Integer.parseInt(args[1]));
                         case "quiverWarning" ->
                                 SkyblockMod.skyblockMod.quiverWarning.on = Boolean.parseBoolean(args[1]);
                         case "reparty" -> SkyblockMod.skyblockMod.reparty.on = Boolean.parseBoolean(args[1]);

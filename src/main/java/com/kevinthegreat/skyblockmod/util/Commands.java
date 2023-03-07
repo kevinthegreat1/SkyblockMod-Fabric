@@ -2,12 +2,8 @@ package com.kevinthegreat.skyblockmod.util;
 
 import com.kevinthegreat.skyblockmod.SkyblockMod;
 import com.mojang.brigadier.CommandDispatcher;
-import com.mojang.brigadier.arguments.BoolArgumentType;
-import com.mojang.brigadier.arguments.FloatArgumentType;
-import com.mojang.brigadier.arguments.IntegerArgumentType;
-import com.mojang.brigadier.arguments.StringArgumentType;
+import com.mojang.brigadier.arguments.*;
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.screen.ScreenTexts;
 import net.minecraft.text.Text;
@@ -41,46 +37,46 @@ public class Commands {
                             return 1;
                         })
                         .then(literal("reload").executes(context -> {
-                            SkyblockMod.skyblockMod.config.load();
+                            SkyblockMod.skyblockMod.options.load();
                             context.getSource().sendFeedback(Text.translatable("skyblockmod:options.reloaded"));
                             return 1;
                         }))
                         .then(literal("save").executes(context -> {
-                            SkyblockMod.skyblockMod.config.save(MinecraftClient.getInstance());
+                            SkyblockMod.skyblockMod.options.save();
                             context.getSource().sendFeedback(Text.translatable("skyblockmod:options.saved"));
                             return 1;
                         })))
                 .then(literal("dungeonMap").executes(context -> {
-                            context.getSource().sendFeedback(Text.translatable("skyblockmod:dungeonMap").append(queryOnOrOff(SkyblockMod.skyblockMod.dungeonMap.on)));
+                            context.getSource().sendFeedback(Text.translatable("skyblockmod:dungeonMap").append(queryOnOrOff(SkyblockMod.skyblockMod.options.dungeonMap.getValue())));
                             return 1;
                         })
                         .then(argument("value", BoolArgumentType.bool()).executes(context -> {
-                            SkyblockMod.skyblockMod.dungeonMap.on = BoolArgumentType.getBool(context, "value");
-                            context.getSource().sendFeedback(Text.translatable("skyblockmod:dungeonMap").append(turnOnOrOff(SkyblockMod.skyblockMod.dungeonMap.on)));
+                            SkyblockMod.skyblockMod.options.dungeonMap.setValue(BoolArgumentType.getBool(context, "value"));
+                            context.getSource().sendFeedback(Text.translatable("skyblockmod:dungeonMap").append(turnOnOrOff(SkyblockMod.skyblockMod.options.dungeonMap.getValue())));
                             return 1;
                         }))
                         .then(literal("offset").executes(context -> {
-                                    context.getSource().sendFeedback(Text.translatable("skyblockmod:dungeonMap.offset").append(Text.translatable("skyblockmod:options.query")).append(SkyblockMod.skyblockMod.dungeonMap.offsetX + ", " + SkyblockMod.skyblockMod.dungeonMap.offsetY));
+                                    context.getSource().sendFeedback(Text.translatable("skyblockmod:dungeonMap.offset").append(Text.translatable("skyblockmod:options.query")).append(SkyblockMod.skyblockMod.options.dungeonMapX.getValue() + ", " + SkyblockMod.skyblockMod.options.dungeonMapY.getValue()));
                                     return 1;
                                 })
                                 .then(argument("offsetX", IntegerArgumentType.integer()).executes(context -> {
-                                            SkyblockMod.skyblockMod.dungeonMap.offsetX = IntegerArgumentType.getInteger(context, "offsetX");
-                                            context.getSource().sendFeedback(Text.translatable("skyblockmod:dungeonMap.offset").append(Text.translatable("skyblockmod:options.set")).append(SkyblockMod.skyblockMod.dungeonMap.offsetX + ", " + SkyblockMod.skyblockMod.dungeonMap.offsetY));
+                                            SkyblockMod.skyblockMod.options.dungeonMapX.setValue(IntegerArgumentType.getInteger(context, "offsetX"));
+                                            context.getSource().sendFeedback(Text.translatable("skyblockmod:dungeonMap.offset").append(Text.translatable("skyblockmod:options.set")).append(SkyblockMod.skyblockMod.options.dungeonMapX.getValue() + ", " + SkyblockMod.skyblockMod.options.dungeonMapY.getValue()));
                                             return 1;
                                         })
                                         .then(argument("offsetY", IntegerArgumentType.integer()).executes(context -> {
-                                            SkyblockMod.skyblockMod.dungeonMap.offsetX = IntegerArgumentType.getInteger(context, "offsetX");
-                                            SkyblockMod.skyblockMod.dungeonMap.offsetY = IntegerArgumentType.getInteger(context, "offsetY");
-                                            context.getSource().sendFeedback(Text.translatable("skyblockmod:dungeonMap.offset").append(Text.translatable("skyblockmod:options.set")).append(SkyblockMod.skyblockMod.dungeonMap.offsetX + ", " + SkyblockMod.skyblockMod.dungeonMap.offsetY));
+                                            SkyblockMod.skyblockMod.options.dungeonMapX.setValue(IntegerArgumentType.getInteger(context, "offsetX"));
+                                            SkyblockMod.skyblockMod.options.dungeonMapY.setValue(IntegerArgumentType.getInteger(context, "offsetY"));
+                                            context.getSource().sendFeedback(Text.translatable("skyblockmod:dungeonMap.offset").append(Text.translatable("skyblockmod:options.set")).append(SkyblockMod.skyblockMod.options.dungeonMapX.getValue() + ", " + SkyblockMod.skyblockMod.options.dungeonMapY.getValue()));
                                             return 1;
                                         }))))
                         .then(literal("scale").executes(context -> {
-                                    context.getSource().sendFeedback(Text.translatable("skyblockmod:dungeonMap.scale").append(Text.translatable("skyblockmod:options.query")).append(Float.toString(SkyblockMod.skyblockMod.dungeonMap.scale)));
+                                    context.getSource().sendFeedback(Text.translatable("skyblockmod:dungeonMap.scale").append(Text.translatable("skyblockmod:options.query")).append(String.format("%.2f", SkyblockMod.skyblockMod.options.dungeonMapScale.getValue())));
                                     return 1;
                                 })
-                                .then(argument("scale", FloatArgumentType.floatArg()).executes(context -> {
-                                    SkyblockMod.skyblockMod.dungeonMap.scale = FloatArgumentType.getFloat(context, "scale");
-                                    context.getSource().sendFeedback(Text.translatable("skyblockmod:dungeonMap.scale").append(Text.translatable("skyblockmod:options.set")).append(Float.toString(SkyblockMod.skyblockMod.dungeonMap.scale)));
+                                .then(argument("scale", DoubleArgumentType.doubleArg()).executes(context -> {
+                                    SkyblockMod.skyblockMod.options.dungeonMapScale.setValue(DoubleArgumentType.getDouble(context, "scale"));
+                                    context.getSource().sendFeedback(Text.translatable("skyblockmod:dungeonMap.scale").append(Text.translatable("skyblockmod:options.set")).append(String.format("%.2f", SkyblockMod.skyblockMod.options.dungeonMapScale.getValue())));
                                     return 1;
                                 }))))
                 .then(literal("dungeonScore").executes(context -> {
