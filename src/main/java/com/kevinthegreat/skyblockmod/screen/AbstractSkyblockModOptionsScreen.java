@@ -61,12 +61,16 @@ public abstract class AbstractSkyblockModOptionsScreen extends GameOptionsScreen
         options.save();
     }
 
-    protected ButtonWidget add(Text message, Function<Screen, Screen> screenFunction){
+    protected ButtonWidget addScreenButton(Text message, Function<Screen, Screen> screenFunction){
         return adder.add(createButton(message, screenFunction));
     }
 
-    protected <T> ClickableWidget add(SimpleOption<T> option){
+    protected <T> ClickableWidget addOptionButton(SimpleOption<T> option){
         return adder.add(createButton(option));
+    }
+
+    protected ButtonWidget addButton(Text message, ButtonWidget.PressAction onPress){
+        return adder.add(ButtonWidget.builder(message, onPress).build());
     }
 
     protected ButtonWidget createButton(Text message, Function<Screen, Screen> screenFunction) {

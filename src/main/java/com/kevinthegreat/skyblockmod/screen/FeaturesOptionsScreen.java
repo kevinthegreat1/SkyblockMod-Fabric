@@ -11,12 +11,12 @@ public class FeaturesOptionsScreen extends AbstractSkyblockModOptionsScreen {
     @Override
     protected void init() {
         super.init();
-        add(options.experimentChronomatron);
-        add(options.experimentSuperpairs);
-        add(options.experimentUltrasequencer);
-        add(options.fairySouls);
-        add(options.fishing);
-        add(options.quiver);
+        addOptionButton(options.experimentChronomatron);
+        addOptionButton(options.experimentSuperpairs);
+        addOptionButton(options.experimentUltrasequencer);
+        addOptionButton(options.fairySouls);
+        addOptionButton(options.fishing);
+        addOptionButton(options.quiver);
         addGridWidget();
     }
 }
