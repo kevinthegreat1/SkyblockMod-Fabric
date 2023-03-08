@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Reparty implements ChatListener {
-    public boolean on = true;
     private boolean reparty = false;
     private int memberCount = 0;
     private final List<String> members = new ArrayList<>();
@@ -21,7 +20,7 @@ public class Reparty implements ChatListener {
 
     @Override
     public boolean onChatMessage(String message) {
-        if (on && SkyblockMod.skyblockMod.info.hypixel) {
+        if (SkyblockMod.skyblockMod.options.reparty.getValue() && SkyblockMod.skyblockMod.info.hypixel) {
             if (reparty) {
                 if (message.startsWith("Party Members (")) {
                     memberCount = Integer.parseInt(message.substring(15, message.length() - 1)) - 1;

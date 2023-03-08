@@ -2,7 +2,10 @@ package com.kevinthegreat.skyblockmod.util;
 
 import com.kevinthegreat.skyblockmod.SkyblockMod;
 import com.mojang.brigadier.CommandDispatcher;
-import com.mojang.brigadier.arguments.*;
+import com.mojang.brigadier.arguments.BoolArgumentType;
+import com.mojang.brigadier.arguments.DoubleArgumentType;
+import com.mojang.brigadier.arguments.IntegerArgumentType;
+import com.mojang.brigadier.arguments.StringArgumentType;
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
 import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.screen.ScreenTexts;
@@ -189,21 +192,21 @@ public class Commands {
                     return 1;
                 }))
                 .then(literal("lividColor").executes(context -> {
-                            context.getSource().sendFeedback(Text.translatable("skyblockmod:lividColor").append(queryOnOrOff(SkyblockMod.skyblockMod.lividColor.on)).append(": " + SkyblockMod.skyblockMod.lividColor.text));
+                            context.getSource().sendFeedback(Text.translatable("skyblockmod:lividColor").append(queryOnOrOff(SkyblockMod.skyblockMod.options.lividColor.getValue())).append(": " + SkyblockMod.skyblockMod.options.lividColorText.getValue()));
                             return 1;
                         })
                         .then(argument("value", BoolArgumentType.bool()).executes(context -> {
-                            SkyblockMod.skyblockMod.lividColor.on = BoolArgumentType.getBool(context, "value");
-                            context.getSource().sendFeedback(Text.translatable("skyblockmod:lividColor").append(turnOnOrOff(SkyblockMod.skyblockMod.lividColor.on)).append(": " + SkyblockMod.skyblockMod.lividColor.text));
+                            SkyblockMod.skyblockMod.options.lividColor.setValue(BoolArgumentType.getBool(context, "value"));
+                            context.getSource().sendFeedback(Text.translatable("skyblockmod:lividColor").append(turnOnOrOff(SkyblockMod.skyblockMod.options.lividColor.getValue())).append(": " + SkyblockMod.skyblockMod.options.lividColorText.getValue()));
                             return 1;
                         }))
                         .then(literal("message").executes(context -> {
-                                    context.getSource().sendFeedback(Text.translatable("skyblockmod:lividColor").append(queryOnOrOff(SkyblockMod.skyblockMod.lividColor.on)).append(": " + SkyblockMod.skyblockMod.lividColor.text));
+                                    context.getSource().sendFeedback(Text.translatable("skyblockmod:lividColor").append(queryOnOrOff(SkyblockMod.skyblockMod.options.lividColor.getValue())).append(": " + SkyblockMod.skyblockMod.options.lividColorText.getValue()));
                                     return 1;
                                 })
                                 .then(argument("message", StringArgumentType.greedyString()).executes(context -> {
-                                    SkyblockMod.skyblockMod.lividColor.text = StringArgumentType.getString(context, "message");
-                                    context.getSource().sendFeedback(Text.translatable("skyblockmod:lividColor").append(Text.translatable("skyblockmod:options.set")).append(ScreenTexts.onOrOff(SkyblockMod.skyblockMod.lividColor.on)).append(": " + SkyblockMod.skyblockMod.lividColor.text));
+                                    SkyblockMod.skyblockMod.options.lividColorText.setValue(StringArgumentType.getString(context, "message"));
+                                    context.getSource().sendFeedback(Text.translatable("skyblockmod:lividColor").append(Text.translatable("skyblockmod:options.set")).append(ScreenTexts.onOrOff(SkyblockMod.skyblockMod.options.lividColor.getValue())).append(": " + SkyblockMod.skyblockMod.options.lividColorText.getValue()));
                                     return 1;
                                 }))))
                 .then(literal("quiverWarning").executes(context -> {
@@ -216,12 +219,12 @@ public class Commands {
                             return 1;
                         })))
                 .then(literal("reparty").executes(context -> {
-                            context.getSource().sendFeedback(Text.translatable("skyblockmod:reparty").append(queryOnOrOff(SkyblockMod.skyblockMod.reparty.on)));
+                            context.getSource().sendFeedback(Text.translatable("skyblockmod:reparty").append(queryOnOrOff(SkyblockMod.skyblockMod.options.reparty.getValue())));
                             return 1;
                         })
                         .then(argument("value", BoolArgumentType.bool()).executes(context -> {
-                            SkyblockMod.skyblockMod.reparty.on = BoolArgumentType.getBool(context, "value");
-                            context.getSource().sendFeedback(Text.translatable("skyblockmod:reparty").append(turnOnOrOff(SkyblockMod.skyblockMod.reparty.on)));
+                            SkyblockMod.skyblockMod.options.reparty.setValue(BoolArgumentType.getBool(context, "value"));
+                            context.getSource().sendFeedback(Text.translatable("skyblockmod:reparty").append(turnOnOrOff(SkyblockMod.skyblockMod.options.reparty.getValue())));
                             return 1;
                         }))));
     }

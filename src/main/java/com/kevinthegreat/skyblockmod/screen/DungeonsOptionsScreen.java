@@ -18,6 +18,9 @@ public class DungeonsOptionsScreen extends AbstractSkyblockModOptionsScreen {
         add(options.dungeonScore270Text);
         add(options.dungeonScore300);
         add(options.dungeonScore300Text);
+        add(options.lividColor);
+        add(options.lividColorText);
+        add(options.reparty);
         addGridWidget();
     }
 }

@@ -32,8 +32,11 @@ public class SkyblockModOptions {
     public final SimpleOption<String> dungeonScore270Text = new SimpleOption<>("skyblockmod:dungeonScore.270.text", SimpleOption.emptyTooltip(), (optionText, value) -> Text.of(value), StringTextFieldCallbacks.INSTANCE_256, "270 score", SkyblockModOptions::emptyConsumer);
     public final SimpleOption<Boolean> dungeonScore300 = SimpleOption.ofBoolean("skyblockmod:dungeonScore.300", true);
     public final SimpleOption<String> dungeonScore300Text = new SimpleOption<>("skyblockmod:dungeonScore.300.text", SimpleOption.emptyTooltip(), (optionText, value) -> Text.of(value), StringTextFieldCallbacks.INSTANCE_256, "300 score", SkyblockModOptions::emptyConsumer);
+    public final SimpleOption<Boolean> lividColor = SimpleOption.ofBoolean("skyblockmod:lividColor", true);
+    public final SimpleOption<String> lividColorText = new SimpleOption<>("skyblockmod:lividColor.text", SimpleOption.emptyTooltip(), (optionText, value) -> Text.of(value), StringTextFieldCallbacks.INSTANCE_256, "[color]", SkyblockModOptions::emptyConsumer);
+    public final SimpleOption<Boolean> reparty = SimpleOption.ofBoolean("skyblockmod:reparty", true);
     @SuppressWarnings("SuspiciousNameCombination")
-    public final List<List<Pair<String, SimpleOption<?>>>> optionsList = List.of(List.of(new Pair<>("dungeonMap", dungeonMap), new Pair<>("dungeonMap.scale", dungeonMapScale), new Pair<>("dungeonMap.offset.x", dungeonMapX), new Pair<>("dungeonMap.offset.y", dungeonMapY), new Pair<>("dungeonScore.270", dungeonScore270), new Pair<>("dungeonScore.270.text", dungeonScore270Text), new Pair<>("dungeonScore.300", dungeonScore300), new Pair<>("dungeonScore.300.text", dungeonScore300Text)));
+    public final List<List<Pair<String, SimpleOption<?>>>> optionsList = List.of(List.of(new Pair<>("dungeonMap", dungeonMap), new Pair<>("dungeonMap.scale", dungeonMapScale), new Pair<>("dungeonMap.offset.x", dungeonMapX), new Pair<>("dungeonMap.offset.y", dungeonMapY), new Pair<>("dungeonScore.270", dungeonScore270), new Pair<>("dungeonScore.270.text", dungeonScore270Text), new Pair<>("dungeonScore.300", dungeonScore300), new Pair<>("dungeonScore.300.text", dungeonScore300Text), new Pair<>("lividColor", lividColor), new Pair<>("lividColor.text", lividColorText), new Pair<>("reparty", reparty)));
 
     public static Text getGenericValueText(Text prefix, double value) {
         return GameOptions.getGenericValueText(prefix, Text.literal(String.format("%.2f", value)));
@@ -110,15 +113,17 @@ public class SkyblockModOptions {
                                 SkyblockMod.skyblockMod.experiments.toggleUltrasequencer = Boolean.parseBoolean(args[1]);
                         case "fairySouls" -> SkyblockMod.skyblockMod.fairySouls.on = Boolean.parseBoolean(args[1]);
                         case "fishing" -> SkyblockMod.skyblockMod.fishing.on = Boolean.parseBoolean(args[1]);
-                        case "lividColor" -> SkyblockMod.skyblockMod.lividColor.on = Boolean.parseBoolean(args[1]);
-                        case "lividColorText" -> SkyblockMod.skyblockMod.lividColor.text = args[1];
+                        case "lividColor" ->
+                                SkyblockMod.skyblockMod.options.lividColor.setValue(Boolean.parseBoolean(args[1]));
+                        case "lividColorText" -> SkyblockMod.skyblockMod.options.lividColorText.setValue(args[1]);
                         case "map" -> dungeonMap.setValue(Boolean.parseBoolean(args[1]));
                         case "mapScale" -> dungeonMapScale.setValue(Double.parseDouble(args[1]));
                         case "mapOffsetX" -> dungeonMapX.setValue(Integer.parseInt(args[1]));
                         case "mapOffsetY" -> dungeonMapY.setValue(Integer.parseInt(args[1]));
                         case "quiverWarning" ->
                                 SkyblockMod.skyblockMod.quiverWarning.on = Boolean.parseBoolean(args[1]);
-                        case "reparty" -> SkyblockMod.skyblockMod.reparty.on = Boolean.parseBoolean(args[1]);
+                        case "reparty" ->
+                                SkyblockMod.skyblockMod.options.reparty.setValue(Boolean.parseBoolean(args[1]));
                         case "score270" -> dungeonScore270.setValue(Boolean.parseBoolean(args[1]));
                         case "score270Text" -> dungeonScore270Text.setValue(args[1]);
                         case "score300" -> dungeonScore300.setValue(Boolean.parseBoolean(args[1]));
