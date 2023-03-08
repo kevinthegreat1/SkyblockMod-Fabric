@@ -1,6 +1,8 @@
 package com.kevinthegreat.skyblockmod.util;
 
 import com.kevinthegreat.skyblockmod.SkyblockMod;
+import com.kevinthegreat.skyblockmod.option.SkyblockModOptions;
+import com.kevinthegreat.skyblockmod.screen.SkyblockModOptionsScreen;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.BoolArgumentType;
 import com.mojang.brigadier.arguments.DoubleArgumentType;
@@ -34,52 +36,54 @@ public class Commands {
             context.getSource().sendFeedback(Text.translatable("skyblockmod:reparty.repartying"));
             return 1;
         }));
+        SkyblockModOptions options = SkyblockMod.skyblockMod.options;
         dispatcher.register(literal("sbm")
                 .then(literal("config").executes(context -> {
-                            context.getSource().sendFeedback(Text.of("/sbm config [save|load]"));
+                            // Don't immediately open the next screen as it will be closed by ChatScreen right after this command is executed
+                            SkyblockMod.skyblockMod.setNextScreen(new SkyblockModOptionsScreen());
                             return 1;
                         })
                         .then(literal("reload").executes(context -> {
-                            SkyblockMod.skyblockMod.options.load();
+                            options.load();
                             context.getSource().sendFeedback(Text.translatable("skyblockmod:options.reloaded"));
                             return 1;
                         }))
                         .then(literal("save").executes(context -> {
-                            SkyblockMod.skyblockMod.options.save();
+                            options.save();
                             context.getSource().sendFeedback(Text.translatable("skyblockmod:options.saved"));
                             return 1;
                         })))
                 .then(literal("dungeonMap").executes(context -> {
-                            context.getSource().sendFeedback(Text.translatable("skyblockmod:dungeonMap").append(queryOnOrOff(SkyblockMod.skyblockMod.options.dungeonMap.getValue())));
+                            context.getSource().sendFeedback(Text.translatable("skyblockmod:dungeonMap").append(queryOnOrOff(options.dungeonMap.getValue())));
                             return 1;
                         })
                         .then(argument("value", BoolArgumentType.bool()).executes(context -> {
-                            SkyblockMod.skyblockMod.options.dungeonMap.setValue(BoolArgumentType.getBool(context, "value"));
-                            context.getSource().sendFeedback(Text.translatable("skyblockmod:dungeonMap").append(turnOnOrOff(SkyblockMod.skyblockMod.options.dungeonMap.getValue())));
+                            options.dungeonMap.setValue(BoolArgumentType.getBool(context, "value"));
+                            context.getSource().sendFeedback(Text.translatable("skyblockmod:dungeonMap").append(turnOnOrOff(options.dungeonMap.getValue())));
                             return 1;
                         }))
                         .then(literal("offset").executes(context -> {
-                                    context.getSource().sendFeedback(Text.translatable("skyblockmod:dungeonMap.offset").append(Text.translatable("skyblockmod:options.query")).append(SkyblockMod.skyblockMod.options.dungeonMapX.getValue() + ", " + SkyblockMod.skyblockMod.options.dungeonMapY.getValue()));
+                                    context.getSource().sendFeedback(Text.translatable("skyblockmod:dungeonMap.offset").append(Text.translatable("skyblockmod:options.query")).append(options.dungeonMapX.getValue() + ", " + options.dungeonMapY.getValue()));
                                     return 1;
                                 })
                                 .then(argument("offsetX", IntegerArgumentType.integer()).executes(context -> {
-                                            SkyblockMod.skyblockMod.options.dungeonMapX.setValue(IntegerArgumentType.getInteger(context, "offsetX"));
-                                            context.getSource().sendFeedback(Text.translatable("skyblockmod:dungeonMap.offset").append(Text.translatable("skyblockmod:options.set")).append(SkyblockMod.skyblockMod.options.dungeonMapX.getValue() + ", " + SkyblockMod.skyblockMod.options.dungeonMapY.getValue()));
+                                            options.dungeonMapX.setValue(IntegerArgumentType.getInteger(context, "offsetX"));
+                                            context.getSource().sendFeedback(Text.translatable("skyblockmod:dungeonMap.offset").append(Text.translatable("skyblockmod:options.set")).append(options.dungeonMapX.getValue() + ", " + options.dungeonMapY.getValue()));
                                             return 1;
                                         })
                                         .then(argument("offsetY", IntegerArgumentType.integer()).executes(context -> {
-                                            SkyblockMod.skyblockMod.options.dungeonMapX.setValue(IntegerArgumentType.getInteger(context, "offsetX"));
-                                            SkyblockMod.skyblockMod.options.dungeonMapY.setValue(IntegerArgumentType.getInteger(context, "offsetY"));
-                                            context.getSource().sendFeedback(Text.translatable("skyblockmod:dungeonMap.offset").append(Text.translatable("skyblockmod:options.set")).append(SkyblockMod.skyblockMod.options.dungeonMapX.getValue() + ", " + SkyblockMod.skyblockMod.options.dungeonMapY.getValue()));
+                                            options.dungeonMapX.setValue(IntegerArgumentType.getInteger(context, "offsetX"));
+                                            options.dungeonMapY.setValue(IntegerArgumentType.getInteger(context, "offsetY"));
+                                            context.getSource().sendFeedback(Text.translatable("skyblockmod:dungeonMap.offset").append(Text.translatable("skyblockmod:options.set")).append(options.dungeonMapX.getValue() + ", " + options.dungeonMapY.getValue()));
                                             return 1;
                                         }))))
                         .then(literal("scale").executes(context -> {
-                                    context.getSource().sendFeedback(Text.translatable("skyblockmod:dungeonMap.scale").append(Text.translatable("skyblockmod:options.query")).append(String.format("%.2f", SkyblockMod.skyblockMod.options.dungeonMapScale.getValue())));
+                                    context.getSource().sendFeedback(Text.translatable("skyblockmod:dungeonMap.scale").append(Text.translatable("skyblockmod:options.query")).append(String.format("%.2f", options.dungeonMapScale.getValue())));
                                     return 1;
                                 })
                                 .then(argument("scale", DoubleArgumentType.doubleArg()).executes(context -> {
-                                    SkyblockMod.skyblockMod.options.dungeonMapScale.setValue(DoubleArgumentType.getDouble(context, "scale"));
-                                    context.getSource().sendFeedback(Text.translatable("skyblockmod:dungeonMap.scale").append(Text.translatable("skyblockmod:options.set")).append(String.format("%.2f", SkyblockMod.skyblockMod.options.dungeonMapScale.getValue())));
+                                    options.dungeonMapScale.setValue(DoubleArgumentType.getDouble(context, "scale"));
+                                    context.getSource().sendFeedback(Text.translatable("skyblockmod:dungeonMap.scale").append(Text.translatable("skyblockmod:options.set")).append(String.format("%.2f", options.dungeonMapScale.getValue())));
                                     return 1;
                                 }))))
                 .then(literal("dungeonScore").executes(context -> {
@@ -87,39 +91,39 @@ public class Commands {
                             return 1;
                         })
                         .then(literal("270").executes(context -> {
-                                    context.getSource().sendFeedback(Text.translatable("skyblockmod:dungeonScore.270").append(queryOnOrOff(SkyblockMod.skyblockMod.options.dungeonScore270.getValue())).append(": " + SkyblockMod.skyblockMod.options.dungeonScore270Text.getValue()));
+                                    context.getSource().sendFeedback(Text.translatable("skyblockmod:dungeonScore.270").append(queryOnOrOff(options.dungeonScore270.getValue())).append(": " + options.dungeonScore270Text.getValue()));
                                     return 1;
                                 })
                                 .then(argument("value", BoolArgumentType.bool()).executes(context -> {
-                                    SkyblockMod.skyblockMod.options.dungeonScore270.setValue(BoolArgumentType.getBool(context, "value"));
-                                    context.getSource().sendFeedback(Text.translatable("skyblockmod:dungeonScore.270").append(turnOnOrOff(SkyblockMod.skyblockMod.options.dungeonScore270.getValue())).append(": " + SkyblockMod.skyblockMod.options.dungeonScore270Text.getValue()));
+                                    options.dungeonScore270.setValue(BoolArgumentType.getBool(context, "value"));
+                                    context.getSource().sendFeedback(Text.translatable("skyblockmod:dungeonScore.270").append(turnOnOrOff(options.dungeonScore270.getValue())).append(": " + options.dungeonScore270Text.getValue()));
                                     return 1;
                                 }))
                                 .then(literal("message").executes(context -> {
-                                            context.getSource().sendFeedback(Text.translatable("skyblockmod:dungeonScore.270.text").append(queryOnOrOff(SkyblockMod.skyblockMod.options.dungeonScore270.getValue())).append(": " + SkyblockMod.skyblockMod.options.dungeonScore270Text.getValue()));
+                                            context.getSource().sendFeedback(Text.translatable("skyblockmod:dungeonScore.270.text").append(queryOnOrOff(options.dungeonScore270.getValue())).append(": " + options.dungeonScore270Text.getValue()));
                                             return 1;
                                         })
                                         .then(argument("message", StringArgumentType.greedyString()).executes(context -> {
-                                            SkyblockMod.skyblockMod.options.dungeonScore270Text.setValue(StringArgumentType.getString(context, "message"));
-                                            context.getSource().sendFeedback(Text.translatable("skyblockmod:dungeonScore.270.text").append(Text.translatable("skyblockmod:options.set")).append(ScreenTexts.onOrOff(SkyblockMod.skyblockMod.options.dungeonScore270.getValue())).append(": " + SkyblockMod.skyblockMod.options.dungeonScore270Text.getValue()));
+                                            options.dungeonScore270Text.setValue(StringArgumentType.getString(context, "message"));
+                                            context.getSource().sendFeedback(Text.translatable("skyblockmod:dungeonScore.270.text").append(Text.translatable("skyblockmod:options.set")).append(ScreenTexts.onOrOff(options.dungeonScore270.getValue())).append(": " + options.dungeonScore270Text.getValue()));
                                             return 1;
                                         }))))
                         .then(literal("300").executes(context -> {
-                                    context.getSource().sendFeedback(Text.translatable("skyblockmod:dungeonScore.300").append(queryOnOrOff(SkyblockMod.skyblockMod.options.dungeonScore300.getValue())).append(": " + SkyblockMod.skyblockMod.options.dungeonScore300Text.getValue()));
+                                    context.getSource().sendFeedback(Text.translatable("skyblockmod:dungeonScore.300").append(queryOnOrOff(options.dungeonScore300.getValue())).append(": " + options.dungeonScore300Text.getValue()));
                                     return 1;
                                 })
                                 .then(argument("value", BoolArgumentType.bool()).executes(context -> {
-                                    SkyblockMod.skyblockMod.options.dungeonScore300.setValue(BoolArgumentType.getBool(context, "value"));
-                                    context.getSource().sendFeedback(Text.translatable("skyblockmod:dungeonScore.300").append(turnOnOrOff(SkyblockMod.skyblockMod.options.dungeonScore300.getValue())).append(": " + SkyblockMod.skyblockMod.options.dungeonScore300Text.getValue()));
+                                    options.dungeonScore300.setValue(BoolArgumentType.getBool(context, "value"));
+                                    context.getSource().sendFeedback(Text.translatable("skyblockmod:dungeonScore.300").append(turnOnOrOff(options.dungeonScore300.getValue())).append(": " + options.dungeonScore300Text.getValue()));
                                     return 1;
                                 }))
                                 .then(literal("message").executes(context -> {
-                                            context.getSource().sendFeedback(Text.translatable("skyblockmod:dungeonScore.300.text").append(queryOnOrOff(SkyblockMod.skyblockMod.options.dungeonScore300.getValue())).append(": " + SkyblockMod.skyblockMod.options.dungeonScore300Text.getValue()));
+                                            context.getSource().sendFeedback(Text.translatable("skyblockmod:dungeonScore.300.text").append(queryOnOrOff(options.dungeonScore300.getValue())).append(": " + options.dungeonScore300Text.getValue()));
                                             return 1;
                                         })
                                         .then(argument("message", StringArgumentType.greedyString()).executes(context -> {
-                                            SkyblockMod.skyblockMod.options.dungeonScore300Text.setValue(StringArgumentType.getString(context, "message"));
-                                            context.getSource().sendFeedback(Text.translatable("skyblockmod:dungeonScore.300.text").append(Text.translatable("skyblockmod:options.set")).append(ScreenTexts.onOrOff(SkyblockMod.skyblockMod.options.dungeonScore300.getValue())).append(": " + SkyblockMod.skyblockMod.options.dungeonScore300Text.getValue()));
+                                            options.dungeonScore300Text.setValue(StringArgumentType.getString(context, "message"));
+                                            context.getSource().sendFeedback(Text.translatable("skyblockmod:dungeonScore.300.text").append(Text.translatable("skyblockmod:options.set")).append(ScreenTexts.onOrOff(options.dungeonScore300.getValue())).append(": " + options.dungeonScore300Text.getValue()));
                                             return 1;
                                         })))))
                 .then(literal("experiments").executes(context -> {
@@ -127,39 +131,39 @@ public class Commands {
                             return 1;
                         })
                         .then(literal("chronomatron").executes(context -> {
-                                    context.getSource().sendFeedback(Text.translatable("skyblockmod:experiments.chronomatron").append(queryOnOrOff(SkyblockMod.skyblockMod.experiments.toggleChronomatron)));
+                                    context.getSource().sendFeedback(Text.translatable("skyblockmod:experiments.chronomatron").append(queryOnOrOff(options.experimentChronomatron.getValue())));
                                     return 1;
                                 })
                                 .then(argument("value", BoolArgumentType.bool()).executes(context -> {
-                                    SkyblockMod.skyblockMod.experiments.toggleChronomatron = BoolArgumentType.getBool(context, "value");
-                                    context.getSource().sendFeedback(Text.translatable("skyblockmod:experiments.chronomatron").append(turnOnOrOff(SkyblockMod.skyblockMod.experiments.toggleChronomatron)));
+                                    options.experimentChronomatron.setValue(BoolArgumentType.getBool(context, "value"));
+                                    context.getSource().sendFeedback(Text.translatable("skyblockmod:experiments.chronomatron").append(turnOnOrOff(options.experimentChronomatron.getValue())));
                                     return 1;
                                 })))
                         .then(literal("superpairs").executes(context -> {
-                                    context.getSource().sendFeedback(Text.translatable("skyblockmod:experiments.superpairs").append(queryOnOrOff(SkyblockMod.skyblockMod.experiments.toggleSuperpairs)));
+                                    context.getSource().sendFeedback(Text.translatable("skyblockmod:experiments.superpairs").append(queryOnOrOff(options.experimentSuperpairs.getValue())));
                                     return 1;
                                 })
                                 .then(argument("value", BoolArgumentType.bool()).executes(context -> {
-                                    SkyblockMod.skyblockMod.experiments.toggleSuperpairs = BoolArgumentType.getBool(context, "value");
-                                    context.getSource().sendFeedback(Text.translatable("skyblockmod:experiments.superpairs").append(turnOnOrOff(SkyblockMod.skyblockMod.experiments.toggleSuperpairs)));
+                                    options.experimentSuperpairs.setValue(BoolArgumentType.getBool(context, "value"));
+                                    context.getSource().sendFeedback(Text.translatable("skyblockmod:experiments.superpairs").append(turnOnOrOff(options.experimentSuperpairs.getValue())));
                                     return 1;
                                 })))
                         .then(literal("ultrasequencer").executes(context -> {
-                                    context.getSource().sendFeedback(Text.translatable("skyblockmod:experiments.ultrasequencer").append(queryOnOrOff(SkyblockMod.skyblockMod.experiments.toggleUltrasequencer)));
+                                    context.getSource().sendFeedback(Text.translatable("skyblockmod:experiments.ultrasequencer").append(queryOnOrOff(options.experimentUltrasequencer.getValue())));
                                     return 1;
                                 })
                                 .then(argument("value", BoolArgumentType.bool()).executes(context -> {
-                                    SkyblockMod.skyblockMod.experiments.toggleUltrasequencer = BoolArgumentType.getBool(context, "value");
-                                    context.getSource().sendFeedback(Text.translatable("skyblockmod:experiments.ultrasequencer").append(turnOnOrOff(SkyblockMod.skyblockMod.experiments.toggleUltrasequencer)));
+                                    options.experimentUltrasequencer.setValue(BoolArgumentType.getBool(context, "value"));
+                                    context.getSource().sendFeedback(Text.translatable("skyblockmod:experiments.ultrasequencer").append(turnOnOrOff(options.experimentUltrasequencer.getValue())));
                                     return 1;
                                 }))))
                 .then(literal("fairySouls").executes(context -> {
-                            context.getSource().sendFeedback(Text.translatable("skyblockmod:fairySouls").append(queryOnOrOff(SkyblockMod.skyblockMod.fairySouls.on)));
+                            context.getSource().sendFeedback(Text.translatable("skyblockmod:fairySouls").append(queryOnOrOff(options.fairySouls.getValue())));
                             return 1;
                         })
                         .then(argument("value", BoolArgumentType.bool()).executes(context -> {
-                            SkyblockMod.skyblockMod.fairySouls.on = BoolArgumentType.getBool(context, "value");
-                            context.getSource().sendFeedback(Text.translatable("skyblockmod:fairySouls").append(turnOnOrOff(SkyblockMod.skyblockMod.fairySouls.on)));
+                            options.fairySouls.setValue(BoolArgumentType.getBool(context, "value"));
+                            context.getSource().sendFeedback(Text.translatable("skyblockmod:fairySouls").append(turnOnOrOff(options.fairySouls.getValue())));
                             return 1;
                         }))
                         .then(literal("markAllInCurrentIslandFound").executes(context -> {
@@ -173,12 +177,12 @@ public class Commands {
                             return 1;
                         })))
                 .then(literal("fishingHelper").executes(context -> {
-                            context.getSource().sendFeedback(Text.translatable("skyblockmod:fishingHelper").append(queryOnOrOff(SkyblockMod.skyblockMod.fishing.on)));
+                            context.getSource().sendFeedback(Text.translatable("skyblockmod:fishingHelper").append(queryOnOrOff(options.fishing.getValue())));
                             return 1;
                         })
                         .then(argument("value", BoolArgumentType.bool()).executes(context -> {
-                            SkyblockMod.skyblockMod.fishing.on = BoolArgumentType.getBool(context, "value");
-                            context.getSource().sendFeedback(Text.translatable("skyblockmod:fishingHelper").append(turnOnOrOff(SkyblockMod.skyblockMod.fishing.on)));
+                            options.fishing.setValue(BoolArgumentType.getBool(context, "value"));
+                            context.getSource().sendFeedback(Text.translatable("skyblockmod:fishingHelper").append(turnOnOrOff(options.fishing.getValue())));
                             return 1;
                         })))
                 .then(literal("help").executes(context -> {
@@ -192,39 +196,39 @@ public class Commands {
                     return 1;
                 }))
                 .then(literal("lividColor").executes(context -> {
-                            context.getSource().sendFeedback(Text.translatable("skyblockmod:lividColor").append(queryOnOrOff(SkyblockMod.skyblockMod.options.lividColor.getValue())).append(": " + SkyblockMod.skyblockMod.options.lividColorText.getValue()));
+                            context.getSource().sendFeedback(Text.translatable("skyblockmod:lividColor").append(queryOnOrOff(options.lividColor.getValue())).append(": " + options.lividColorText.getValue()));
                             return 1;
                         })
                         .then(argument("value", BoolArgumentType.bool()).executes(context -> {
-                            SkyblockMod.skyblockMod.options.lividColor.setValue(BoolArgumentType.getBool(context, "value"));
-                            context.getSource().sendFeedback(Text.translatable("skyblockmod:lividColor").append(turnOnOrOff(SkyblockMod.skyblockMod.options.lividColor.getValue())).append(": " + SkyblockMod.skyblockMod.options.lividColorText.getValue()));
+                            options.lividColor.setValue(BoolArgumentType.getBool(context, "value"));
+                            context.getSource().sendFeedback(Text.translatable("skyblockmod:lividColor").append(turnOnOrOff(options.lividColor.getValue())).append(": " + options.lividColorText.getValue()));
                             return 1;
                         }))
                         .then(literal("message").executes(context -> {
-                                    context.getSource().sendFeedback(Text.translatable("skyblockmod:lividColor").append(queryOnOrOff(SkyblockMod.skyblockMod.options.lividColor.getValue())).append(": " + SkyblockMod.skyblockMod.options.lividColorText.getValue()));
+                                    context.getSource().sendFeedback(Text.translatable("skyblockmod:lividColor").append(queryOnOrOff(options.lividColor.getValue())).append(": " + options.lividColorText.getValue()));
                                     return 1;
                                 })
                                 .then(argument("message", StringArgumentType.greedyString()).executes(context -> {
-                                    SkyblockMod.skyblockMod.options.lividColorText.setValue(StringArgumentType.getString(context, "message"));
-                                    context.getSource().sendFeedback(Text.translatable("skyblockmod:lividColor").append(Text.translatable("skyblockmod:options.set")).append(ScreenTexts.onOrOff(SkyblockMod.skyblockMod.options.lividColor.getValue())).append(": " + SkyblockMod.skyblockMod.options.lividColorText.getValue()));
+                                    options.lividColorText.setValue(StringArgumentType.getString(context, "message"));
+                                    context.getSource().sendFeedback(Text.translatable("skyblockmod:lividColor").append(Text.translatable("skyblockmod:options.set")).append(ScreenTexts.onOrOff(options.lividColor.getValue())).append(": " + options.lividColorText.getValue()));
                                     return 1;
                                 }))))
                 .then(literal("quiverWarning").executes(context -> {
-                            context.getSource().sendFeedback(Text.translatable("skyblockmod:quiver").append(queryOnOrOff(SkyblockMod.skyblockMod.quiverWarning.on)));
+                            context.getSource().sendFeedback(Text.translatable("skyblockmod:quiver").append(queryOnOrOff(options.quiver.getValue())));
                             return 1;
                         })
                         .then(argument("value", BoolArgumentType.bool()).executes(context -> {
-                            SkyblockMod.skyblockMod.quiverWarning.on = BoolArgumentType.getBool(context, "value");
-                            context.getSource().sendFeedback(Text.translatable("skyblockmod:quiver").append(turnOnOrOff(SkyblockMod.skyblockMod.quiverWarning.on)));
+                            options.quiver.setValue(BoolArgumentType.getBool(context, "value"));
+                            context.getSource().sendFeedback(Text.translatable("skyblockmod:quiver").append(turnOnOrOff(options.quiver.getValue())));
                             return 1;
                         })))
                 .then(literal("reparty").executes(context -> {
-                            context.getSource().sendFeedback(Text.translatable("skyblockmod:reparty").append(queryOnOrOff(SkyblockMod.skyblockMod.options.reparty.getValue())));
+                            context.getSource().sendFeedback(Text.translatable("skyblockmod:reparty").append(queryOnOrOff(options.reparty.getValue())));
                             return 1;
                         })
                         .then(argument("value", BoolArgumentType.bool()).executes(context -> {
-                            SkyblockMod.skyblockMod.options.reparty.setValue(BoolArgumentType.getBool(context, "value"));
-                            context.getSource().sendFeedback(Text.translatable("skyblockmod:reparty").append(turnOnOrOff(SkyblockMod.skyblockMod.options.reparty.getValue())));
+                            options.reparty.setValue(BoolArgumentType.getBool(context, "value"));
+                            context.getSource().sendFeedback(Text.translatable("skyblockmod:reparty").append(turnOnOrOff(options.reparty.getValue())));
                             return 1;
                         }))));
     }

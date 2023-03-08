@@ -17,14 +17,14 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public abstract class FishingRodItemMixin {
     @Inject(method = "use", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/player/PlayerEntity;incrementStat(Lnet/minecraft/stat/Stat;)V"))
     private void skyblockmod_onCast(World world, PlayerEntity user, Hand hand, CallbackInfoReturnable<TypedActionResult<ItemStack>> cir) {
-        if (SkyblockMod.skyblockMod.fishing.on && user.equals(MinecraftClient.getInstance().player)) {
+        if (SkyblockMod.skyblockMod.options.fishing.getValue() && user.equals(MinecraftClient.getInstance().player)) {
             SkyblockMod.skyblockMod.fishing.start(user);
         }
     }
 
     @Inject(method = "use", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/World;playSound(Lnet/minecraft/entity/player/PlayerEntity;DDDLnet/minecraft/sound/SoundEvent;Lnet/minecraft/sound/SoundCategory;FF)V", ordinal = 0))
     private void skyblockmod_onReel(World world, PlayerEntity user, Hand hand, CallbackInfoReturnable<TypedActionResult<ItemStack>> cir) {
-        if (SkyblockMod.skyblockMod.fishing.on && user.equals(MinecraftClient.getInstance().player)) {
+        if (SkyblockMod.skyblockMod.options.fishing.getValue() && user.equals(MinecraftClient.getInstance().player)) {
             SkyblockMod.skyblockMod.fishing.reset();
         }
     }

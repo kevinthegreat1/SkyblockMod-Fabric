@@ -19,7 +19,6 @@ import java.util.*;
 import java.util.concurrent.CompletableFuture;
 
 public class FairySouls implements ChatListener {
-    public boolean on = false;
     private CompletableFuture<Void> fairySoulsLoaded;
     private final Map<String, Set<BlockPos>> fairySouls = new HashMap<>();
     private final Map<String, Map<String, Set<BlockPos>>> foundFairies = new HashMap<>();
@@ -88,7 +87,7 @@ public class FairySouls implements ChatListener {
     }
 
     public void render(WorldRenderContext context) {
-        if (!on) {
+        if (!SkyblockMod.skyblockMod.options.fairySouls.getValue()) {
             return;
         }
         if (!fairySoulsLoaded.isDone()) {

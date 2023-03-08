@@ -7,12 +7,11 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 
 public class QuiverWarning implements ChatListener {
-    public boolean on = true;
     private int warning = 0;
 
     @Override
     public boolean onChatMessage(String message) {
-        if (on && message.endsWith("left in your Quiver!")) {
+        if (SkyblockMod.skyblockMod.options.quiver.getValue() && message.endsWith("left in your Quiver!")) {
             MinecraftClient.getInstance().inGameHud.setDefaultTitleFade();
             if (message.startsWith("You only have 50")) {
                 MinecraftClient.getInstance().inGameHud.setTitle(Text.translatable("skyblockmod:quiver.50Left").formatted(Formatting.RED));
@@ -35,7 +34,7 @@ public class QuiverWarning implements ChatListener {
     }
 
     public void check(MinecraftClient minecraftClient) {
-        if (on && warning != 0 && !SkyblockMod.skyblockMod.info.catacombs) {
+        if (SkyblockMod.skyblockMod.options.quiver.getValue() && warning != 0 && !SkyblockMod.skyblockMod.info.catacombs) {
             minecraftClient.inGameHud.setDefaultTitleFade();
             switch (warning) {
                 case 1 ->

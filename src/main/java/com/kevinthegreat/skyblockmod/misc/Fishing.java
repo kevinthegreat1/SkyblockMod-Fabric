@@ -1,5 +1,6 @@
 package com.kevinthegreat.skyblockmod.misc;
 
+import com.kevinthegreat.skyblockmod.SkyblockMod;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -10,7 +11,6 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 
 public class Fishing {
-    public boolean on = true;
     private long startTime;
     private Vec3d normalYawVector;
 
@@ -26,7 +26,7 @@ public class Fishing {
 
     public void onSound(MinecraftClient client, PlaySoundS2CPacket packet) {
         String path = packet.getSound().value().getId().getPath();
-        if (on && startTime != 0 && System.currentTimeMillis() >= startTime + 2000 && ("entity.generic.splash".equals(path) || "entity.player.splash".equals(path))) {
+        if (SkyblockMod.skyblockMod.options.fishing.getValue() && startTime != 0 && System.currentTimeMillis() >= startTime + 2000 && ("entity.generic.splash".equals(path) || "entity.player.splash".equals(path))) {
             ClientPlayerEntity player = client.player;
             if (player != null && player.fishHook != null) {
                 Vec3d soundToFishHook = player.fishHook.getPos().subtract(packet.getX(), 0, packet.getZ());

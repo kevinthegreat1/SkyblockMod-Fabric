@@ -11,7 +11,10 @@ import com.kevinthegreat.skyblockmod.misc.FairySouls;
 import com.kevinthegreat.skyblockmod.misc.Fishing;
 import com.kevinthegreat.skyblockmod.misc.QuiverWarning;
 import com.kevinthegreat.skyblockmod.option.SkyblockModOptions;
-import com.kevinthegreat.skyblockmod.util.*;
+import com.kevinthegreat.skyblockmod.util.Commands;
+import com.kevinthegreat.skyblockmod.util.Info;
+import com.kevinthegreat.skyblockmod.util.Message;
+import com.kevinthegreat.skyblockmod.util.NEURepo;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
@@ -23,6 +26,7 @@ import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
 import net.fabricmc.fabric.api.client.screen.v1.ScreenEvents;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.text.Text;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -51,7 +55,12 @@ public class SkyblockMod implements ModInitializer {
     public final QuiverWarning quiverWarning = new QuiverWarning();
     public final Reparty reparty = new Reparty();
     public final Info info = new Info();
-    public int tick = 0;
+    private int tick = 0;
+    private Screen nextScreen;
+
+    public void setNextScreen(Screen nextScreen) {
+        this.nextScreen = nextScreen;
+    }
 
     @Override
     public void onInitialize() {
@@ -82,6 +91,10 @@ public class SkyblockMod implements ModInitializer {
         }
         lividColor.tick(minecraftClient);
         message.tick();
+        if (nextScreen != null) {
+            minecraftClient.setScreen(nextScreen);
+            nextScreen = null;
+        }
         tick++;
     }
 

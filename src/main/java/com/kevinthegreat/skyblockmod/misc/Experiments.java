@@ -1,6 +1,8 @@
 package com.kevinthegreat.skyblockmod.misc;
 
 import com.google.common.collect.ImmutableMap;
+import com.kevinthegreat.skyblockmod.SkyblockMod;
+import com.kevinthegreat.skyblockmod.option.SkyblockModOptions;
 import net.fabricmc.fabric.api.client.screen.v1.ScreenEvents;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
@@ -13,10 +15,6 @@ import net.minecraft.item.Items;
 import java.util.*;
 
 public class Experiments {
-    public boolean toggleChronomatron = true;
-    public boolean toggleSuperpairs = true;
-    public boolean toggleUltrasequencer = true;
-
     public enum Type {
         NONE, CHRONOMATRON, SUPERPAIRS, ULTRASEQUENCER
     }
@@ -53,13 +51,14 @@ public class Experiments {
     );
 
     public void start(MinecraftClient minecraftClient, Screen screen, int scaledWidth, int scaledHeight) {
-        if ((toggleChronomatron || toggleSuperpairs || toggleUltrasequencer) && screen instanceof GenericContainerScreen genericContainerScreen) {
+        SkyblockModOptions options = SkyblockMod.skyblockMod.options;
+        if ((options.experimentChronomatron.getValue() || options.experimentSuperpairs.getValue() || options.experimentUltrasequencer.getValue()) && screen instanceof GenericContainerScreen genericContainerScreen) {
             String title = genericContainerScreen.getTitle().getString();
             int index = title.indexOf('(');
             if (11 <= index && index <= 15) {
                 switch (title.substring(0, index)) {
                     case "Chronomatron " -> {
-                        if (toggleChronomatron) {
+                        if (options.experimentChronomatron.getValue()) {
                             type = Type.CHRONOMATRON;
                             state = State.REMEMBER;
                             ScreenEvents.afterTick(screen).register(this::chronomatron);
@@ -67,7 +66,7 @@ public class Experiments {
                         }
                     }
                     case "Superpairs " -> {
-                        if (toggleSuperpairs) {
+                        if (options.experimentSuperpairs.getValue()) {
                             type = Type.SUPERPAIRS;
                             state = State.SHOW;
                             ScreenEvents.afterTick(screen).register(this::superpairs);
@@ -75,7 +74,7 @@ public class Experiments {
                         }
                     }
                     case "Ultrasequencer " -> {
-                        if (toggleUltrasequencer) {
+                        if (options.experimentUltrasequencer.getValue()) {
                             type = Type.ULTRASEQUENCER;
                             state = State.REMEMBER;
                             ScreenEvents.afterTick(screen).register(this::ultrasequencer);
@@ -111,7 +110,7 @@ public class Experiments {
     }
 
     private void chronomatron(Screen screen) {
-        if (toggleChronomatron && screen instanceof GenericContainerScreen genericContainerScreen && genericContainerScreen.getTitle().getString().startsWith("Chronomatron (")) {
+        if (SkyblockMod.skyblockMod.options.experimentChronomatron.getValue() && screen instanceof GenericContainerScreen genericContainerScreen && genericContainerScreen.getTitle().getString().startsWith("Chronomatron (")) {
             switch (state) {
                 case REMEMBER -> {
                     Inventory inventory = genericContainerScreen.getScreenHandler().getInventory();
@@ -156,7 +155,7 @@ public class Experiments {
     }
 
     private void superpairs(Screen screen) {
-        if (toggleSuperpairs && screen instanceof GenericContainerScreen genericContainerScreen && genericContainerScreen.getTitle().getString().startsWith("Superpairs (")) {
+        if (SkyblockMod.skyblockMod.options.experimentSuperpairs.getValue() && screen instanceof GenericContainerScreen genericContainerScreen && genericContainerScreen.getTitle().getString().startsWith("Superpairs (")) {
             if (state == State.SHOW) {
                 if (genericContainerScreen.getScreenHandler().getInventory().getStack(4).isOf(Items.CAULDRON)) {
                     resetSuperpairs(screen);
@@ -175,7 +174,7 @@ public class Experiments {
     }
 
     private void ultrasequencer(Screen screen) {
-        if (toggleUltrasequencer && screen instanceof GenericContainerScreen genericContainerScreen && genericContainerScreen.getTitle().getString().startsWith("Ultrasequencer (")) {
+        if (SkyblockMod.skyblockMod.options.experimentUltrasequencer.getValue() && screen instanceof GenericContainerScreen genericContainerScreen && genericContainerScreen.getTitle().getString().startsWith("Ultrasequencer (")) {
             switch (state) {
                 case REMEMBER -> {
                     Inventory inventory = genericContainerScreen.getScreenHandler().getInventory();

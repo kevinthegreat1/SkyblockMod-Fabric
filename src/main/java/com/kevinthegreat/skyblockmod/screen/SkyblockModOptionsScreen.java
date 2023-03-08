@@ -7,6 +7,10 @@ public class SkyblockModOptionsScreen extends AbstractSkyblockModOptionsScreen {
     public static final Text DUNGEONS = Text.translatable("skyblockmod:dungeons");
     public static final Text OTHER_FEATURES = Text.translatable("skyblockmod:options.other_features");
 
+    public SkyblockModOptionsScreen() {
+        this(null);
+    }
+
     public SkyblockModOptionsScreen(Screen parent) {
         super(parent, Text.translatable("skyblockmod:options.title"));
     }
