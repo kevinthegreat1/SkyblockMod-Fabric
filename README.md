@@ -12,6 +12,10 @@ Helpful features for Hypixel Skyblock ([Fabric](https://fabricmc.net/) 1.17+)
 - /co -> /chat officer
 - /cc -> /chat coop
 
+### Config
+
+- /sbm config: open config screen
+
 ### Dungeon
 
 #### Configurable dungeon map
@@ -56,7 +60,6 @@ Helpful features for Hypixel Skyblock ([Fabric](https://fabricmc.net/) 1.17+)
 ### Fishing
 
 - Notifies you to reel in
-- (Only works when nothing is in the water in the line through the player and the bobber*)
 - /sbm fishingHelper: show current state (on or off)
 - /sbm fishingHelper [true|false]: turn fishing helper on or off
 
@@ -131,6 +134,5 @@ Helpful features for Hypixel Skyblock ([Fabric](https://fabricmc.net/) 1.17+)
 - /sbm config save: manually save config file
 - Config file will automatically save when you quit the game
 
-Configuration file is in config folder in minecraft run directory
-<br>
-Configuration will be printed to the log if writing to the configuration file fails.
+Configuration file is `skyblockmod.json` located in skyblockmod folder in the config folder in the minecraft run directory  
+A backup is also saved as `skyblockmod.json_old` in the same location
