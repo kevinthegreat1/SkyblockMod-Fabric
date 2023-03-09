@@ -8,6 +8,7 @@ import com.mojang.brigadier.arguments.BoolArgumentType;
 import com.mojang.brigadier.arguments.DoubleArgumentType;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
+import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
 import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.screen.ScreenTexts;
@@ -19,7 +20,10 @@ import static net.fabricmc.fabric.api.client.command.v2.ClientCommandManager.arg
 import static net.fabricmc.fabric.api.client.command.v2.ClientCommandManager.literal;
 
 public class Commands {
+    private SkyblockModOptions options;
+
     public void registerCommands(CommandDispatcher<FabricClientCommandSource> dispatcher, CommandRegistryAccess registryAccess) {
+        options = SkyblockMod.skyblockMod.options;
         for (String key : SkyblockMod.skyblockMod.message.commands.keySet()) {
             if (key.startsWith("/")) {
                 dispatcher.register(literal(key.substring(1)));
@@ -36,23 +40,8 @@ public class Commands {
             context.getSource().sendFeedback(Text.translatable("skyblockmod:reparty.repartying"));
             return 1;
         }));
-        SkyblockModOptions options = SkyblockMod.skyblockMod.options;
         dispatcher.register(literal("sbm")
-                .then(literal("config").executes(context -> {
-                            // Don't immediately open the next screen as it will be closed by ChatScreen right after this command is executed
-                            SkyblockMod.skyblockMod.setNextScreen(new SkyblockModOptionsScreen());
-                            return 1;
-                        })
-                        .then(literal("reload").executes(context -> {
-                            options.load();
-                            context.getSource().sendFeedback(Text.translatable("skyblockmod:options.reloaded"));
-                            return 1;
-                        }))
-                        .then(literal("save").executes(context -> {
-                            options.save();
-                            context.getSource().sendFeedback(Text.translatable("skyblockmod:options.saved"));
-                            return 1;
-                        })))
+                .then(optionsLiteral("config"))
                 .then(literal("dungeonMap").executes(context -> {
                             context.getSource().sendFeedback(Text.translatable("skyblockmod:dungeonMap").append(queryOnOrOff(options.dungeonMap.getValue())));
                             return 1;
@@ -213,6 +202,7 @@ public class Commands {
                                     context.getSource().sendFeedback(Text.translatable("skyblockmod:lividColor").append(Text.translatable("skyblockmod:options.set")).append(ScreenTexts.onOrOff(options.lividColor.getValue())).append(": " + options.lividColorText.getValue()));
                                     return 1;
                                 }))))
+                .then(optionsLiteral("options"))
                 .then(literal("quiverWarning").executes(context -> {
                             context.getSource().sendFeedback(Text.translatable("skyblockmod:quiver").append(queryOnOrOff(options.quiver.getValue())));
                             return 1;
@@ -239,5 +229,23 @@ public class Commands {
 
     private Text turnOnOrOff(boolean on) {
         return Text.translatable("skyblockmod:options.turn").append(ScreenTexts.onOrOff(on));
+    }
+
+    private LiteralArgumentBuilder<FabricClientCommandSource> optionsLiteral(String name) {
+        return literal(name).executes(context -> {
+                    // Don't immediately open the next screen as it will be closed by ChatScreen right after this command is executed
+                    SkyblockMod.skyblockMod.setNextScreen(new SkyblockModOptionsScreen());
+                    return 1;
+                })
+                .then(literal("reload").executes(context -> {
+                    options.load();
+                    context.getSource().sendFeedback(Text.translatable("skyblockmod:options.reloaded"));
+                    return 1;
+                }))
+                .then(literal("save").executes(context -> {
+                    options.save();
+                    context.getSource().sendFeedback(Text.translatable("skyblockmod:options.saved"));
+                    return 1;
+                }));
     }
 }

@@ -12,10 +12,6 @@ Helpful features for Hypixel Skyblock ([Fabric](https://fabricmc.net/) 1.17+)
 - /co -> /chat officer
 - /cc -> /chat coop
 
-### Config
-
-- /sbm config: open config screen
-
 ### Dungeon
 
 #### Configurable dungeon map
@@ -70,6 +66,10 @@ Helpful features for Hypixel Skyblock ([Fabric](https://fabricmc.net/) 1.17+)
 ### Message
 
 - /m [player] -> /msg [player]
+
+### Options
+
+- /sbm options: open options screen
 
 ### Quiver Low Warning
 
@@ -129,10 +129,10 @@ Helpful features for Hypixel Skyblock ([Fabric](https://fabricmc.net/) 1.17+)
 
 ### Misc
 
-- /sbm config reload: reload config file
+- /sbm options reload: reload options file
 - Useful when you accidentally override a setting
-- /sbm config save: manually save config file
-- Config file will automatically save when you quit the game
+- /sbm options save: manually save options file
+- Options file will automatically save when you quit the game
 
-Configuration file is `skyblockmod.json` located in skyblockmod folder in the config folder in the minecraft run directory  
+Options file is `skyblockmod.json` located in skyblockmod folder in the config folder in the minecraft run directory  
 A backup is also saved as `skyblockmod.json_old` in the same location
