@@ -11,7 +11,8 @@
         "FishingRodItemMixin",
         "HandledScreenMixin",
         "accessors.BeaconBlockEntityRendererInvoker",
-        "accessors.GameOptionsInvoker"
+        "accessors.GameOptionsInvoker",
+        "accessors.SimpleOptionAccessor"
     ],
     "injectors": {
         "defaultRequire": 1

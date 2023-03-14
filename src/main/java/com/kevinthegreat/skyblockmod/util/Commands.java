@@ -84,39 +84,39 @@ public class Commands {
                             return 1;
                         })
                         .then(literal("270").executes(context -> {
-                                    context.getSource().sendFeedback(Text.translatable("skyblockmod:dungeonScore.270").append(queryOnOrOff(SkyblockMod.skyblockMod.dungeonScore.on270)).append(": " + SkyblockMod.skyblockMod.dungeonScore.text270));
+                                    context.getSource().sendFeedback(Text.translatable("skyblockmod:dungeonScore.270").append(queryOnOrOff(SkyblockMod.skyblockMod.options.dungeonScore270.getValue())).append(": " + SkyblockMod.skyblockMod.options.dungeonScore270Text.getValue()));
                                     return 1;
                                 })
                                 .then(argument("value", BoolArgumentType.bool()).executes(context -> {
-                                    SkyblockMod.skyblockMod.dungeonScore.on270 = BoolArgumentType.getBool(context, "value");
-                                    context.getSource().sendFeedback(Text.translatable("skyblockmod:dungeonScore.270").append(turnOnOrOff(SkyblockMod.skyblockMod.dungeonScore.on270)).append(": " + SkyblockMod.skyblockMod.dungeonScore.text270));
+                                    SkyblockMod.skyblockMod.options.dungeonScore270.setValue(BoolArgumentType.getBool(context, "value"));
+                                    context.getSource().sendFeedback(Text.translatable("skyblockmod:dungeonScore.270").append(turnOnOrOff(SkyblockMod.skyblockMod.options.dungeonScore270.getValue())).append(": " + SkyblockMod.skyblockMod.options.dungeonScore270Text.getValue()));
                                     return 1;
                                 }))
                                 .then(literal("message").executes(context -> {
-                                            context.getSource().sendFeedback(Text.translatable("skyblockmod:dungeonScore.270.text").append(queryOnOrOff(SkyblockMod.skyblockMod.dungeonScore.on270)).append(": " + SkyblockMod.skyblockMod.dungeonScore.text270));
+                                            context.getSource().sendFeedback(Text.translatable("skyblockmod:dungeonScore.270.text").append(queryOnOrOff(SkyblockMod.skyblockMod.options.dungeonScore270.getValue())).append(": " + SkyblockMod.skyblockMod.options.dungeonScore270Text.getValue()));
                                             return 1;
                                         })
                                         .then(argument("message", StringArgumentType.greedyString()).executes(context -> {
-                                            SkyblockMod.skyblockMod.dungeonScore.text270 = StringArgumentType.getString(context, "message");
-                                            context.getSource().sendFeedback(Text.translatable("skyblockmod:dungeonScore.270.text").append(Text.translatable("skyblockmod:options.set")).append(ScreenTexts.onOrOff(SkyblockMod.skyblockMod.dungeonScore.on270)).append(": " + SkyblockMod.skyblockMod.dungeonScore.text270));
+                                            SkyblockMod.skyblockMod.options.dungeonScore270Text.setValue(StringArgumentType.getString(context, "message"));
+                                            context.getSource().sendFeedback(Text.translatable("skyblockmod:dungeonScore.270.text").append(Text.translatable("skyblockmod:options.set")).append(ScreenTexts.onOrOff(SkyblockMod.skyblockMod.options.dungeonScore270.getValue())).append(": " + SkyblockMod.skyblockMod.options.dungeonScore270Text.getValue()));
                                             return 1;
                                         }))))
                         .then(literal("300").executes(context -> {
-                                    context.getSource().sendFeedback(Text.translatable("skyblockmod:dungeonScore.300").append(queryOnOrOff(SkyblockMod.skyblockMod.dungeonScore.on300)).append(": " + SkyblockMod.skyblockMod.dungeonScore.text300));
+                                    context.getSource().sendFeedback(Text.translatable("skyblockmod:dungeonScore.300").append(queryOnOrOff(SkyblockMod.skyblockMod.options.dungeonScore300.getValue())).append(": " + SkyblockMod.skyblockMod.options.dungeonScore300Text.getValue()));
                                     return 1;
                                 })
                                 .then(argument("value", BoolArgumentType.bool()).executes(context -> {
-                                    SkyblockMod.skyblockMod.dungeonScore.on300 = BoolArgumentType.getBool(context, "value");
-                                    context.getSource().sendFeedback(Text.translatable("skyblockmod:dungeonScore.300").append(turnOnOrOff(SkyblockMod.skyblockMod.dungeonScore.on300)).append(": " + SkyblockMod.skyblockMod.dungeonScore.text300));
+                                    SkyblockMod.skyblockMod.options.dungeonScore300.setValue(BoolArgumentType.getBool(context, "value"));
+                                    context.getSource().sendFeedback(Text.translatable("skyblockmod:dungeonScore.300").append(turnOnOrOff(SkyblockMod.skyblockMod.options.dungeonScore300.getValue())).append(": " + SkyblockMod.skyblockMod.options.dungeonScore300Text.getValue()));
                                     return 1;
                                 }))
                                 .then(literal("message").executes(context -> {
-                                            context.getSource().sendFeedback(Text.translatable("skyblockmod:dungeonScore.300.text").append(queryOnOrOff(SkyblockMod.skyblockMod.dungeonScore.on300)).append(": " + SkyblockMod.skyblockMod.dungeonScore.text300));
+                                            context.getSource().sendFeedback(Text.translatable("skyblockmod:dungeonScore.300.text").append(queryOnOrOff(SkyblockMod.skyblockMod.options.dungeonScore300.getValue())).append(": " + SkyblockMod.skyblockMod.options.dungeonScore300Text.getValue()));
                                             return 1;
                                         })
                                         .then(argument("message", StringArgumentType.greedyString()).executes(context -> {
-                                            SkyblockMod.skyblockMod.dungeonScore.text300 = StringArgumentType.getString(context, "message");
-                                            context.getSource().sendFeedback(Text.translatable("skyblockmod:dungeonScore.300.text").append(Text.translatable("skyblockmod:options.set")).append(ScreenTexts.onOrOff(SkyblockMod.skyblockMod.dungeonScore.on300)).append(": " + SkyblockMod.skyblockMod.dungeonScore.text300));
+                                            SkyblockMod.skyblockMod.options.dungeonScore300Text.setValue(StringArgumentType.getString(context, "message"));
+                                            context.getSource().sendFeedback(Text.translatable("skyblockmod:dungeonScore.300.text").append(Text.translatable("skyblockmod:options.set")).append(ScreenTexts.onOrOff(SkyblockMod.skyblockMod.options.dungeonScore300.getValue())).append(": " + SkyblockMod.skyblockMod.options.dungeonScore300Text.getValue()));
                                             return 1;
                                         })))))
                 .then(literal("experiments").executes(context -> {

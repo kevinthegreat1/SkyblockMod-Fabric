@@ -15,6 +15,7 @@ import net.minecraft.client.option.SimpleOption;
 import net.minecraft.text.Text;
 import net.minecraft.util.Pair;
 import net.minecraft.util.Util;
+import net.minecraft.util.math.MathHelper;
 
 import java.io.*;
 import java.util.List;
@@ -22,13 +23,17 @@ import java.util.List;
 public class SkyblockModOptions {
     private static final MaxSuppliableIntSliderCallbacks screenWidthCallback = new MaxSuppliableIntSliderCallbacks(0, SkyblockModOptions::getScreenWidth);
     private static final MaxSuppliableIntSliderCallbacks screenHeightCallback = new MaxSuppliableIntSliderCallbacks(0, SkyblockModOptions::getScreenHeight);
-    private final File optionsFile = new File(FabricLoader.getInstance().getConfigDir().toFile(), SkyblockMod.MOD_ID + ".json");
+    private final File optionsFile = new File(FabricLoader.getInstance().getConfigDir().resolve(SkyblockMod.MOD_ID).toFile(), SkyblockMod.MOD_ID + ".json");
     public final SimpleOption<Boolean> dungeonMap = SimpleOption.ofBoolean("skyblockmod:dungeonMap", true);
-    public final SimpleOption<Double> dungeonMapScale = new SimpleOption<>("skyblockmod:dungeonMap.scale", SimpleOption.emptyTooltip(), SkyblockModOptions::getGenericValueText, SimpleOption.DoubleSliderCallbacks.INSTANCE, 1D, value -> {});
-    public final SimpleOption<Integer> dungeonMapX = new SimpleOption<>("skyblockmod:dungeonMap.offset.x", SimpleOption.emptyTooltip(), GameOptionsInvoker::getPixelValueText, screenWidthCallback, 0, value -> {});
-    public final SimpleOption<Integer> dungeonMapY = new SimpleOption<>("skyblockmod:dungeonMap.offset.y", SimpleOption.emptyTooltip(), GameOptionsInvoker::getPixelValueText, screenHeightCallback, 0, value -> {});
+    public final SimpleOption<Double> dungeonMapScale = new SimpleOption<>("skyblockmod:dungeonMap.scale", SimpleOption.emptyTooltip(), SkyblockModOptions::getGenericValueText, SimpleOption.DoubleSliderCallbacks.INSTANCE.withModifier(value -> MathHelper.square(value) * 10, value -> Math.sqrt(value / 10)), 0.1D, SkyblockModOptions::emptyConsumer);
+    public final SimpleOption<Integer> dungeonMapX = new SimpleOption<>("skyblockmod:dungeonMap.offset.x", SimpleOption.emptyTooltip(), GameOptionsInvoker::getPixelValueText, screenWidthCallback, 0, SkyblockModOptions::emptyConsumer);
+    public final SimpleOption<Integer> dungeonMapY = new SimpleOption<>("skyblockmod:dungeonMap.offset.y", SimpleOption.emptyTooltip(), GameOptionsInvoker::getPixelValueText, screenHeightCallback, 0, SkyblockModOptions::emptyConsumer);
+    public final SimpleOption<Boolean> dungeonScore270 = SimpleOption.ofBoolean("skyblockmod:dungeonScore.270", true);
+    public final SimpleOption<String> dungeonScore270Text = new SimpleOption<>("skyblockmod:dungeonScore.270.text", SimpleOption.emptyTooltip(), (optionText, value) -> Text.of(value), StringTextFieldCallbacks.INSTANCE_256, "270 score", SkyblockModOptions::emptyConsumer);
+    public final SimpleOption<Boolean> dungeonScore300 = SimpleOption.ofBoolean("skyblockmod:dungeonScore.300", true);
+    public final SimpleOption<String> dungeonScore300Text = new SimpleOption<>("skyblockmod:dungeonScore.300.text", SimpleOption.emptyTooltip(), (optionText, value) -> Text.of(value), StringTextFieldCallbacks.INSTANCE_256, "300 score", SkyblockModOptions::emptyConsumer);
     @SuppressWarnings("SuspiciousNameCombination")
-    public final List<List<Pair<String, SimpleOption<?>>>> optionsList = List.of(List.of(new Pair<>("dungeonMap", dungeonMap), new Pair<>("dungeonMap.scale", dungeonMapScale), new Pair<>("dungeonMap.offset.x", dungeonMapX), new Pair<>("dungeonMap.offset.y", dungeonMapY)));
+    public final List<List<Pair<String, SimpleOption<?>>>> optionsList = List.of(List.of(new Pair<>("dungeonMap", dungeonMap), new Pair<>("dungeonMap.scale", dungeonMapScale), new Pair<>("dungeonMap.offset.x", dungeonMapX), new Pair<>("dungeonMap.offset.y", dungeonMapY), new Pair<>("dungeonScore.270", dungeonScore270), new Pair<>("dungeonScore.270.text", dungeonScore270Text), new Pair<>("dungeonScore.300", dungeonScore300), new Pair<>("dungeonScore.300.text", dungeonScore300Text)));
 
     public static Text getGenericValueText(Text prefix, double value) {
         return GameOptions.getGenericValueText(prefix, Text.literal(String.format("%.2f", value)));
@@ -36,12 +41,15 @@ public class SkyblockModOptions {
 
     public static int getScreenWidth() {
         Screen screen = MinecraftClient.getInstance().currentScreen;
-        return screen == null ? Integer.MAX_VALUE : screen.width;
+        return screen == null ? Integer.MAX_VALUE - 1 : screen.width * 2;
     }
 
     public static int getScreenHeight() {
         Screen screen = MinecraftClient.getInstance().currentScreen;
-        return screen == null ? Integer.MAX_VALUE : screen.height;
+        return screen == null ? Integer.MAX_VALUE - 1 : screen.height * 2;
+    }
+
+    public static <T> void emptyConsumer(T value) {
     }
 
     /**
@@ -111,10 +119,10 @@ public class SkyblockModOptions {
                         case "quiverWarning" ->
                                 SkyblockMod.skyblockMod.quiverWarning.on = Boolean.parseBoolean(args[1]);
                         case "reparty" -> SkyblockMod.skyblockMod.reparty.on = Boolean.parseBoolean(args[1]);
-                        case "score270" -> SkyblockMod.skyblockMod.dungeonScore.on270 = Boolean.parseBoolean(args[1]);
-                        case "score270Text" -> SkyblockMod.skyblockMod.dungeonScore.text270 = args[1];
-                        case "score300" -> SkyblockMod.skyblockMod.dungeonScore.on300 = Boolean.parseBoolean(args[1]);
-                        case "score300Text" -> SkyblockMod.skyblockMod.dungeonScore.text300 = args[1];
+                        case "score270" -> dungeonScore270.setValue(Boolean.parseBoolean(args[1]));
+                        case "score270Text" -> dungeonScore270Text.setValue(args[1]);
+                        case "score300" -> dungeonScore300.setValue(Boolean.parseBoolean(args[1]));
+                        case "score300Text" -> dungeonScore300Text.setValue(args[1]);
                     }
                 } catch (ArrayIndexOutOfBoundsException | NumberFormatException e) {
                     SkyblockMod.LOGGER.error("Unable to parse configuration \"" + args[0] + "\".");
