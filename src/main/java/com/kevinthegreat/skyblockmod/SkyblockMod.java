@@ -6,10 +6,7 @@ import com.kevinthegreat.skyblockmod.dungeons.DungeonMap;
 import com.kevinthegreat.skyblockmod.dungeons.DungeonScore;
 import com.kevinthegreat.skyblockmod.dungeons.LividColor;
 import com.kevinthegreat.skyblockmod.dungeons.Reparty;
-import com.kevinthegreat.skyblockmod.misc.Experiments;
-import com.kevinthegreat.skyblockmod.misc.FairySouls;
-import com.kevinthegreat.skyblockmod.misc.Fishing;
-import com.kevinthegreat.skyblockmod.misc.QuiverWarning;
+import com.kevinthegreat.skyblockmod.misc.*;
 import com.kevinthegreat.skyblockmod.option.SkyblockModOptions;
 import com.kevinthegreat.skyblockmod.util.Commands;
 import com.kevinthegreat.skyblockmod.util.Info;
@@ -50,6 +47,7 @@ public class SkyblockMod implements ModInitializer {
     public final Fishing fishing = new Fishing();
     public final LividColor lividColor = new LividColor();
     public final Message message = new Message();
+    public final MythologicalRitual mythologicalRitual = new MythologicalRitual();
     public final NEURepo neuRepo = new NEURepo();
     public final SkyblockModOptions options = new SkyblockModOptions();
     public final QuiverWarning quiverWarning = new QuiverWarning();
@@ -78,6 +76,7 @@ public class SkyblockMod implements ModInitializer {
         ClientPlayConnectionEvents.JOIN.register(info::onClientWorldJoin);
         ClientTickEvents.END_CLIENT_TICK.register(this::tick);
         WorldRenderEvents.AFTER_TRANSLUCENT.register(fairySouls::render);
+        WorldRenderEvents.AFTER_TRANSLUCENT.register(mythologicalRitual::render);
         HudRenderCallback.EVENT.register(dungeonMap::render);
         ClientReceiveMessageEvents.ALLOW_GAME.register(this::onChatMessage);
         ScreenEvents.AFTER_INIT.register(experiments::start);
@@ -91,6 +90,7 @@ public class SkyblockMod implements ModInitializer {
         }
         lividColor.tick(minecraftClient);
         message.tick();
+        mythologicalRitual.tick();
         if (nextScreen != null) {
             minecraftClient.setScreen(nextScreen);
             nextScreen = null;
