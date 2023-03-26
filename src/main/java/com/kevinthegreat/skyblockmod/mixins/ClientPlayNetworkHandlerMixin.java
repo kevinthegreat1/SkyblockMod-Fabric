@@ -17,8 +17,8 @@ public abstract class ClientPlayNetworkHandlerMixin {
     @Final
     private MinecraftClient client;
 
-    @Inject(method = "onPlaySound", at = @At(value = "HEAD"))
-    private void skyblockmod_onPlaySoundId(PlaySoundS2CPacket packet, CallbackInfo ci) {
+    @Inject(method = "onPlaySound", at = @At("RETURN"))
+    private void skyblockmod_onPlaySound(PlaySoundS2CPacket packet, CallbackInfo ci) {
         SkyblockMod.skyblockMod.fishing.onSound(client, packet);
     }
 }

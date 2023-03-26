@@ -99,8 +99,7 @@ public class FairySouls implements ChatListener {
         }
         for (BlockPos fairySoul : fairySouls.get(SkyblockMod.skyblockMod.info.location)) {
             float[] colorComponents = isFairySoulNotFound(fairySoul) ? DyeColor.GREEN.getColorComponents() : DyeColor.RED.getColorComponents();
-            RenderHelper.renderFilledThroughWalls(context, fairySoul, colorComponents, 0.5F);
-            RenderHelper.renderBeaconBeam(context, fairySoul, colorComponents);
+            RenderHelper.renderFilledThroughWallsWithBeaconBeam(context, fairySoul, colorComponents, 0.5F);
         }
     }
 

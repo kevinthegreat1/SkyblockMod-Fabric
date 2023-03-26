@@ -102,6 +102,7 @@ public class SkyblockModOptions {
     /**
      * Loads legacy options from {@code /config/skyblockmod.txt}.
      */
+    @SuppressWarnings("DeprecatedIsStillUsed")
     @Deprecated(since = "1.8.2")
     private void loadLegacyOptions() {
         try {

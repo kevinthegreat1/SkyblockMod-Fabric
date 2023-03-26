@@ -10,6 +10,11 @@ import net.minecraft.util.math.Vec3d;
 import java.awt.*;
 
 public class RenderHelper {
+    public static void renderFilledThroughWallsWithBeaconBeam(WorldRenderContext context, BlockPos pos, float[] colorComponents, float alpha) {
+        renderFilledThroughWalls(context, pos, colorComponents, alpha);
+        renderBeaconBeam(context, pos, colorComponents);
+    }
+
     public static void renderFilledThroughWalls(WorldRenderContext context, BlockPos pos, float[] colorComponents, float alpha) {
         Renderer3d.renderThroughWalls();
         Renderer3d.renderFilled(context.matrixStack(), new Color(colorComponents[0], colorComponents[1], colorComponents[2], alpha), Vec3d.of(pos), new Vec3d(1, 1, 1));
