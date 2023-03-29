@@ -16,6 +16,7 @@ public class FeaturesOptionsScreen extends AbstractSkyblockModOptionsScreen {
         addOptionButton(options.experimentUltrasequencer);
         addOptionButton(options.fairySouls);
         addOptionButton(options.fishing);
+        addOptionButton(options.mythologicalRitual);
         addOptionButton(options.quiver);
         addGridWidget();
     }
