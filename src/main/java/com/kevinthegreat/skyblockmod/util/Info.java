@@ -97,7 +97,7 @@ public class Info implements ChatListener {
         String scoreboardString = list.toString();
         if (list.get(list.size() - 1).equals("www.hypixel.net")) {
             hypixel = true;
-            if (list.get(0).contains("SKYBLOCK")) {
+            if (list.get(0).contains("SKYBLOCK") || list.get(0).contains("SKIBLOCK")) {
                 skyblock = true;
                 catacombs = scoreboardString.contains("The Catacombs");
                 crystalHollows = scoreboardString.contains("Precursor Remnants") || scoreboardString.contains("Khazad-dûm") || scoreboardString.contains("Jungle") || scoreboardString.contains("Mithril Deposits") || scoreboardString.contains("Goblin Holdout") || scoreboardString.contains("Goblin Queen's Den") || scoreboardString.contains("Lost Precursor City") || scoreboardString.contains("Crystal Nucleus") || scoreboardString.contains("Crystal Hollows") || scoreboardString.contains("Magma Fields") || scoreboardString.contains("Fairy Grotto") || scoreboardString.contains("Dragon's Lair");
