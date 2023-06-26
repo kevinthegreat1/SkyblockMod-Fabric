@@ -2,9 +2,8 @@ package com.kevinthegreat.skyblockmod.mixins;
 
 import com.kevinthegreat.skyblockmod.SkyblockMod;
 import com.kevinthegreat.skyblockmod.misc.Experiments;
-import net.minecraft.client.gui.DrawableHelper;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
-import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -21,39 +20,39 @@ public abstract class HandledScreenMixin {
     private final Experiments skyblockmod_experiments = SkyblockMod.skyblockMod.experiments;
 
     @Inject(method = "drawSlot", at = @At(value = "TAIL"))
-    private void skyblockmod_fillSlot(MatrixStack matrices, Slot slot, CallbackInfo ci) {
+    private void skyblockmod_fillSlot(DrawContext context, Slot slot, CallbackInfo ci) {
         if (skyblockmod_experiments.type != Experiments.Type.NONE && skyblockmod_experiments.state == Experiments.State.SHOW && slot.inventory instanceof SimpleInventory) {
             switch (skyblockmod_experiments.type) {
                 case CHRONOMATRON -> {
                     Item item = skyblockmod_experiments.chronomatronSlots.get(skyblockmod_experiments.chronomatronCurrentOrdinal);
                     if (slot.getStack().isOf(item) || Experiments.terracottaToGlass.get(slot.getStack().getItem()) == item) {
-                        matrices.push();
-                        matrices.translate(0, 0, 300);
-                        DrawableHelper.fill(matrices, slot.x, slot.y, slot.x + 16, slot.y + 16, -1073676544);
-                        matrices.pop();
+                        context.getMatrices().push();
+                        context.getMatrices().translate(0, 0, 300);
+                        context.fill(slot.x, slot.y, slot.x + 16, slot.y + 16, -1073676544);
+                        context.getMatrices().pop();
                     }
                 }
                 case SUPERPAIRS -> {
                     ItemStack itemStack = skyblockmod_experiments.superpairsSlots.get(slot.getIndex());
                     if (itemStack != null && !ItemStack.areEqual(itemStack, slot.getStack())) {
-                        matrices.push();
-                        matrices.translate(0, 0, 300);
+                        context.getMatrices().push();
+                        context.getMatrices().translate(0, 0, 300);
                         if (ItemStack.areEqual(skyblockmod_experiments.superpairsCurrentSlot, itemStack) && slot.getStack().getName().getString().equals("Click a second button!")) {
-                            DrawableHelper.fill(matrices, slot.x, slot.y, slot.x + 16, slot.y + 16, -1073676544);
+                            context.fill(slot.x, slot.y, slot.x + 16, slot.y + 16, -1073676544);
                         } else if (skyblockmod_experiments.superpairsDuplicatedSlots.contains(slot.getIndex())) {
-                            DrawableHelper.fill(matrices, slot.x, slot.y, slot.x + 16, slot.y + 16, -1056964864);
+                            context.fill(slot.x, slot.y, slot.x + 16, slot.y + 16, -1056964864);
                         } else {
-                            DrawableHelper.fill(matrices, slot.x, slot.y, slot.x + 16, slot.y + 16, 1090453504);
+                            context.fill(slot.x, slot.y, slot.x + 16, slot.y + 16, 1090453504);
                         }
-                        matrices.pop();
+                        context.getMatrices().pop();
                     }
                 }
                 case ULTRASEQUENCER -> {
                     if (slot.getIndex() == skyblockmod_experiments.ultrasequencerNextSlot) {
-                        matrices.push();
-                        matrices.translate(0, 0, 300);
-                        DrawableHelper.fill(matrices, slot.x, slot.y, slot.x + 16, slot.y + 16, -1073676544);
-                        matrices.pop();
+                        context.getMatrices().push();
+                        context.getMatrices().translate(0, 0, 300);
+                        context.fill(slot.x, slot.y, slot.x + 16, slot.y + 16, -1073676544);
+                        context.getMatrices().pop();
                     }
                 }
             }

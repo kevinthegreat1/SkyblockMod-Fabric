@@ -3,6 +3,7 @@ package com.kevinthegreat.skyblockmod.screen;
 import com.kevinthegreat.skyblockmod.SkyblockMod;
 import com.kevinthegreat.skyblockmod.option.SkyblockModOptions;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.option.GameOptionsScreen;
 import net.minecraft.client.gui.widget.ButtonWidget;
@@ -10,7 +11,6 @@ import net.minecraft.client.gui.widget.ClickableWidget;
 import net.minecraft.client.gui.widget.GridWidget;
 import net.minecraft.client.gui.widget.SimplePositioningWidget;
 import net.minecraft.client.option.SimpleOption;
-import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.screen.ScreenTexts;
 import net.minecraft.text.Text;
 
@@ -46,14 +46,14 @@ public abstract class AbstractSkyblockModOptionsScreen extends GameOptionsScreen
     }
 
     @Override
-    public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
-        renderBackGroundAndTitle(matrices);
-        super.render(matrices, mouseX, mouseY, delta);
+    public void render(DrawContext context, int mouseX, int mouseY, float delta) {
+        renderBackGroundAndTitle(context);
+        super.render(context, mouseX, mouseY, delta);
     }
 
-    protected void renderBackGroundAndTitle(MatrixStack matrices) {
-        renderBackground(matrices);
-        drawCenteredTextWithShadow(matrices, textRenderer, title, width / 2, 15, 0xFFFFFF);
+    protected void renderBackGroundAndTitle(DrawContext context) {
+        renderBackground(context);
+        context.drawCenteredTextWithShadow(textRenderer, title, width / 2, 15, 0xFFFFFF);
     }
 
     @Override
@@ -61,15 +61,15 @@ public abstract class AbstractSkyblockModOptionsScreen extends GameOptionsScreen
         options.save();
     }
 
-    protected ButtonWidget addScreenButton(Text message, Function<Screen, Screen> screenFunction){
+    protected ButtonWidget addScreenButton(Text message, Function<Screen, Screen> screenFunction) {
         return adder.add(createButton(message, screenFunction));
     }
 
-    protected <T> ClickableWidget addOptionButton(SimpleOption<T> option){
+    protected <T> ClickableWidget addOptionButton(SimpleOption<T> option) {
         return adder.add(createButton(option));
     }
 
-    protected ButtonWidget addButton(Text message, ButtonWidget.PressAction onPress){
+    protected ButtonWidget addButton(Text message, ButtonWidget.PressAction onPress) {
         return adder.add(ButtonWidget.builder(message, onPress).build());
     }
 
@@ -77,7 +77,7 @@ public abstract class AbstractSkyblockModOptionsScreen extends GameOptionsScreen
         return ButtonWidget.builder(message, button -> client.setScreen(screenFunction.apply(this))).build();
     }
 
-    protected <T> ClickableWidget createButton(SimpleOption<T> option){
+    protected <T> ClickableWidget createButton(SimpleOption<T> option) {
         return option.createWidget(gameOptions, 0, 0, ButtonWidget.DEFAULT_WIDTH);
     }
 }
