@@ -19,6 +19,7 @@ import net.minecraft.util.math.MathHelper;
 
 import java.io.*;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class SkyblockModOptions {
     private static final MaxSuppliableIntSliderCallbacks screenWidthCallback = new MaxSuppliableIntSliderCallbacks(0, SkyblockModOptions::getScreenWidth);
@@ -71,13 +72,17 @@ public class SkyblockModOptions {
             return;
         }
         JsonObject optionsJson;
-        try (BufferedReader reader = new BufferedReader(new FileReader(optionsFile))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(optionsFile)); BufferedReader reader2 = new BufferedReader(new FileReader(optionsFile))) {
+            SkyblockMod.LOGGER.info(reader2.lines().collect(Collectors.joining()));
             optionsJson = JsonParser.parseReader(reader).getAsJsonObject();
         } catch (FileNotFoundException e) {
             SkyblockMod.LOGGER.warn("Options file not found", e);
             return;
         } catch (IOException e) {
             SkyblockMod.LOGGER.error("Failed to load options", e);
+            return;
+        } catch (Exception e) {
+            SkyblockMod.LOGGER.error("Encountered unknown error while loading options", e);
             return;
         }
         for (List<Pair<String, SimpleOption<?>>> optionRow : optionsList) {

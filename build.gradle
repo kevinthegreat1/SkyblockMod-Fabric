@@ -1,5 +1,5 @@
 plugins {
-	id 'fabric-loom' version '1.0-SNAPSHOT'
+	id 'fabric-loom' version '1.2-SNAPSHOT'
 	id 'maven-publish'
 }
 
@@ -38,7 +38,9 @@ dependencies {
     include modImplementation("org.eclipse.jgit:org.eclipse.jgit:${project.jgit_version}")
 
 	modImplementation "com.terraformersmc:modmenu:${project.modmenu_version}"
-	include modImplementation("com.github.0x3C50:Renderer:${project.renderer_version}")
+	include modImplementation("com.github.0x3C50:Renderer:${project.renderer_version}") {
+		exclude group: "io.github.ladysnake" exclude module: "satin"
+	}
 }
 
 processResources {
