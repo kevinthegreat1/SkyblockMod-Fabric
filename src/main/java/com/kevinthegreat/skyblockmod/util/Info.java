@@ -7,10 +7,7 @@ import net.fabricmc.fabric.api.networking.v1.PacketSender;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.client.network.PlayerListEntry;
-import net.minecraft.scoreboard.Scoreboard;
-import net.minecraft.scoreboard.ScoreboardObjective;
-import net.minecraft.scoreboard.ScoreboardPlayerScore;
-import net.minecraft.scoreboard.Team;
+import net.minecraft.scoreboard.*;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -71,7 +68,7 @@ public class Info implements ChatListener {
             resetScoreboardInfo();
             return;
         }
-        ScoreboardObjective objective = scoreboard.getObjectiveForSlot(1);
+        ScoreboardObjective objective = scoreboard.getObjectiveForSlot(ScoreboardDisplaySlot.FROM_ID.apply(1));
         if (objective == null) {
             resetScoreboardInfo();
             return;

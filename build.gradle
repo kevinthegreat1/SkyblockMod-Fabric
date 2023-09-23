@@ -32,13 +32,15 @@ dependencies {
 	mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
 	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
-	// Fabric API. This is technically optional, but you probably want it anyway.
+	// Fabric API.
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
     include modImplementation("org.eclipse.jgit:org.eclipse.jgit:${project.jgit_version}")
 
 	modImplementation "com.terraformersmc:modmenu:${project.modmenu_version}"
-	include modImplementation("com.github.0x3C50:Renderer:${project.renderer_version}")
+	include modImplementation("com.github.0x3C50:Renderer:${project.renderer_version}") {
+		exclude group: "io.github.ladysnake" exclude module: "satin"
+	}
 }
 
 processResources {

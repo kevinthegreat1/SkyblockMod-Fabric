@@ -24,7 +24,8 @@ public class Fishing {
         startTime = 0;
     }
 
-    public void onSound(MinecraftClient client, PlaySoundS2CPacket packet) {
+    public void onSound(PlaySoundS2CPacket packet) {
+        MinecraftClient client = MinecraftClient.getInstance();
         String path = packet.getSound().value().getId().getPath();
         if (SkyblockMod.skyblockMod.options.fishing.getValue() && startTime != 0 && System.currentTimeMillis() >= startTime + 2000 && ("entity.generic.splash".equals(path) || "entity.player.splash".equals(path))) {
             ClientPlayerEntity player = client.player;
