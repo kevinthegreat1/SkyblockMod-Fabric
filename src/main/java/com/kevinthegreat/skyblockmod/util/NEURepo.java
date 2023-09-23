@@ -21,10 +21,10 @@ public class NEURepo {
                 } else {
                     Git.cloneRepository().setURI(REPO_URL).setDirectory(SkyblockMod.NEU_REPO_DIR.toFile()).setBranchesToClone(List.of("refs/heads/master")).setBranch("refs/heads/master").call().close();
                 }
+                SkyblockMod.LOGGER.info("NEU Repo Initialized.");
             } catch (Exception e) {
-                e.printStackTrace();
+                SkyblockMod.LOGGER.error("Failed to initialize NEU Repo", e);
             }
-            SkyblockMod.LOGGER.info("NEU Repo Initialized");
         });
     }
 

@@ -51,10 +51,9 @@ public class FairySouls implements ChatListener {
                 }
                 reader.close();
             } catch (IOException e) {
-                e.printStackTrace();
-                SkyblockMod.LOGGER.error("Failed to load found fairy souls.");
+                SkyblockMod.LOGGER.error("Failed to load found fairy souls", e);
             } catch (Exception e) {
-                e.printStackTrace();
+                SkyblockMod.LOGGER.error("Encountered unknown exception while loading found fairy souls", e);
             }
         });
     }
