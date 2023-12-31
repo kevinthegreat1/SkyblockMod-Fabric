@@ -32,7 +32,7 @@ public class Reparty implements ChatListener {
                     String[] messageContents = message.split(" ");
                     MinecraftClient minecraftClient = MinecraftClient.getInstance();
                     assert minecraftClient.player != null;
-                    if (!messageContents[2].equals(minecraftClient.player.getEntityName()) && !messageContents[3].equals(minecraftClient.player.getEntityName())) {
+                    if (!messageContents[2].equals(minecraftClient.getSession().getUsername()) && !messageContents[3].equals(minecraftClient.getSession().getUsername())) {
                         SkyblockMod.skyblockMod.message.addMessage(Text.translatable("skyblockmod:party.notLeader"));
                         reparty = false;
                     }
@@ -64,7 +64,7 @@ public class Reparty implements ChatListener {
                 }
             } else if (!leader.isEmpty() && message.contains(leader + " has invited you to join their party!")) {
                 assert MinecraftClient.getInstance().player != null;
-                if (!leader.equals(MinecraftClient.getInstance().player.getEntityName())) {
+                if (!leader.equals(MinecraftClient.getInstance().getSession().getUsername())) {
                     SkyblockMod.skyblockMod.message.sendMessageAfterCooldown("/p accept " + leader);
                     leader = "";
                 }

@@ -74,19 +74,17 @@ public class Info implements ChatListener {
             return;
         }
         List<String> list = new ArrayList<>();
-        for (ScoreboardPlayerScore score : scoreboard.getAllPlayerScores(objective)) {
-            if (score == null || score.getPlayerName() == null || score.getPlayerName().startsWith("#")) {
-                resetScoreboardInfo();
-                return;
-            }
-            Team team = scoreboard.getPlayerTeam(score.getPlayerName());
-            if (team == null) {
-                resetScoreboardInfo();
-                return;
-            }
-            String text = team.getPrefix().getString() + team.getSuffix().getString();
-            if (text.trim().length() > 0) {
-                list.add(text);
+        for (ScoreHolder scoreHolder : scoreboard.getKnownScoreHolders()) {
+            if (scoreboard.getScoreHolderObjectives(scoreHolder).containsKey(objective)) {
+                Team team = scoreboard.getScoreHolderTeam(scoreHolder.getNameForScoreboard());
+                if (team == null) {
+                    resetScoreboardInfo();
+                    return;
+                }
+                String text = team.getPrefix().getString() + team.getSuffix().getString();
+                if (!text.trim().isEmpty()) {
+                    list.add(text);
+                }
             }
         }
         list.add(objective.getDisplayName().getString());

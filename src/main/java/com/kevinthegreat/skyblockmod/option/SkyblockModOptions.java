@@ -18,12 +18,14 @@ import net.minecraft.util.Util;
 import net.minecraft.util.math.MathHelper;
 
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.List;
 
 public class SkyblockModOptions {
     private static final MaxSuppliableIntSliderCallbacks screenWidthCallback = new MaxSuppliableIntSliderCallbacks(0, SkyblockModOptions::getScreenWidth);
     private static final MaxSuppliableIntSliderCallbacks screenHeightCallback = new MaxSuppliableIntSliderCallbacks(0, SkyblockModOptions::getScreenHeight);
-    private final File optionsFile = new File(FabricLoader.getInstance().getConfigDir().resolve(SkyblockMod.MOD_ID).toFile(), SkyblockMod.MOD_ID + ".json");
+    private final Path optionsFile = FabricLoader.getInstance().getConfigDir().resolve(SkyblockMod.MOD_ID).resolve(SkyblockMod.MOD_ID + ".json");
     public final SimpleOption<Boolean> dungeonMap = SimpleOption.ofBoolean("skyblockmod:dungeonMap", true);
     public final SimpleOption<Double> dungeonMapScale = new SimpleOption<>("skyblockmod:dungeonMap.scale", SimpleOption.emptyTooltip(), SkyblockModOptions::getGenericValueText, SimpleOption.DoubleSliderCallbacks.INSTANCE.withModifier(value -> MathHelper.square(value) * 10, value -> Math.sqrt(value / 10)), 0.1D, SkyblockModOptions::emptyConsumer);
     public final SimpleOption<Integer> dungeonMapX = new SimpleOption<>("skyblockmod:dungeonMap.offset.x", SimpleOption.emptyTooltip(), GameOptionsInvoker::getPixelValueText, screenWidthCallback, 0, SkyblockModOptions::emptyConsumer);
@@ -66,12 +68,12 @@ public class SkyblockModOptions {
      * Loads options from {@code /config/skyblockmod.json} with Gson.
      */
     public void load() {
-        if (!optionsFile.exists()) {
+        if (!Files.isRegularFile(optionsFile)) {
             loadLegacyOptions();
             return;
         }
         JsonObject optionsJson;
-        try (BufferedReader reader = new BufferedReader(new FileReader(optionsFile))) {
+        try (BufferedReader reader = Files.newBufferedReader(optionsFile)) {
             optionsJson = JsonParser.parseReader(reader).getAsJsonObject();
         } catch (FileNotFoundException e) {
             SkyblockMod.LOGGER.warn("Options file not found", e);
@@ -159,19 +161,19 @@ public class SkyblockModOptions {
                 saveOption(optionsJson, namedOption.getLeft(), namedOption.getRight());
             }
         }
-        File tempFile;
+        Path tempFile;
         try {
-            tempFile = File.createTempFile(SkyblockMod.MOD_ID, ".json", optionsFile.getParentFile());
+            tempFile = Files.createTempFile(optionsFile.getParent(), SkyblockMod.MOD_ID, ".json");
         } catch (IOException e) {
             SkyblockMod.LOGGER.error("Failed to save options file", e);
             return;
         }
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile))) {
+        try (BufferedWriter writer = Files.newBufferedWriter(tempFile)) {
             SkyblockMod.GSON.toJson(optionsJson, writer);
         } catch (IOException e) {
             SkyblockMod.LOGGER.error("Failed to write options", e);
         }
-        File backup = new File(optionsFile.getParentFile(), SkyblockMod.MOD_ID + ".json_old");
+        Path backup = optionsFile.getParent().resolve(SkyblockMod.MOD_ID + ".json_old");
         Util.backupAndReplace(optionsFile, tempFile, backup);
     }
 
