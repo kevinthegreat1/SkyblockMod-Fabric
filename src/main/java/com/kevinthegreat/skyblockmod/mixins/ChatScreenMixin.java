@@ -1,6 +1,7 @@
 package com.kevinthegreat.skyblockmod.mixins;
 
 import com.kevinthegreat.skyblockmod.SkyblockMod;
+import com.kevinthegreat.skyblockmod.option.SkyblockModOptions;
 import net.minecraft.client.gui.screen.ChatScreen;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -16,7 +17,7 @@ public abstract class ChatScreenMixin {
             ),
             at = @At(value = "LOAD", ordinal = 0), argsOnly = true)
     private String skyblockmod_modifyMessage(String message) {
-        if (message.startsWith("/")) {
+        if (SkyblockMod.skyblockMod.options.shortcuts.getValue() && message.startsWith("/")) {
             message = SkyblockMod.skyblockMod.message.commands.getOrDefault(message, message);
             String[] messageArgs = message.split(" ");
             for (int i = 0; i < messageArgs.length; i++) {

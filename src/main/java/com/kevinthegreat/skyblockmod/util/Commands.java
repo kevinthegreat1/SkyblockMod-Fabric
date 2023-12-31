@@ -220,6 +220,15 @@ public class Commands {
                             options.reparty.setValue(BoolArgumentType.getBool(context, "value"));
                             context.getSource().sendFeedback(Text.translatable("skyblockmod:reparty").append(turnOnOrOff(options.reparty.getValue())));
                             return 1;
+                        })))
+                .then(literal("shortcuts").executes(context -> {
+                            context.getSource().sendFeedback(Text.translatable("skyblockmod:shortcuts").append(queryOnOrOff(options.shortcuts.getValue())));
+                            return 1;
+                        })
+                        .then(argument("value", BoolArgumentType.bool()).executes(context -> {
+                            options.shortcuts.setValue(BoolArgumentType.getBool(context, "value"));
+                            context.getSource().sendFeedback(Text.translatable("skyblockmod:shortcuts").append(turnOnOrOff(options.shortcuts.getValue())));
+                            return 1;
                         }))));
     }
 

@@ -90,6 +90,11 @@ Helpful features for Hypixel Skyblock ([Fabric](https://fabricmc.net/) 1.17+)
 - /sbm reparty: show current state (on or off)
 - /sbm reparty [true|false]: turn reparty on or off
 
+### Shortcuts Commands
+
+- /sbm shortcuts: show current state (on or off)
+- /sbm shortcuts [true|false]: turn shortcuts on or off
+
 ### Visit
 
 - /v [Player] -> /visit [Player]
