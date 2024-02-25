@@ -51,9 +51,9 @@ public class FairySouls implements ChatListener {
                 }
                 reader.close();
             } catch (IOException e) {
-                SkyblockMod.LOGGER.error("Failed to load found fairy souls", e);
+                SkyblockMod.LOGGER.error("[Skyblock Mod] Failed to load found fairy souls", e);
             } catch (Exception e) {
-                SkyblockMod.LOGGER.error("Encountered unknown exception while loading found fairy souls", e);
+                SkyblockMod.LOGGER.error("[Skyblock Mod] Encountered unknown exception while loading found fairy souls", e);
             }
         });
     }
@@ -81,7 +81,7 @@ public class FairySouls implements ChatListener {
             SkyblockMod.GSON.toJson(foundFairiesJson, writer);
             writer.close();
         } catch (IOException e) {
-            SkyblockMod.LOGGER.error("Failed to write found fairy souls to file.");
+            SkyblockMod.LOGGER.error("[Skyblock Mod] Failed to write found fairy souls to file.");
         }
     }
 
@@ -90,7 +90,7 @@ public class FairySouls implements ChatListener {
             return;
         }
         if (!fairySoulsLoaded.isDone()) {
-            SkyblockMod.LOGGER.warn("Fairy souls are not loaded yet.");
+            SkyblockMod.LOGGER.warn("[Skyblock Mod] Fairy souls are not loaded yet.");
             return;
         }
         if (!fairySouls.containsKey(SkyblockMod.skyblockMod.info.locationRaw)) {
@@ -125,10 +125,15 @@ public class FairySouls implements ChatListener {
     private void markClosestFairyFound() {
         PlayerEntity player = MinecraftClient.getInstance().player;
         if (player == null) {
-            SkyblockMod.LOGGER.warn("Failed to mark closest fairy soul as found because player is null.");
+            SkyblockMod.LOGGER.warn("[Skyblock Mod] Failed to mark closest fairy soul as found because player is null.");
             return;
         }
-        fairySouls.get(SkyblockMod.skyblockMod.info.locationRaw).stream().filter(this::isFairySoulNotFound).min(Comparator.comparingDouble(fairySoul -> fairySoul.getSquaredDistance(player.getPos()))).ifPresent(fairySoul -> {
+        Set<BlockPos> fairiesOnCurrentIsland = fairySouls.get(SkyblockMod.skyblockMod.info.locationRaw);
+        if (fairiesOnCurrentIsland == null) {
+            SkyblockMod.LOGGER.warn("[Skyblock Mod] Failed to mark closest fairy soul as found because there are no fairy souls loaded on the current island. NEU repo probably failed to load.");
+            return;
+        }
+        fairiesOnCurrentIsland.stream().filter(this::isFairySoulNotFound).min(Comparator.comparingDouble(fairySoul -> fairySoul.getSquaredDistance(player.getPos()))).filter(fairySoul -> fairySoul.getSquaredDistance(player.getPos()) <= 16).ifPresent(fairySoul -> {
             initializeFoundFairiesForCurrentProfileAndLocation();
             foundFairies.get(SkyblockMod.skyblockMod.info.profile).get(SkyblockMod.skyblockMod.info.locationRaw).add(fairySoul);
         });

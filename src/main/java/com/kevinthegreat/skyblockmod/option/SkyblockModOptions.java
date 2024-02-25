@@ -77,10 +77,10 @@ public class SkyblockModOptions {
         try (BufferedReader reader = Files.newBufferedReader(optionsFile)) {
             optionsJson = JsonParser.parseReader(reader).getAsJsonObject();
         } catch (FileNotFoundException e) {
-            SkyblockMod.LOGGER.warn("Options file not found", e);
+            SkyblockMod.LOGGER.warn("[Skyblock Mod] Options file not found", e);
             return;
         } catch (IOException e) {
-            SkyblockMod.LOGGER.error("Failed to load options", e);
+            SkyblockMod.LOGGER.error("[Skyblock Mod] Failed to load options", e);
             return;
         }
         for (List<Pair<String, SimpleOption<?>>> optionRow : optionsList) {
@@ -99,7 +99,7 @@ public class SkyblockModOptions {
      */
     private <T> void parseOption(JsonObject optionsJson, String name, SimpleOption<T> option) {
         DataResult<T> dataResult = option.getCodec().parse(JsonOps.INSTANCE, optionsJson.get(name));
-        dataResult.error().ifPresent(error -> SkyblockMod.LOGGER.error("Error parsing option value " + optionsJson.get(name) + " for option " + name + ": " + error));
+        dataResult.error().ifPresent(error -> SkyblockMod.LOGGER.error("[Skyblock Mod] Error parsing option value " + optionsJson.get(name) + " for option " + name + ": " + error));
         dataResult.result().ifPresent(option::setValue);
     }
 
@@ -136,14 +136,14 @@ public class SkyblockModOptions {
                         case "score300Text" -> dungeonScore300Text.setValue(args[1]);
                     }
                 } catch (ArrayIndexOutOfBoundsException | NumberFormatException e) {
-                    SkyblockMod.LOGGER.error("Unable to parse configuration \"" + args[0] + "\".");
+                    SkyblockMod.LOGGER.error("[Skyblock Mod] Unable to parse configuration \"" + args[0] + "\".");
                 }
             }
             reader.close();
         } catch (FileNotFoundException e) {
-            SkyblockMod.LOGGER.info("Configuration file not found.");
+            SkyblockMod.LOGGER.info("[Skyblock Mod] Configuration file not found.");
         } catch (IOException e) {
-            SkyblockMod.LOGGER.error("Error while reading configuration file.");
+            SkyblockMod.LOGGER.error("[Skyblock Mod] Error while reading configuration file.");
         }
     }
 
@@ -166,13 +166,13 @@ public class SkyblockModOptions {
         try {
             tempFile = Files.createTempFile(optionsFile.getParent(), SkyblockMod.MOD_ID, ".json");
         } catch (IOException e) {
-            SkyblockMod.LOGGER.error("Failed to save options file", e);
+            SkyblockMod.LOGGER.error("[Skyblock Mod] Failed to save options file", e);
             return;
         }
         try (BufferedWriter writer = Files.newBufferedWriter(tempFile)) {
             SkyblockMod.GSON.toJson(optionsJson, writer);
         } catch (IOException e) {
-            SkyblockMod.LOGGER.error("Failed to write options", e);
+            SkyblockMod.LOGGER.error("[Skyblock Mod] Failed to write options", e);
         }
         Path backup = optionsFile.getParent().resolve(SkyblockMod.MOD_ID + ".json_old");
         Util.backupAndReplace(optionsFile, tempFile, backup);
@@ -187,7 +187,7 @@ public class SkyblockModOptions {
      */
     private <T> void saveOption(JsonObject optionsJson, String name, SimpleOption<T> option) {
         DataResult<JsonElement> dataResult = option.getCodec().encodeStart(JsonOps.INSTANCE, option.getValue());
-        dataResult.error().ifPresent(error -> SkyblockMod.LOGGER.error("Error encoding option value " + option.getValue() + " for option " + name + ": " + error));
+        dataResult.error().ifPresent(error -> SkyblockMod.LOGGER.error("[Skyblock Mod] Error encoding option value " + option.getValue() + " for option " + name + ": " + error));
         dataResult.result().ifPresent(optionJson -> optionsJson.add(name, optionJson));
     }
 }

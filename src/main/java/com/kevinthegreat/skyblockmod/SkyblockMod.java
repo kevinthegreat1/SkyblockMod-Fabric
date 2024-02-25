@@ -32,7 +32,7 @@ import java.nio.file.Path;
 
 public class SkyblockMod implements ModInitializer {
     public static final String MOD_ID = "skyblockmod";
-    public static final String MOD_NAME = "SkyblockMod";
+    public static final String MOD_NAME = "Skyblock Mod";
     public static SkyblockMod skyblockMod;
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
     public static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
