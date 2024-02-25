@@ -22,7 +22,7 @@ public class Info implements ChatListener {
     public String profile = "";
     public String server = "";
     public String gameType = "";
-    public String location = "";
+    public String locationRaw = "";
     public String map = "";
     private long clientWorldJoinTime = 0;
     private boolean sentLocRaw = false;
@@ -90,7 +90,7 @@ public class Info implements ChatListener {
         list.add(objective.getDisplayName().getString());
         Collections.reverse(list);
         String scoreboardString = list.toString();
-        if (list.get(list.size() - 1).equals("www.hypixel.net")) {
+        if (list.contains("www.hypixel.net")) {
             hypixel = true;
             if (list.get(0).contains("SKYBLOCK") || list.get(0).contains("SKIBLOCK")) {
                 skyblock = true;
@@ -129,7 +129,7 @@ public class Info implements ChatListener {
                     gameType = locRaw.get("gameType").getAsString();
                 }
                 if (locRaw.has("mode")) {
-                    location = locRaw.get("mode").getAsString();
+                    locationRaw = locRaw.get("mode").getAsString();
                 }
                 if (locRaw.has("map")) {
                     map = locRaw.get("map").getAsString();
@@ -151,7 +151,7 @@ public class Info implements ChatListener {
         sentLocRaw = false;
         server = "";
         gameType = "";
-        location = "";
+        locationRaw = "";
         map = "";
     }
 }

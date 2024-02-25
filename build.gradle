@@ -41,6 +41,9 @@ dependencies {
 	include modImplementation("com.github.0x3C50:Renderer:${project.renderer_version}") {
 		exclude group: "io.github.ladysnake" exclude module: "satin"
 	}
+
+	// Apache Commons Math
+	include implementation("org.apache.commons:commons-math3:${project.commons_math_version}")
 }
 
 processResources {

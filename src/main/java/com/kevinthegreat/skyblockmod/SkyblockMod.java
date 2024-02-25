@@ -76,7 +76,7 @@ public class SkyblockMod implements ModInitializer {
         ClientPlayConnectionEvents.JOIN.register(info::onClientWorldJoin);
         ClientTickEvents.END_CLIENT_TICK.register(this::tick);
         WorldRenderEvents.AFTER_TRANSLUCENT.register(fairySouls::render);
-        WorldRenderEvents.AFTER_TRANSLUCENT.register(mythologicalRitual::render);
+        mythologicalRitual.init();
         HudRenderCallback.EVENT.register(dungeonMap::render);
         ClientReceiveMessageEvents.ALLOW_GAME.register(this::onChatMessage);
         ScreenEvents.AFTER_INIT.register(experiments::start);
@@ -90,7 +90,6 @@ public class SkyblockMod implements ModInitializer {
         }
         lividColor.tick(minecraftClient);
         message.tick();
-        mythologicalRitual.tick();
         if (nextScreen != null) {
             minecraftClient.setScreen(nextScreen);
             nextScreen = null;

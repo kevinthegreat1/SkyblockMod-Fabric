@@ -93,12 +93,12 @@ public class FairySouls implements ChatListener {
             SkyblockMod.LOGGER.warn("Fairy souls are not loaded yet.");
             return;
         }
-        if (!fairySouls.containsKey(SkyblockMod.skyblockMod.info.location)) {
+        if (!fairySouls.containsKey(SkyblockMod.skyblockMod.info.locationRaw)) {
             return;
         }
-        for (BlockPos fairySoul : fairySouls.get(SkyblockMod.skyblockMod.info.location)) {
+        for (BlockPos fairySoul : fairySouls.get(SkyblockMod.skyblockMod.info.locationRaw)) {
             float[] colorComponents = isFairySoulNotFound(fairySoul) ? DyeColor.GREEN.getColorComponents() : DyeColor.RED.getColorComponents();
-            RenderHelper.renderFilledThroughWallsWithBeaconBeam(context, fairySoul, colorComponents, 0.5F);
+            RenderHelper.renderFilledWithBeaconBeam(context, fairySoul, colorComponents, 0.5F, true);
         }
     }
 
@@ -107,7 +107,7 @@ public class FairySouls implements ChatListener {
         if (foundFairiesForProfile == null) {
             return true;
         }
-        Set<BlockPos> foundFairiesForProfileAndLocation = foundFairiesForProfile.get(SkyblockMod.skyblockMod.info.location);
+        Set<BlockPos> foundFairiesForProfileAndLocation = foundFairiesForProfile.get(SkyblockMod.skyblockMod.info.locationRaw);
         if (foundFairiesForProfileAndLocation == null) {
             return true;
         }
@@ -128,26 +128,26 @@ public class FairySouls implements ChatListener {
             SkyblockMod.LOGGER.warn("Failed to mark closest fairy soul as found because player is null.");
             return;
         }
-        fairySouls.get(SkyblockMod.skyblockMod.info.location).stream().filter(this::isFairySoulNotFound).min(Comparator.comparingDouble(fairySoul -> fairySoul.getSquaredDistance(player.getPos()))).ifPresent(fairySoul -> {
+        fairySouls.get(SkyblockMod.skyblockMod.info.locationRaw).stream().filter(this::isFairySoulNotFound).min(Comparator.comparingDouble(fairySoul -> fairySoul.getSquaredDistance(player.getPos()))).ifPresent(fairySoul -> {
             initializeFoundFairiesForCurrentProfileAndLocation();
-            foundFairies.get(SkyblockMod.skyblockMod.info.profile).get(SkyblockMod.skyblockMod.info.location).add(fairySoul);
+            foundFairies.get(SkyblockMod.skyblockMod.info.profile).get(SkyblockMod.skyblockMod.info.locationRaw).add(fairySoul);
         });
     }
 
     public void markAllFairiesFound() {
         initializeFoundFairiesForCurrentProfileAndLocation();
-        foundFairies.get(SkyblockMod.skyblockMod.info.profile).get(SkyblockMod.skyblockMod.info.location).addAll(fairySouls.get(SkyblockMod.skyblockMod.info.location));
+        foundFairies.get(SkyblockMod.skyblockMod.info.profile).get(SkyblockMod.skyblockMod.info.locationRaw).addAll(fairySouls.get(SkyblockMod.skyblockMod.info.locationRaw));
     }
 
     public void markAllFairiesNotFound() {
         Map<String, Set<BlockPos>> foundFairiesForProfile = foundFairies.get(SkyblockMod.skyblockMod.info.profile);
         if (foundFairiesForProfile != null) {
-            foundFairiesForProfile.remove(SkyblockMod.skyblockMod.info.location);
+            foundFairiesForProfile.remove(SkyblockMod.skyblockMod.info.locationRaw);
         }
     }
 
     private void initializeFoundFairiesForCurrentProfileAndLocation() {
-        initializeFoundFairiesForProfileAndLocation(SkyblockMod.skyblockMod.info.profile, SkyblockMod.skyblockMod.info.location);
+        initializeFoundFairiesForProfileAndLocation(SkyblockMod.skyblockMod.info.profile, SkyblockMod.skyblockMod.info.locationRaw);
     }
 
     private void initializeFoundFairiesForProfileAndLocation(String profile, String location) {
