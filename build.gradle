@@ -1,6 +1,7 @@
 plugins {
 	id 'fabric-loom' version '1.4-SNAPSHOT'
 	id 'maven-publish'
+	id "me.modmuss50.mod-publish-plugin" version "0.5.1"
 }
 
 sourceCompatibility = JavaVersion.VERSION_17
@@ -86,5 +87,33 @@ publishing {
 		// Notice: This block does NOT have the same function as the block in the top level.
 		// The repositories here will be used for publishing your artifact, not for
 		// retrieving dependencies.
+	}
+}
+
+publishMods {
+	file = remapJar.archiveFile
+	displayName = "Skyblock Mod ${mod_version} for ${minecraft_version}"
+	changelog = rootProject.file("CHANGELOG.md").text
+	type = STABLE
+	modLoaders.add("fabric")
+
+	curseforge {
+		projectId = "658094"
+		projectSlug = "skyblockmod" // Required for discord webhook
+		accessToken = providers.environmentVariable("CURSEFORGE_TOKEN")
+		minecraftVersions.add("1.20.3")
+		minecraftVersions.add("1.20.4")
+		requires("fabric-api")
+	}
+	modrinth {
+		projectId = "GTIrlvJk"
+		accessToken = providers.environmentVariable("MODRINTH_TOKEN")
+		minecraftVersions.add("1.20.3")
+		minecraftVersions.add("1.20.4")
+	}
+	github {
+		repository = "kevinthegreat1/SkyblockMod-Fabric"
+		accessToken = providers.environmentVariable("GITHUB_TOKEN")
+		commitish = "main"
 	}
 }
