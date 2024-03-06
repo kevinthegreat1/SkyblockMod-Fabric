@@ -2,10 +2,12 @@ package com.kevinthegreat.skyblockmod.waypoint;
 
 import com.kevinthegreat.skyblockmod.util.RenderHelper;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext;
+import net.minecraft.util.StringIdentifiable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 
 import java.util.Arrays;
+import java.util.Objects;
 import java.util.function.Supplier;
 
 public class Waypoint {
@@ -71,6 +73,10 @@ public class Waypoint {
         this.shouldRender = !this.shouldRender;
     }
 
+    public void setShouldRender(boolean shouldRender) {
+        this.shouldRender = shouldRender;
+    }
+
     public float[] getColorComponents() {
         return colorComponents;
     }
@@ -94,16 +100,26 @@ public class Waypoint {
     }
 
     @Override
+    public int hashCode() {
+        return Objects.hash(pos, typeSupplier.get(), Arrays.hashCode(colorComponents), alpha, lineWidth, throughWalls, shouldRender);
+    }
+
+    @Override
     public boolean equals(Object obj) {
         return super.equals(obj) || obj instanceof Waypoint other && pos.equals(other.pos) && typeSupplier.get() == other.typeSupplier.get() && Arrays.equals(colorComponents, other.colorComponents) && alpha == other.alpha && lineWidth == other.lineWidth && throughWalls == other.throughWalls && shouldRender == other.shouldRender;
     }
 
-    public enum Type {
+    public enum Type implements StringIdentifiable {
         WAYPOINT,
         OUTLINED_WAYPOINT,
         HIGHLIGHT,
         OUTLINED_HIGHLIGHT,
         OUTLINE;
+
+        @Override
+        public String asString() {
+            return name().toLowerCase();
+        }
 
         @Override
         public String toString() {

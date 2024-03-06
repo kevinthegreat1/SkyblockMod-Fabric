@@ -6,6 +6,7 @@ import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.Element;
 import net.minecraft.client.gui.Selectable;
 import net.minecraft.client.gui.widget.ButtonWidget;
+import net.minecraft.client.gui.widget.CheckboxWidget;
 import net.minecraft.client.gui.widget.ClickableWidget;
 import net.minecraft.client.gui.widget.ElementListWidget;
 import net.minecraft.text.Text;
@@ -16,11 +17,11 @@ import java.util.List;
 import java.util.Optional;
 
 public class WaypointsListWidget extends ElementListWidget<WaypointsListWidget.AbstractWaypointEntry> {
-    private final WaypointsScreen screen;
+    private final AbstractWaypointsScreen screen;
     private final String island;
     private final List<WaypointCategory> waypoints;
 
-    public WaypointsListWidget(MinecraftClient client, WaypointsScreen screen, int width, int height, int y, int itemHeight) {
+    public WaypointsListWidget(MinecraftClient client, AbstractWaypointsScreen screen, int width, int height, int y, int itemHeight) {
         super(client, width, height, y, itemHeight);
         this.screen = screen;
         island = SkyblockMod.skyblockMod.info.locationRaw;
@@ -70,12 +71,13 @@ public class WaypointsListWidget extends ElementListWidget<WaypointsListWidget.A
         children().add(entryIndex, categoryEntry);
     }
 
-    protected static abstract class AbstractWaypointEntry extends Entry<AbstractWaypointEntry> {
+    protected static abstract class AbstractWaypointEntry extends ElementListWidget.Entry<AbstractWaypointEntry> {
     }
 
     protected class WaypointCategoryEntry extends AbstractWaypointEntry {
         private final WaypointCategory category;
         private final List<ClickableWidget> children;
+        private final CheckboxWidget enabled;
         private final ButtonWidget buttonNewWaypoint;
         private final ButtonWidget buttonDelete;
 
@@ -85,6 +87,7 @@ public class WaypointsListWidget extends ElementListWidget<WaypointsListWidget.A
 
         public WaypointCategoryEntry(WaypointCategory category) {
             this.category = category;
+            enabled = CheckboxWidget.builder(Text.literal(""), client.textRenderer).checked(screen.isEnabled(category)).callback((checkbox, checked) -> screen.enabledChanged(category, checked)).build();
             buttonNewWaypoint = ButtonWidget.builder(Text.translatable("skyblocker.waypoints.new"), buttonNewWaypoint -> {
                 WaypointEntry waypointEntry = new WaypointEntry(this);
                 int entryIndex;
@@ -107,7 +110,7 @@ public class WaypointsListWidget extends ElementListWidget<WaypointsListWidget.A
                 WaypointsListWidget.this.children().remove(this);
                 waypoints.remove(category);
             }).width(50).build();
-            children = List.of(buttonNewWaypoint, buttonDelete);
+            children = List.of(enabled, buttonNewWaypoint, buttonDelete);
         }
 
         @Override
@@ -123,8 +126,10 @@ public class WaypointsListWidget extends ElementListWidget<WaypointsListWidget.A
         @Override
         public void render(DrawContext context, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
             context.drawTextWithShadow(client.textRenderer, category.name(), width / 2 - 150, y + 5, 0xFFFFFF);
+            enabled.setPosition(x, y);
             buttonNewWaypoint.setPosition(x + entryWidth - 133, y);
             buttonDelete.setPosition(x + entryWidth - 54, y);
+            enabled.render(context, mouseX, mouseY, tickDelta);
             buttonNewWaypoint.render(context, mouseX, mouseY, tickDelta);
             buttonDelete.render(context, mouseX, mouseY, tickDelta);
         }
@@ -134,6 +139,7 @@ public class WaypointsListWidget extends ElementListWidget<WaypointsListWidget.A
         private final WaypointCategoryEntry category;
         private final NamedWaypoint waypoint;
         private final List<ClickableWidget> children;
+        private final CheckboxWidget enabled;
         private final ButtonWidget buttonDelete;
 
         public WaypointEntry(WaypointCategoryEntry category) {
@@ -143,11 +149,12 @@ public class WaypointsListWidget extends ElementListWidget<WaypointsListWidget.A
         public WaypointEntry(WaypointCategoryEntry category, NamedWaypoint waypoint) {
             this.category = category;
             this.waypoint = waypoint;
+            enabled = CheckboxWidget.builder(Text.literal(""), client.textRenderer).checked(screen.isEnabled(waypoint)).callback((checkbox, checked) -> screen.enabledChanged(waypoint, checked)).build();
             buttonDelete = ButtonWidget.builder(Text.translatable("selectServer.deleteButton"), button -> {
                 category.category.waypoints().remove(waypoint);
                 WaypointsListWidget.this.children().remove(this);
             }).width(50).build();
-            children = List.of(buttonDelete);
+            children = List.of(enabled, buttonDelete);
         }
 
         @Override
@@ -166,7 +173,9 @@ public class WaypointsListWidget extends ElementListWidget<WaypointsListWidget.A
             context.drawTextWithShadow(client.textRenderer, waypoint.pos.toShortString(), width / 2 - 25, y + 5, 0xFFFFFF);
             float[] colorComponents = waypoint.getColorComponents();
             context.drawTextWithShadow(client.textRenderer, String.format("#%02X%02X%02X", (int) (colorComponents[0] * 255), (int) (colorComponents[1] * 255), (int) (colorComponents[2] * 255)), width / 2 + 25, y + 5, 0xFFFFFF);
+            enabled.setPosition(x, y);
             buttonDelete.setPosition(x + entryWidth - 54, y);
+            enabled.render(context, mouseX, mouseY, tickDelta);
             buttonDelete.render(context, mouseX, mouseY, tickDelta);
         }
     }

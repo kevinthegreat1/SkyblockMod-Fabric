@@ -14,6 +14,7 @@ import net.minecraft.text.TextCodecs;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 
+import java.util.Objects;
 import java.util.function.Supplier;
 
 public class NamedWaypoint extends Waypoint {
@@ -74,6 +75,11 @@ public class NamedWaypoint extends Waypoint {
         if (shouldRenderName()) {
             RenderHelper.renderText(context, name, centerPos.add(0, 1, 0), true);
         }
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), name);
     }
 
     @Override

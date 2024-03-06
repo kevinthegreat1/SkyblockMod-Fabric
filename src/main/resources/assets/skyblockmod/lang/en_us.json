@@ -44,6 +44,7 @@
     "skyblocker.waypoints.newCategory": "New Waypoint Category",
     "skyblocker.waypoints.new": "New Waypoint",
     "skyblocker.waypoints.share": "Share",
+    "skyblocker.waypoints.shareWaypoints": "Share Waypoints",
     "skyblocker.waypoints.deleteQuestion": "Are you sure you want to remove this waypoint?",
     "skyblocker.waypoints.deleteWarning": "Waypoint '%s' will be lost forever! (A long time!)"
 }

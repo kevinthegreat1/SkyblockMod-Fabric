@@ -15,12 +15,14 @@ import net.minecraft.client.option.GameOptions;
 import net.minecraft.client.option.SimpleOption;
 import net.minecraft.text.Text;
 import net.minecraft.util.Pair;
+import net.minecraft.util.StringIdentifiable;
 import net.minecraft.util.Util;
 import net.minecraft.util.math.MathHelper;
 
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Arrays;
 import java.util.List;
 
 public class SkyblockModOptions {
@@ -47,7 +49,7 @@ public class SkyblockModOptions {
     public final SimpleOption<Boolean> reparty = SimpleOption.ofBoolean("skyblockmod:reparty", true);
     public final SimpleOption<Boolean> shortcuts = SimpleOption.ofBoolean("skyblockmod:shortcuts", true);
     public final SimpleOption<Boolean> waypoints = SimpleOption.ofBoolean("skyblockmod:waypoints", true);
-    public final SimpleOption<Waypoint.Type> waypointType = null;
+    public final SimpleOption<Waypoint.Type> waypointType = new SimpleOption<>("skyblockmod:waypoints.type", SimpleOption.emptyTooltip(), (optionText, value) -> Text.of(value.name()), new SimpleOption.PotentialValuesBasedCallbacks<>(Arrays.asList(Waypoint.Type.values()), StringIdentifiable.createCodec(Waypoint.Type::values)), Waypoint.Type.WAYPOINT, SkyblockModOptions::emptyConsumer);
     @SuppressWarnings("SuspiciousNameCombination")
     public final List<List<Pair<String, SimpleOption<?>>>> optionsList = List.of(List.of(new Pair<>("dungeonMap", dungeonMap), new Pair<>("dungeonMap.scale", dungeonMapScale), new Pair<>("dungeonMap.offset.x", dungeonMapX), new Pair<>("dungeonMap.offset.y", dungeonMapY), new Pair<>("dungeonScore.270", dungeonScore270), new Pair<>("dungeonScore.270.text", dungeonScore270Text), new Pair<>("dungeonScore.300", dungeonScore300), new Pair<>("dungeonScore.300.text", dungeonScore300Text), new Pair<>("experiments.chronomatron", experimentChronomatron), new Pair<>("experiments.superpairs", experimentSuperpairs), new Pair<>("experiments.ultrasequencer", experimentUltrasequencer), new Pair<>("fairySouls", fairySouls), new Pair<>("fishing", fishing), new Pair<>("lividColor", lividColor), new Pair<>("lividColor.text", lividColorText), new Pair<>("mythologicalRitual", mythologicalRitual), new Pair<>("quiver", quiver), new Pair<>("reparty", reparty), new Pair<>("shortcuts", shortcuts), new Pair<>("waypoints", waypoints), new Pair<>("waypoints.type", waypointType)));
 

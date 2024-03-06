@@ -12,6 +12,7 @@ import com.kevinthegreat.skyblockmod.util.Commands;
 import com.kevinthegreat.skyblockmod.util.Info;
 import com.kevinthegreat.skyblockmod.util.Message;
 import com.kevinthegreat.skyblockmod.util.NEURepo;
+import com.kevinthegreat.skyblockmod.waypoint.Waypoints;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
@@ -80,6 +81,7 @@ public class SkyblockMod implements ModInitializer {
         HudRenderCallback.EVENT.register(dungeonMap::render);
         ClientReceiveMessageEvents.ALLOW_GAME.register(this::onChatMessage);
         ScreenEvents.AFTER_INIT.register(experiments::start);
+        Waypoints.init();
     }
 
     private void tick(MinecraftClient minecraftClient) {
