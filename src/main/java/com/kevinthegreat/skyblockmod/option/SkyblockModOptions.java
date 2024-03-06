@@ -5,6 +5,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.kevinthegreat.skyblockmod.SkyblockMod;
 import com.kevinthegreat.skyblockmod.mixins.accessors.GameOptionsInvoker;
+import com.kevinthegreat.skyblockmod.waypoint.Waypoint;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.JsonOps;
 import net.fabricmc.loader.api.FabricLoader;
@@ -45,8 +46,10 @@ public class SkyblockModOptions {
     public final SimpleOption<Boolean> quiver = SimpleOption.ofBoolean("skyblockmod:quiver", true);
     public final SimpleOption<Boolean> reparty = SimpleOption.ofBoolean("skyblockmod:reparty", true);
     public final SimpleOption<Boolean> shortcuts = SimpleOption.ofBoolean("skyblockmod:shortcuts", true);
+    public final SimpleOption<Boolean> waypoints = SimpleOption.ofBoolean("skyblockmod:waypoints", true);
+    public final SimpleOption<Waypoint.Type> waypointType = null;
     @SuppressWarnings("SuspiciousNameCombination")
-    public final List<List<Pair<String, SimpleOption<?>>>> optionsList = List.of(List.of(new Pair<>("dungeonMap", dungeonMap), new Pair<>("dungeonMap.scale", dungeonMapScale), new Pair<>("dungeonMap.offset.x", dungeonMapX), new Pair<>("dungeonMap.offset.y", dungeonMapY), new Pair<>("dungeonScore.270", dungeonScore270), new Pair<>("dungeonScore.270.text", dungeonScore270Text), new Pair<>("dungeonScore.300", dungeonScore300), new Pair<>("dungeonScore.300.text", dungeonScore300Text), new Pair<>("experiments.chronomatron", experimentChronomatron), new Pair<>("experiments.superpairs", experimentSuperpairs), new Pair<>("experiments.ultrasequencer", experimentUltrasequencer), new Pair<>("fairySouls", fairySouls), new Pair<>("fishing", fishing), new Pair<>("lividColor", lividColor), new Pair<>("lividColor.text", lividColorText), new Pair<>("mythologicalRitual", mythologicalRitual), new Pair<>("quiver", quiver), new Pair<>("reparty", reparty), new Pair<>("shortcuts", shortcuts)));
+    public final List<List<Pair<String, SimpleOption<?>>>> optionsList = List.of(List.of(new Pair<>("dungeonMap", dungeonMap), new Pair<>("dungeonMap.scale", dungeonMapScale), new Pair<>("dungeonMap.offset.x", dungeonMapX), new Pair<>("dungeonMap.offset.y", dungeonMapY), new Pair<>("dungeonScore.270", dungeonScore270), new Pair<>("dungeonScore.270.text", dungeonScore270Text), new Pair<>("dungeonScore.300", dungeonScore300), new Pair<>("dungeonScore.300.text", dungeonScore300Text), new Pair<>("experiments.chronomatron", experimentChronomatron), new Pair<>("experiments.superpairs", experimentSuperpairs), new Pair<>("experiments.ultrasequencer", experimentUltrasequencer), new Pair<>("fairySouls", fairySouls), new Pair<>("fishing", fishing), new Pair<>("lividColor", lividColor), new Pair<>("lividColor.text", lividColorText), new Pair<>("mythologicalRitual", mythologicalRitual), new Pair<>("quiver", quiver), new Pair<>("reparty", reparty), new Pair<>("shortcuts", shortcuts), new Pair<>("waypoints", waypoints), new Pair<>("waypoints.type", waypointType)));
 
     public static Text getGenericValueText(Text prefix, double value) {
         return GameOptions.getGenericValueText(prefix, Text.literal(String.format("%.2f", value)));

@@ -3,7 +3,7 @@ package com.kevinthegreat.skyblockmod.misc;
 import com.kevinthegreat.skyblockmod.SkyblockMod;
 import com.kevinthegreat.skyblockmod.util.ItemUtils;
 import com.kevinthegreat.skyblockmod.util.RenderHelper;
-import com.kevinthegreat.skyblockmod.util.Waypoint;
+import com.kevinthegreat.skyblockmod.waypoint.Waypoint;
 import com.mojang.brigadier.Command;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
 import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents;

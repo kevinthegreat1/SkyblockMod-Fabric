@@ -1,9 +1,11 @@
-package com.kevinthegreat.skyblockmod.util;
+package com.kevinthegreat.skyblockmod.waypoint;
 
+import com.kevinthegreat.skyblockmod.util.RenderHelper;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 
+import java.util.Arrays;
 import java.util.function.Supplier;
 
 public class Waypoint {
@@ -69,7 +71,7 @@ public class Waypoint {
         this.shouldRender = !this.shouldRender;
     }
 
-    protected float[] getColorComponents() {
+    public float[] getColorComponents() {
         return colorComponents;
     }
 
@@ -79,16 +81,21 @@ public class Waypoint {
             case OUTLINED_WAYPOINT -> {
                 float[] colorComponents = getColorComponents();
                 RenderHelper.renderFilledWithBeaconBeam(context, pos, colorComponents, alpha, throughWalls);
-//                RenderHelper.renderOutline(context, box, colorComponents, lineWidth, throughWalls);
+                RenderHelper.renderOutline(context, box, colorComponents, lineWidth, throughWalls);
             }
             case HIGHLIGHT -> RenderHelper.renderFilled(context, pos, getColorComponents(), alpha, throughWalls);
             case OUTLINED_HIGHLIGHT -> {
                 float[] colorComponents = getColorComponents();
                 RenderHelper.renderFilled(context, pos, colorComponents, alpha, throughWalls);
-//                RenderHelper.renderOutline(context, box, colorComponents, lineWidth, throughWalls);
+                RenderHelper.renderOutline(context, box, colorComponents, lineWidth, throughWalls);
             }
-//            case OUTLINE -> RenderHelper.renderOutline(context, box, getColorComponents(), lineWidth, throughWalls);
+            case OUTLINE -> RenderHelper.renderOutline(context, box, getColorComponents(), lineWidth, throughWalls);
         }
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return super.equals(obj) || obj instanceof Waypoint other && pos.equals(other.pos) && typeSupplier.get() == other.typeSupplier.get() && Arrays.equals(colorComponents, other.colorComponents) && alpha == other.alpha && lineWidth == other.lineWidth && throughWalls == other.throughWalls && shouldRender == other.shouldRender;
     }
 
     public enum Type {

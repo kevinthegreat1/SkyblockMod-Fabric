@@ -4,10 +4,15 @@ import com.kevinthegreat.skyblockmod.mixins.accessors.BeaconBlockEntityRendererI
 import com.mojang.blaze3d.systems.RenderSystem;
 import me.x150.renderer.render.Renderer3d;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.render.*;
 import net.minecraft.client.render.block.entity.BeaconBlockEntityRenderer;
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.text.OrderedText;
+import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
 import org.joml.Matrix3f;
 import org.joml.Matrix4f;
@@ -40,6 +45,40 @@ public class RenderHelper {
     }
 
     /**
+     * Renders the outline of a box with the specified color components and line width.
+     * This does not use renderer since renderer draws outline using debug lines with a fixed width.
+     *
+     * @author AzureAaron
+     * @author minor edits by Kevinthegreat
+     */
+    public static void renderOutline(WorldRenderContext context, Box box, float[] colorComponents, float lineWidth, boolean throughWalls) {
+        MatrixStack matrices = context.matrixStack();
+        Vec3d camera = context.camera().getPos();
+        Tessellator tessellator = RenderSystem.renderThreadTesselator();
+        BufferBuilder buffer = tessellator.getBuffer();
+
+        RenderSystem.setShader(GameRenderer::getRenderTypeLinesProgram);
+        RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
+        RenderSystem.lineWidth(lineWidth);
+        RenderSystem.disableCull();
+        RenderSystem.enableDepthTest();
+        RenderSystem.depthFunc(throughWalls ? GL11.GL_ALWAYS : GL11.GL_LEQUAL);
+
+        matrices.push();
+        matrices.translate(-camera.getX(), -camera.getY(), -camera.getZ());
+
+        buffer.begin(VertexFormat.DrawMode.LINES, VertexFormats.LINES);
+        WorldRenderer.drawBox(matrices, buffer, box, colorComponents[0], colorComponents[1], colorComponents[2], 1f);
+        tessellator.draw();
+
+        matrices.pop();
+        RenderSystem.lineWidth(1f);
+        RenderSystem.enableCull();
+        RenderSystem.disableDepthTest();
+        RenderSystem.depthFunc(GL11.GL_LEQUAL);
+    }
+
+    /**
      * Draws lines from point to point.<br><br>
      * <p>
      * Tip: To draw lines from the center of a block, offset the X, Y and Z each by 0.5
@@ -52,6 +91,9 @@ public class RenderHelper {
      * @param alpha           The alpha of the lines
      * @param lineWidth       The width of the lines
      * @param throughWalls    Whether to render through walls or not
+     *
+     * @author AzureAaron
+     * @author minor edits by Kevinthegreat
      */
     public static void renderLinesFromPoints(WorldRenderContext context, Vec3d[] points, float[] colorComponents, float alpha, float lineWidth, boolean throughWalls) {
         Vec3d camera = context.camera().getPos();
@@ -96,5 +138,54 @@ public class RenderHelper {
         RenderSystem.lineWidth(1f);
         RenderSystem.enableCull();
         RenderSystem.depthFunc(GL11.GL_LEQUAL);
+    }
+
+    public static void renderText(WorldRenderContext context, Text text, Vec3d pos, boolean throughWalls) {
+        renderText(context, text, pos, 1, throughWalls);
+    }
+
+    public static void renderText(WorldRenderContext context, Text text, Vec3d pos, float scale, boolean throughWalls) {
+        renderText(context, text, pos, scale, 0, throughWalls);
+    }
+
+    public static void renderText(WorldRenderContext context, Text text, Vec3d pos, float scale, float yOffset, boolean throughWalls) {
+        renderText(context, text.asOrderedText(), pos, scale, yOffset, throughWalls);
+    }
+
+    /**
+     * Renders text in the world space.
+     *
+     * @param throughWalls whether the text should be able to be seen through walls or not.
+     *
+     * @author AzureAaron
+     * @author minor edits by Kevinthegreat
+     */
+    public static void renderText(WorldRenderContext context, OrderedText text, Vec3d pos, float scale, float yOffset, boolean throughWalls) {
+        MatrixStack matrices = context.matrixStack();
+        Vec3d camera = context.camera().getPos();
+        TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
+
+        scale *= 0.025f;
+
+        matrices.push();
+        matrices.translate(pos.getX() - camera.getX(), pos.getY() - camera.getY(), pos.getZ() - camera.getZ());
+        matrices.peek().getPositionMatrix().mul(RenderSystem.getModelViewMatrix());
+        matrices.multiply(context.camera().getRotation());
+        matrices.scale(-scale, -scale, scale);
+
+        Matrix4f positionMatrix = matrices.peek().getPositionMatrix();
+        float xOffset = -textRenderer.getWidth(text) / 2f;
+
+        Tessellator tessellator = RenderSystem.renderThreadTesselator();
+        BufferBuilder buffer = tessellator.getBuffer();
+        VertexConsumerProvider.Immediate consumers = VertexConsumerProvider.immediate(buffer);
+
+        RenderSystem.depthFunc(throughWalls ? GL11.GL_ALWAYS : GL11.GL_LEQUAL);
+
+        textRenderer.draw(text, xOffset, yOffset, 0xFFFFFFFF, false, positionMatrix, consumers, TextRenderer.TextLayerType.SEE_THROUGH, 0, LightmapTextureManager.MAX_LIGHT_COORDINATE);
+        consumers.draw();
+
+        RenderSystem.depthFunc(GL11.GL_LEQUAL);
+        matrices.pop();
     }
 }
