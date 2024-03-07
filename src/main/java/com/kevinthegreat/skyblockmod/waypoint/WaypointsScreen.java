@@ -49,20 +49,8 @@ public class WaypointsScreen extends AbstractWaypointsScreen {
     }
 
     @Override
-    protected boolean isEnabled(WaypointCategory waypointCategory) {
-        return waypointCategory.waypoints().stream().allMatch(Waypoint::shouldRender);
-    }
-
-    @Override
     protected boolean isEnabled(NamedWaypoint waypoint) {
         return waypoint.shouldRender();
-    }
-
-    @Override
-    protected void enabledChanged(WaypointCategory waypointCategory, boolean enabled) {
-        for (NamedWaypoint waypoint : waypointCategory.waypoints()) {
-            waypoint.setShouldRender(enabled);
-        }
     }
 
     @Override

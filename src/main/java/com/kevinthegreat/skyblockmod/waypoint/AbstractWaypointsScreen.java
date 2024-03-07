@@ -19,11 +19,7 @@ public abstract class AbstractWaypointsScreen extends Screen {
         this.waypoints = waypoints;
     }
 
-    protected abstract boolean isEnabled(WaypointCategory waypointCategory);
-
     protected abstract boolean isEnabled(NamedWaypoint waypoint);
-
-    protected abstract void enabledChanged(WaypointCategory waypointCategory, boolean enabled);
 
     protected abstract void enabledChanged(NamedWaypoint waypoint, boolean enabled);
 }

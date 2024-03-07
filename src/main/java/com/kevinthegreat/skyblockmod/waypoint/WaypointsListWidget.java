@@ -26,13 +26,7 @@ public class WaypointsListWidget extends ElementListWidget<WaypointsListWidget.A
         this.screen = screen;
         island = SkyblockMod.skyblockMod.info.locationRaw;
         waypoints = (List<WaypointCategory>) screen.waypoints.get(island);
-        for (WaypointCategory category : waypoints) {
-            WaypointCategoryEntry categoryEntry = new WaypointCategoryEntry(category);
-            addEntry(categoryEntry);
-            for (NamedWaypoint waypoint : category.waypoints()) {
-                addEntry(new WaypointEntry(categoryEntry, waypoint));
-            }
-        }
+        updateEntries();
     }
 
     @Override
@@ -43,6 +37,16 @@ public class WaypointsListWidget extends ElementListWidget<WaypointsListWidget.A
     @Override
     protected int getScrollbarPositionX() {
         return super.getScrollbarPositionX() + 50;
+    }
+
+    protected void updateEntries() {
+        for (WaypointCategory category : waypoints) {
+            WaypointCategoryEntry categoryEntry = new WaypointCategoryEntry(category);
+            addEntry(categoryEntry);
+            for (NamedWaypoint waypoint : category.waypoints()) {
+                addEntry(new WaypointEntry(categoryEntry, waypoint));
+            }
+        }
     }
 
     Optional<WaypointCategoryEntry> getCategory() {
@@ -87,7 +91,7 @@ public class WaypointsListWidget extends ElementListWidget<WaypointsListWidget.A
 
         public WaypointCategoryEntry(WaypointCategory category) {
             this.category = category;
-            enabled = CheckboxWidget.builder(Text.literal(""), client.textRenderer).checked(screen.isEnabled(category)).callback((checkbox, checked) -> screen.enabledChanged(category, checked)).build();
+            enabled = CheckboxWidget.builder(Text.literal(""), client.textRenderer).checked(category.waypoints().stream().allMatch(screen::isEnabled)).callback((checkbox, checked) -> category.waypoints().forEach(waypoint -> screen.enabledChanged(waypoint, checked))).build();
             buttonNewWaypoint = ButtonWidget.builder(Text.translatable("skyblocker.waypoints.new"), buttonNewWaypoint -> {
                 WaypointEntry waypointEntry = new WaypointEntry(this);
                 int entryIndex;

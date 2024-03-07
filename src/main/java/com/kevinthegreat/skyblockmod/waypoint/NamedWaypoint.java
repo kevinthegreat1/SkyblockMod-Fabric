@@ -1,13 +1,11 @@
 package com.kevinthegreat.skyblockmod.waypoint;
 
 import com.google.common.primitives.Floats;
-import com.google.gson.JsonObject;
 import com.kevinthegreat.skyblockmod.SkyblockMod;
+import com.kevinthegreat.skyblockmod.util.RenderHelper;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import com.kevinthegreat.skyblockmod.util.PosUtils;
-import com.kevinthegreat.skyblockmod.util.RenderHelper;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext;
 import net.minecraft.text.Text;
 import net.minecraft.text.TextCodecs;
@@ -27,6 +25,14 @@ public class NamedWaypoint extends Waypoint {
             ).fieldOf("colorComponents").forGetter(secretWaypoint -> secretWaypoint.colorComponents),
             Codec.BOOL.fieldOf("shouldRender").forGetter(Waypoint::shouldRender)
     ).apply(instance, NamedWaypoint::new));
+    public static final Codec<NamedWaypoint> SKYTILS_CODEC = RecordCodecBuilder.create(instance -> instance.group(
+            Codec.INT.fieldOf("x").forGetter(waypoint -> waypoint.pos.getX()),
+            Codec.INT.fieldOf("y").forGetter(waypoint -> waypoint.pos.getY()),
+            Codec.INT.fieldOf("z").forGetter(waypoint -> waypoint.pos.getZ()),
+            Codec.STRING.fieldOf("name").forGetter(waypoint -> waypoint.name.getString()),
+            Codec.INT.fieldOf("color").forGetter(waypoint -> (int) (waypoint.colorComponents[0] * 255) << 16 | (int) (waypoint.colorComponents[1] * 255) << 8 | (int) (waypoint.colorComponents[2] * 255)),
+            Codec.BOOL.fieldOf("enabled").forGetter(Waypoint::shouldRender)
+    ).apply(instance, NamedWaypoint::fromSkytils));
     protected final Text name;
     protected final Vec3d centerPos;
 
@@ -56,9 +62,8 @@ public class NamedWaypoint extends Waypoint {
         this.centerPos = pos.toCenterPos();
     }
 
-    public static NamedWaypoint fromSkytilsJson(JsonObject waypointJson) {
-        int color = waypointJson.get("color").getAsInt();
-        return new NamedWaypoint(PosUtils.parsePosJson(waypointJson), waypointJson.get("name").getAsString(), () -> SkyblockMod.skyblockMod.options.waypointType.getValue(), new float[]{((color & 0x00FF0000) >> 16) / 255f, ((color & 0x0000FF00) >> 8) / 255f, (color & 0x000000FF) / 255f}, waypointJson.get("enabled").getAsBoolean());
+    public static NamedWaypoint fromSkytils(int x, int y, int z, String name, int color, boolean enabled) {
+        return new NamedWaypoint(new BlockPos(x, y, z), name, new float[]{((color & 0x00FF0000) >> 16) / 255f, ((color & 0x0000FF00) >> 8) / 255f, (color & 0x000000FF) / 255f}, enabled);
     }
 
     public Text getName() {
