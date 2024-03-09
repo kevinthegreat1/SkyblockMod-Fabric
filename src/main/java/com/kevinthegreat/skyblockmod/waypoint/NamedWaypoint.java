@@ -3,6 +3,7 @@ package com.kevinthegreat.skyblockmod.waypoint;
 import com.google.common.primitives.Floats;
 import com.kevinthegreat.skyblockmod.SkyblockMod;
 import com.kevinthegreat.skyblockmod.util.RenderHelper;
+import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -29,7 +30,7 @@ public class NamedWaypoint extends Waypoint {
             Codec.INT.fieldOf("x").forGetter(waypoint -> waypoint.pos.getX()),
             Codec.INT.fieldOf("y").forGetter(waypoint -> waypoint.pos.getY()),
             Codec.INT.fieldOf("z").forGetter(waypoint -> waypoint.pos.getZ()),
-            Codec.STRING.fieldOf("name").forGetter(waypoint -> waypoint.name.getString()),
+            Codec.either(Codec.STRING, Codec.INT).xmap(either -> either.map(str -> str, Object::toString), Either::left).fieldOf("name").forGetter(waypoint -> waypoint.name.getString()),
             Codec.INT.fieldOf("color").forGetter(waypoint -> (int) (waypoint.colorComponents[0] * 255) << 16 | (int) (waypoint.colorComponents[1] * 255) << 8 | (int) (waypoint.colorComponents[2] * 255)),
             Codec.BOOL.fieldOf("enabled").forGetter(Waypoint::shouldRender)
     ).apply(instance, NamedWaypoint::fromSkytils));
@@ -64,6 +65,10 @@ public class NamedWaypoint extends Waypoint {
 
     public static NamedWaypoint fromSkytils(int x, int y, int z, String name, int color, boolean enabled) {
         return new NamedWaypoint(new BlockPos(x, y, z), name, new float[]{((color & 0x00FF0000) >> 16) / 255f, ((color & 0x0000FF00) >> 8) / 255f, (color & 0x000000FF) / 255f}, enabled);
+    }
+
+    public NamedWaypoint copy() {
+        return new NamedWaypoint(pos, name, typeSupplier, colorComponents, shouldRender());
     }
 
     public Text getName() {

@@ -45,6 +45,12 @@ dependencies {
 
 	// Apache Commons Math
 	include implementation("org.apache.commons:commons-math3:${project.commons_math_version}")
+
+	testImplementation "net.fabricmc:fabric-loader-junit:${project.loader_version}"
+}
+
+test {
+	useJUnitPlatform()
 }
 
 processResources {

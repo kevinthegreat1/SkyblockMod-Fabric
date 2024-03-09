@@ -47,7 +47,7 @@
     "skyblocker.waypoints.shareWaypoints": "Share Waypoints",
     "skyblocker.waypoints.importWaypointsSkytils": "Import Waypoints from Clipboard (Skytils Format)",
     "skyblocker.waypoints.importWaypointsSnoopy": "Import Waypoints from Clipboard (Snoopy Format) (Coming Soon)",
-    "skyblocker.waypoints.exportWaypointsSkytils": "Export Waypoints (Skytils Format)",
+    "skyblocker.waypoints.exportWaypointsSkytils": "Export Waypoints to Clipboard (Skytils Format)",
     "skyblocker.waypoints.deleteQuestion": "Are you sure you want to remove this waypoint?",
     "skyblocker.waypoints.deleteWarning": "Waypoint '%s' will be lost forever! (A long time!)"
 }

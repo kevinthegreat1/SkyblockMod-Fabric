@@ -2,12 +2,15 @@ package com.kevinthegreat.skyblockmod.waypoint;
 
 import com.google.common.collect.Multimap;
 import com.google.common.collect.MultimapBuilder;
+import com.google.common.collect.Multimaps;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.kevinthegreat.skyblockmod.SkyblockMod;
+import com.mojang.brigadier.Command;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.JsonOps;
+import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
@@ -22,7 +25,11 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Base64;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
+import java.util.function.Function;
+
+import static net.fabricmc.fabric.api.client.command.v2.ClientCommandManager.literal;
 
 public class Waypoints {
     public static final Logger LOGGER = LoggerFactory.getLogger(Waypoints.class);
@@ -35,6 +42,11 @@ public class Waypoints {
         loadWaypoints();
         ClientLifecycleEvents.CLIENT_STOPPING.register(Waypoints::saveWaypoints);
         WorldRenderEvents.AFTER_TRANSLUCENT.register(Waypoints::render);
+        ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) -> dispatcher.register(literal("sbm").then(literal("waypoints").executes(context -> {
+            MinecraftClient client = MinecraftClient.getInstance();
+            SkyblockMod.skyblockMod.setNextScreen(new WaypointsScreen(client.currentScreen));
+            return Command.SINGLE_SUCCESS;
+        }))));
     }
 
     public static void loadWaypoints() {
@@ -48,20 +60,34 @@ public class Waypoints {
     }
 
     public static List<WaypointCategory> fromSkytilsBase64(String base64) {
-        return fromSkytilsJson(new String(Base64.getDecoder().decode(base64)));
+        try {
+            if (base64.startsWith("<Skytils-Waypoint-Data>(V")) {
+                int version = Integer.parseInt(base64.substring(26, base64.indexOf(')')));
+                if (version == 1) {
+                    return fromSkytilsJson(new String(Base64.getDecoder().decode(base64.substring(base64.indexOf(':') + 1))));
+                } else {
+                    LOGGER.error("[Skyblocker Waypoints] Unknown Skytils waypoint data version: " + version);
+                }
+            } else return fromSkytilsJson(new String(Base64.getDecoder().decode(base64)));
+        } catch (NumberFormatException e) {
+            LOGGER.error("[Skyblocker Waypoints] Encountered exception while parsing Skytils waypoint data version", e);
+        } catch (IllegalArgumentException e) {
+            LOGGER.error("[Skyblocker Waypoints] Encountered exception while decoding Skytils waypoint data", e);
+        }
+        return Collections.emptyList();
     }
 
     public static List<WaypointCategory> fromSkytilsJson(String waypointCategories) {
         return SKYTILS_CODEC.parse(JsonOps.INSTANCE, SkyblockMod.GSON.fromJson(waypointCategories, JsonObject.class).getAsJsonArray("categories")).resultOrPartial(LOGGER::error).orElseThrow();
     }
 
-    public static String toSkytilsBase64(Collection<WaypointCategory> waypointCategories) {
+    public static String toSkytilsBase64(List<WaypointCategory> waypointCategories) {
         return Base64.getEncoder().encodeToString(toSkytilsJson(waypointCategories).getBytes());
     }
 
-    public static String toSkytilsJson(Collection<WaypointCategory> waypointCategories) {
+    public static String toSkytilsJson(List<WaypointCategory> waypointCategories) {
         JsonObject waypointCategoriesJson = new JsonObject();
-        waypointCategoriesJson.add("categories", SKYTILS_CODEC.encodeStart(JsonOps.INSTANCE, List.copyOf(waypointCategories)).resultOrPartial(LOGGER::error).orElseThrow());
+        waypointCategoriesJson.add("categories", SKYTILS_CODEC.encodeStart(JsonOps.INSTANCE, waypointCategories).resultOrPartial(LOGGER::error).orElseThrow());
         return SkyblockMod.GSON.toJson(waypointCategoriesJson);
     }
 
@@ -73,6 +99,10 @@ public class Waypoints {
         } catch (Exception e) {
             LOGGER.error("[Skyblocker Waypoints] Encountered exception while saving waypoints", e);
         }
+    }
+
+    public static Multimap<String, WaypointCategory> waypointsDeepCopy() {
+        return waypoints.values().stream().map(WaypointCategory::deepCopy).collect(Multimaps.toMultimap(WaypointCategory::island, Function.identity(), () -> MultimapBuilder.hashKeys().arrayListValues().build()));
     }
 
     public static void render(WorldRenderContext context) {

@@ -9,19 +9,10 @@ import net.minecraft.client.gui.widget.SimplePositioningWidget;
 import net.minecraft.screen.ScreenTexts;
 import net.minecraft.text.Text;
 
-import java.awt.*;
-import java.awt.datatransfer.Clipboard;
-import java.awt.datatransfer.DataFlavor;
-import java.awt.datatransfer.StringSelection;
-import java.awt.datatransfer.UnsupportedFlavorException;
-import java.io.IOException;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
-public class WaypointsShareScreen extends AbstractWaypointsScreen {
-    private static final Clipboard CLIPBOARD = Toolkit.getDefaultToolkit().getSystemClipboard();
-    private WaypointsListWidget waypointsListWidget;
+public class WaypointsShareScreen extends AbstractWaypointsScreen<WaypointsScreen> {
     private final Set<NamedWaypoint> selectedWaypoints = new HashSet<>();
 
     protected WaypointsShareScreen(WaypointsScreen parent, Multimap<String, WaypointCategory> waypoints) {
@@ -31,31 +22,19 @@ public class WaypointsShareScreen extends AbstractWaypointsScreen {
     @Override
     protected void init() {
         super.init();
-        waypointsListWidget = addDrawableChild(new WaypointsListWidget(client, this, width, height - 96, 32, 24));
         GridWidget gridWidget = new GridWidget();
         gridWidget.getMainPositioner().marginX(5).marginY(2);
         GridWidget.Adder adder = gridWidget.createAdder(2);
         adder.add(ButtonWidget.builder(Text.translatable("skyblocker.waypoints.importWaypointsSkytils"), buttonImport -> {
-            try {
-                for (WaypointCategory waypointCategory : Waypoints.fromSkytilsBase64(CLIPBOARD.getData(DataFlavor.stringFlavor).toString())) {
-                    selectedWaypoints.addAll(waypointCategory.waypoints());
-                    waypoints.put(waypointCategory.island(), waypointCategory);
-                    waypointsListWidget.updateEntries();
-                }
-            } catch (UnsupportedFlavorException e) {
-                Waypoints.LOGGER.error("[Skyblocker Waypoints] Encountered exception while parsing clipboard data", e);
-            } catch (IOException e) {
-                Waypoints.LOGGER.error("[Skyblocker Waypoints] Encountered exception while reading clipboard data", e);
+            for (WaypointCategory waypointCategory : Waypoints.fromSkytilsBase64(client.keyboard.getClipboard())) {
+                selectedWaypoints.addAll(waypointCategory.waypoints());
+                waypoints.put(waypointCategory.island(), waypointCategory);
             }
+            waypointsListWidget.updateEntries();
         }).build());
         adder.add(ButtonWidget.builder(Text.translatable("skyblocker.waypoints.importWaypointsSnoopy"), buttonImport -> {}).build());
         adder.add(ButtonWidget.builder(ScreenTexts.BACK, buttonBack -> close()).build());
-        adder.add(ButtonWidget.builder(Text.translatable("skyblocker.waypoints.exportWaypointsSkytils"), buttonExport -> {
-            List<WaypointCategory> exportWaypoints = waypoints.values().stream().map(WaypointCategory::new).toList();
-            exportWaypoints.forEach(waypointCategory -> waypointCategory.waypoints().removeIf(waypoint -> !selectedWaypoints.contains(waypoint)));
-            StringSelection exportString = new StringSelection(Waypoints.toSkytilsBase64(exportWaypoints));
-            CLIPBOARD.setContents(exportString, exportString);
-        }).build());
+        adder.add(ButtonWidget.builder(Text.translatable("skyblocker.waypoints.exportWaypointsSkytils"), buttonExport -> client.keyboard.setClipboard(Waypoints.toSkytilsBase64(waypoints.values().stream().map(WaypointCategory.filter(selectedWaypoints::contains)).filter(waypointCategory -> !waypointCategory.waypoints().isEmpty()).toList()))).build());
         gridWidget.refreshPositions();
         SimplePositioningWidget.setPos(gridWidget, 0, this.height - 64, this.width, 64);
         gridWidget.forEachChild(this::addDrawableChild);
@@ -81,8 +60,8 @@ public class WaypointsShareScreen extends AbstractWaypointsScreen {
     @SuppressWarnings("DataFlowIssue")
     @Override
     public void close() {
-        ((WaypointsScreen) parent).waypoints.clear();
-        ((WaypointsScreen) parent).waypoints.putAll(waypoints);
+        parent.waypoints.clear();
+        parent.waypoints.putAll(waypoints);
         client.setScreen(parent);
     }
 }

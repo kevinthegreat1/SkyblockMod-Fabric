@@ -8,24 +8,17 @@ import net.minecraft.client.gui.widget.SimplePositioningWidget;
 import net.minecraft.screen.ScreenTexts;
 import net.minecraft.text.Text;
 
-public class WaypointsScreen extends AbstractWaypointsScreen {
-    private WaypointsListWidget waypointsListWidget;
+public class WaypointsScreen extends AbstractWaypointsScreen<Screen> {
     private ButtonWidget buttonNew;
     private ButtonWidget buttonDone;
 
-    protected WaypointsScreen() {
-        this(null);
-    }
-
     public WaypointsScreen(Screen parent) {
-        super(Text.translatable("skyblocker.waypoints.config"), parent);
-        Waypoints.waypoints.forEach((island, category) -> waypoints.put(island, new WaypointCategory(category)));
+        super(Text.translatable("skyblocker.waypoints.config"), parent, Waypoints.waypointsDeepCopy());
     }
 
     @Override
     protected void init() {
         super.init();
-        waypointsListWidget = addDrawableChild(new WaypointsListWidget(client, this, width, height - 96, 32, 24));
         GridWidget gridWidget = new GridWidget();
         gridWidget.getMainPositioner().marginX(5).marginY(2);
         GridWidget.Adder adder = gridWidget.createAdder(2);
@@ -63,8 +56,6 @@ public class WaypointsScreen extends AbstractWaypointsScreen {
         Waypoints.waypoints.putAll(waypoints);
         Waypoints.saveWaypoints(client);
     }
-
-    private void updateButtons() {}
 
     @SuppressWarnings("DataFlowIssue")
     @Override
