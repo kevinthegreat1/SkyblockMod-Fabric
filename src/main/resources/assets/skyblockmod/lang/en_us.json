@@ -39,6 +39,8 @@
     "skyblockmod:reparty": "Reparty",
     "skyblockmod:reparty.repartying": "Repartying...",
     "skyblockmod:shortcuts": "Shortcuts",
+    "skyblockmod:waypoints": "Waypoints",
+    "skyblockmod:waypoints.type": "Waypoint Type",
 
     "skyblocker.waypoints.config": "Waypoints Config",
     "skyblocker.waypoints.newCategory": "New Waypoint Category",

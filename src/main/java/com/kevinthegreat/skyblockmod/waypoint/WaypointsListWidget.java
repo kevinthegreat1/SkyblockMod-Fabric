@@ -1,6 +1,5 @@
 package com.kevinthegreat.skyblockmod.waypoint;
 
-import com.kevinthegreat.skyblockmod.SkyblockMod;
 import com.kevinthegreat.skyblockmod.mixins.CheckboxWidgetAccessor;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
@@ -19,15 +18,13 @@ import java.util.Optional;
 
 public class WaypointsListWidget extends ElementListWidget<WaypointsListWidget.AbstractWaypointEntry> {
     private final AbstractWaypointsScreen<?> screen;
-    private final String island;
-    private final List<WaypointCategory> waypoints;
+    private String island;
+    private List<WaypointCategory> waypoints;
 
     public WaypointsListWidget(MinecraftClient client, AbstractWaypointsScreen<?> screen, int width, int height, int y, int itemHeight) {
         super(client, width, height, y, itemHeight);
         this.screen = screen;
-        island = SkyblockMod.skyblockMod.info.locationRaw;
-        waypoints = (List<WaypointCategory>) screen.waypoints.get(island);
-        updateEntries();
+        setIsland(screen.island);
     }
 
     @Override
@@ -47,6 +44,12 @@ public class WaypointsListWidget extends ElementListWidget<WaypointsListWidget.A
             return Optional.of(waypointEntry.category);
         }
         return Optional.empty();
+    }
+
+    void setIsland(String island) {
+        this.island = island;
+        waypoints = (List<WaypointCategory>) screen.waypoints.get(island);
+        updateEntries();
     }
 
     void addWaypointCategoryAfterSelected() {
