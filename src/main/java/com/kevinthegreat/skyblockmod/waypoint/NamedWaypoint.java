@@ -62,7 +62,7 @@ public class NamedWaypoint extends Waypoint {
     }
 
     public static NamedWaypoint fromSkytils(int x, int y, int z, String name, int color, boolean enabled) {
-        float alpha = ((color & 0xFF000000) >> 24) / 255f;
+        float alpha = ((color & 0xFF000000) >>> 24) / 255f;
         if (alpha == 0) {
             alpha = DEFAULT_HIGHLIGHT_ALPHA;
         }
