@@ -30,7 +30,7 @@ public abstract class AbstractWaypointsScreen<T extends Screen> extends Screen {
     protected void init() {
         super.init();
         waypointsListWidget = addDrawableChild(new WaypointsListWidget(client, this, width, height - 96, 32, 24));
-        islandWidget = addDrawableChild(new DropdownWidget<>(client, width - 158, 8, 150, Arrays.asList(Location.values()), this::islandChanged, Location.from(island)));
+        islandWidget = addDrawableChild(new DropdownWidget<>(client, width - 160, 8, 150, Arrays.asList(Location.values()), this::islandChanged, Location.from(island)));
     }
 
     @Override

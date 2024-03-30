@@ -1,7 +1,6 @@
 package com.kevinthegreat.skyblockmod.waypoint;
 
 import com.google.common.collect.Multimap;
-import com.google.common.collect.MultimapBuilder;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.GridWidget;
@@ -16,7 +15,7 @@ public class WaypointsShareScreen extends AbstractWaypointsScreen<WaypointsScree
     private final Set<NamedWaypoint> selectedWaypoints = new HashSet<>();
 
     protected WaypointsShareScreen(WaypointsScreen parent, Multimap<String, WaypointCategory> waypoints) {
-        super(Text.translatable("skyblocker.waypoints.shareWaypoints"), parent, MultimapBuilder.hashKeys().arrayListValues().build(waypoints));
+        super(Text.translatable("skyblocker.waypoints.shareWaypoints"), parent, waypoints);
     }
 
     @Override
@@ -60,8 +59,6 @@ public class WaypointsShareScreen extends AbstractWaypointsScreen<WaypointsScree
     @SuppressWarnings("DataFlowIssue")
     @Override
     public void close() {
-        parent.waypoints.clear();
-        parent.waypoints.putAll(waypoints);
         client.setScreen(parent);
     }
 }

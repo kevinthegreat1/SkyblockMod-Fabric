@@ -5,10 +5,7 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.Element;
 import net.minecraft.client.gui.Selectable;
-import net.minecraft.client.gui.widget.ButtonWidget;
-import net.minecraft.client.gui.widget.CheckboxWidget;
-import net.minecraft.client.gui.widget.ClickableWidget;
-import net.minecraft.client.gui.widget.ElementListWidget;
+import net.minecraft.client.gui.widget.*;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 
@@ -90,13 +87,14 @@ public class WaypointsListWidget extends ElementListWidget<WaypointsListWidget.A
         }
     }
 
-    protected static abstract class AbstractWaypointEntry extends ElementListWidget.Entry<AbstractWaypointEntry> {
+    protected abstract static class AbstractWaypointEntry extends ElementListWidget.Entry<AbstractWaypointEntry> {
     }
 
     protected class WaypointCategoryEntry extends AbstractWaypointEntry {
         private final WaypointCategory category;
         private final List<ClickableWidget> children;
         private final CheckboxWidget enabled;
+        private final TextFieldWidget nameField;
         private final ButtonWidget buttonNewWaypoint;
         private final ButtonWidget buttonDelete;
 
@@ -107,6 +105,8 @@ public class WaypointsListWidget extends ElementListWidget<WaypointsListWidget.A
         public WaypointCategoryEntry(WaypointCategory category) {
             this.category = category;
             enabled = CheckboxWidget.builder(Text.literal(""), client.textRenderer).checked(!category.waypoints().isEmpty() && category.waypoints().stream().allMatch(screen::isEnabled)).callback((checkbox, checked) -> category.waypoints().forEach(waypoint -> screen.enabledChanged(waypoint, checked))).build();
+            nameField = new TextFieldWidget(client.textRenderer, 70, 20, Text.literal("Name"));
+            nameField.setText(category.name());
             buttonNewWaypoint = ButtonWidget.builder(Text.translatable("skyblocker.waypoints.new"), buttonNewWaypoint -> {
                 WaypointEntry waypointEntry = new WaypointEntry(this);
                 int entryIndex;
@@ -128,8 +128,8 @@ public class WaypointsListWidget extends ElementListWidget<WaypointsListWidget.A
                 }
                 WaypointsListWidget.this.children().remove(this);
                 waypoints.remove(category);
-            }).width(50).build();
-            children = List.of(enabled, buttonNewWaypoint, buttonDelete);
+            }).width(45).build();
+            children = List.of(enabled, nameField, buttonNewWaypoint, buttonDelete);
         }
 
         @Override
@@ -144,11 +144,12 @@ public class WaypointsListWidget extends ElementListWidget<WaypointsListWidget.A
 
         @Override
         public void render(DrawContext context, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
-            context.drawTextWithShadow(client.textRenderer, category.name(), x + 25, y + 5, 0xFFFFFF);
-            enabled.setPosition(x, y);
-            buttonNewWaypoint.setPosition(x + entryWidth - 133, y);
-            buttonDelete.setPosition(x + entryWidth - 54, y);
+            enabled.setPosition(x, y + 1);
+            nameField.setPosition(x + 22, y);
+            buttonNewWaypoint.setPosition(x + entryWidth - 125, y);
+            buttonDelete.setPosition(x + entryWidth - 45, y);
             enabled.render(context, mouseX, mouseY, tickDelta);
+            nameField.render(context, mouseX, mouseY, tickDelta);
             buttonNewWaypoint.render(context, mouseX, mouseY, tickDelta);
             buttonDelete.render(context, mouseX, mouseY, tickDelta);
         }
@@ -159,6 +160,11 @@ public class WaypointsListWidget extends ElementListWidget<WaypointsListWidget.A
         private final NamedWaypoint waypoint;
         private final List<ClickableWidget> children;
         private final CheckboxWidget enabled;
+        private final TextFieldWidget nameField;
+        private final TextFieldWidget xField;
+        private final TextFieldWidget yField;
+        private final TextFieldWidget zField;
+        private final TextFieldWidget colorField;
         private final ButtonWidget buttonDelete;
 
         public WaypointEntry(WaypointCategoryEntry category) {
@@ -169,11 +175,21 @@ public class WaypointsListWidget extends ElementListWidget<WaypointsListWidget.A
             this.category = category;
             this.waypoint = waypoint;
             enabled = CheckboxWidget.builder(Text.literal(""), client.textRenderer).checked(screen.isEnabled(waypoint)).callback((checkbox, checked) -> screen.enabledChanged(waypoint, checked)).build();
+            nameField = new TextFieldWidget(client.textRenderer, 70, 20, Text.literal("Name"));
+            nameField.setText(waypoint.getName().getString());
+            xField = new TextFieldWidget(client.textRenderer, 26, 20, Text.literal("X"));
+            xField.setText(Integer.toString(waypoint.pos.getX()));
+            yField = new TextFieldWidget(client.textRenderer, 26, 20, Text.literal("Y"));
+            yField.setText(Integer.toString(waypoint.pos.getY()));
+            zField = new TextFieldWidget(client.textRenderer, 26, 20, Text.literal("Z"));
+            zField.setText(Integer.toString(waypoint.pos.getZ()));
+            colorField = new TextFieldWidget(client.textRenderer, 44, 20, Text.literal("Color"));
+            colorField.setText(String.format("%02X%02X%02X", (int) (waypoint.getColorComponents()[0] * 255), (int) (waypoint.getColorComponents()[1] * 255), (int) (waypoint.getColorComponents()[2] * 255)));
             buttonDelete = ButtonWidget.builder(Text.translatable("selectServer.deleteButton"), button -> {
                 category.category.waypoints().remove(waypoint);
                 WaypointsListWidget.this.children().remove(this);
-            }).width(50).build();
-            children = List.of(enabled, buttonDelete);
+            }).width(45).build();
+            children = List.of(enabled, nameField, xField, yField, zField, colorField, buttonDelete);
         }
 
         @Override
@@ -188,13 +204,23 @@ public class WaypointsListWidget extends ElementListWidget<WaypointsListWidget.A
 
         @Override
         public void render(DrawContext context, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
-            context.drawTextWithShadow(client.textRenderer, waypoint.getName(), x + 35, y + 5, 0xFFFFFF);
-            context.drawTextWithShadow(client.textRenderer, waypoint.pos.toShortString(), width / 2 - 25, y + 5, 0xFFFFFF);
-            float[] colorComponents = waypoint.getColorComponents();
-            context.drawTextWithShadow(client.textRenderer, String.format("#%02X%02X%02X", (int) (colorComponents[0] * 255), (int) (colorComponents[1] * 255), (int) (colorComponents[2] * 255)), width / 2 + 25, y + 5, 0xFFFFFF);
-            enabled.setPosition(x + 10, y);
-            buttonDelete.setPosition(x + entryWidth - 54, y);
+            context.drawTextWithShadow(client.textRenderer, "X:", width / 2 - 51, y + 6, 0xFFFFFF);
+            context.drawTextWithShadow(client.textRenderer, "Y:", width / 2 - 14, y + 6, 0xFFFFFF);
+            context.drawTextWithShadow(client.textRenderer, "Z:", width / 2 + 23, y + 6, 0xFFFFFF);
+            context.drawTextWithShadow(client.textRenderer, "#", x + entryWidth - 100, y + 6, 0xFFFFFF);
+            enabled.setPosition(x + 10, y + 1);
+            nameField.setPosition(x + 32, y);
+            xField.setPosition(width / 2 - 43, y);
+            yField.setPosition(width / 2 - 6, y);
+            zField.setPosition(width / 2 + 31, y);
+            colorField.setPosition(x + entryWidth - 94, y);
+            buttonDelete.setPosition(x + entryWidth - 45, y);
             enabled.render(context, mouseX, mouseY, tickDelta);
+            nameField.render(context, mouseX, mouseY, tickDelta);
+            xField.render(context, mouseX, mouseY, tickDelta);
+            yField.render(context, mouseX, mouseY, tickDelta);
+            zField.render(context, mouseX, mouseY, tickDelta);
+            colorField.render(context, mouseX, mouseY, tickDelta);
             buttonDelete.render(context, mouseX, mouseY, tickDelta);
         }
     }
