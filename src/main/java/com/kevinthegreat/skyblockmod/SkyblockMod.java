@@ -25,6 +25,7 @@ import net.fabricmc.fabric.api.client.screen.v1.ScreenEvents;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.toast.SystemToast;
 import net.minecraft.text.Text;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,8 +38,10 @@ public class SkyblockMod implements ModInitializer {
     public static SkyblockMod skyblockMod;
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
     public static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
+    public static final Gson GSON_COMPACT = new GsonBuilder().create();
     public static final Path CONFIG_DIR = FabricLoader.getInstance().getConfigDir().resolve(MOD_ID);
     public static final Path NEU_REPO_DIR = CONFIG_DIR.resolve("NEU-repo");
+    public static final SystemToast.Type TOAST_TYPE = new SystemToast.Type();
 
     public final Commands commands = new Commands();
     public final DungeonScore dungeonScore = new DungeonScore();

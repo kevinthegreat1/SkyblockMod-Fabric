@@ -88,7 +88,7 @@ public class Waypoints {
     public static String toSkytilsJson(List<WaypointCategory> waypointCategories) {
         JsonObject waypointCategoriesJson = new JsonObject();
         waypointCategoriesJson.add("categories", SKYTILS_CODEC.encodeStart(JsonOps.INSTANCE, waypointCategories).resultOrPartial(LOGGER::error).orElseThrow());
-        return SkyblockMod.GSON.toJson(waypointCategoriesJson);
+        return SkyblockMod.GSON_COMPACT.toJson(waypointCategoriesJson);
     }
 
     public static void saveWaypoints(MinecraftClient client) {

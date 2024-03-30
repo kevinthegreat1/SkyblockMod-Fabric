@@ -12,7 +12,7 @@ import java.util.Arrays;
 public abstract class AbstractWaypointsScreen<T extends Screen> extends Screen {
     protected final T parent;
     protected final Multimap<String, WaypointCategory> waypoints;
-    protected String island = SkyblockMod.skyblockMod.info.locationRaw;
+    protected String island;
     protected WaypointsListWidget waypointsListWidget;
     protected DropdownWidget<Location> islandWidget;
 
@@ -21,9 +21,14 @@ public abstract class AbstractWaypointsScreen<T extends Screen> extends Screen {
     }
 
     public AbstractWaypointsScreen(Text title, T parent, Multimap<String, WaypointCategory> waypoints) {
+        this(title, parent, waypoints, SkyblockMod.skyblockMod.info.locationRaw);
+    }
+
+    public AbstractWaypointsScreen(Text title, T parent, Multimap<String, WaypointCategory> waypoints, String island) {
         super(title);
         this.parent = parent;
         this.waypoints = waypoints;
+        this.island = island;
     }
 
     @Override

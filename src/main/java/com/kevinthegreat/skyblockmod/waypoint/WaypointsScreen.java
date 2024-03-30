@@ -1,6 +1,7 @@
 package com.kevinthegreat.skyblockmod.waypoint;
 
 import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.gui.screen.ConfirmScreen;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.GridWidget;
@@ -57,9 +58,18 @@ public class WaypointsScreen extends AbstractWaypointsScreen<Screen> {
         Waypoints.saveWaypoints(client);
     }
 
-    @SuppressWarnings("DataFlowIssue")
     @Override
     public void close() {
-        client.setScreen(parent);
+        assert client != null;
+        if (!waypoints.equals(Waypoints.waypoints)) {
+            client.setScreen(new ConfirmScreen(confirmedAction -> client.setScreen(confirmedAction ? parent : this),
+                    Text.translatable("text.skyblocker.quit_config"),
+                    Text.translatable("text.skyblocker.quit_config_sure"),
+                    Text.translatable("text.skyblocker.quit_discard"),
+                    ScreenTexts.CANCEL
+            ));
+        } else {
+            client.setScreen(parent);
+        }
     }
 }
