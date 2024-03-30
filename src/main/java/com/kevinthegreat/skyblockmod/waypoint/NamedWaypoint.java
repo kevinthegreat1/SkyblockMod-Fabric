@@ -14,6 +14,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 
 import java.util.Objects;
+import java.util.Optional;
 import java.util.function.Supplier;
 
 public class NamedWaypoint extends Waypoint {
@@ -46,7 +47,7 @@ public class NamedWaypoint extends Waypoint {
     }
 
     public NamedWaypoint(BlockPos pos, Text name, float[] colorComponents, boolean shouldRender) {
-        this(pos, name, () -> SkyblockMod.skyblockMod.options.waypointType.getValue(), colorComponents, shouldRender);
+        this(pos, name, () -> Optional.ofNullable(SkyblockMod.skyblockMod).map(skyblockMod -> skyblockMod.options.waypointType.getValue()).orElse(Waypoint.Type.WAYPOINT), colorComponents, shouldRender);
     }
 
     public NamedWaypoint(BlockPos pos, String name, Supplier<Type> typeSupplier, float[] colorComponents, boolean shouldRender) {
