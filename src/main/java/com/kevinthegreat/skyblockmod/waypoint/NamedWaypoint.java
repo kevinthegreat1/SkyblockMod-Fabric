@@ -89,7 +89,7 @@ public class NamedWaypoint extends Waypoint {
     }
 
     @Override
-    public NamedWaypoint withColor(float[] colorComponents) {
+    public NamedWaypoint withColor(float[] colorComponents, float alpha) {
         return new NamedWaypoint(pos, name, typeSupplier, colorComponents, alpha, shouldRender());
     }
 

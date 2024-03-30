@@ -69,7 +69,7 @@ public class Waypoint {
         return new Waypoint(new BlockPos(pos.getX(), pos.getY(), z), typeSupplier, getColorComponents(), alpha, lineWidth, throughWalls, shouldRender());
     }
 
-    public Waypoint withColor(float[] colorComponents) {
+    public Waypoint withColor(float[] colorComponents, float alpha) {
         return new Waypoint(pos, typeSupplier, colorComponents, alpha, lineWidth, throughWalls, shouldRender());
     }
 
