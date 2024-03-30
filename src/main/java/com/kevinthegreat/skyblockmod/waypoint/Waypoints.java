@@ -6,6 +6,7 @@ import com.google.common.collect.Multimaps;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonSyntaxException;
 import com.kevinthegreat.skyblockmod.SkyblockMod;
 import com.mojang.brigadier.Command;
 import com.mojang.serialization.Codec;
@@ -59,16 +60,16 @@ public class Waypoints {
         }
     }
 
-    public static List<WaypointCategory> fromSkytilsBase64(String base64) {
+    public static List<WaypointCategory> fromSkytilsBase64(String base64, String defaultIsland) {
         try {
             if (base64.startsWith("<Skytils-Waypoint-Data>(V")) {
                 int version = Integer.parseInt(base64.substring(26, base64.indexOf(')')));
                 if (version == 1) {
-                    return fromSkytilsJson(new String(Base64.getDecoder().decode(base64.substring(base64.indexOf(':') + 1))));
+                    return fromSkytilsJson(new String(Base64.getDecoder().decode(base64.substring(base64.indexOf(':') + 1))), defaultIsland);
                 } else {
                     LOGGER.error("[Skyblocker Waypoints] Unknown Skytils waypoint data version: " + version);
                 }
-            } else return fromSkytilsJson(new String(Base64.getDecoder().decode(base64)));
+            } else return fromSkytilsJson(new String(Base64.getDecoder().decode(base64)), defaultIsland);
         } catch (NumberFormatException e) {
             LOGGER.error("[Skyblocker Waypoints] Encountered exception while parsing Skytils waypoint data version", e);
         } catch (IllegalArgumentException e) {
@@ -77,8 +78,19 @@ public class Waypoints {
         return Collections.emptyList();
     }
 
-    public static List<WaypointCategory> fromSkytilsJson(String waypointCategories) {
-        return SKYTILS_CODEC.parse(JsonOps.INSTANCE, SkyblockMod.GSON.fromJson(waypointCategories, JsonObject.class).getAsJsonArray("categories")).resultOrPartial(LOGGER::error).orElseThrow();
+    public static List<WaypointCategory> fromSkytilsJson(String waypointCategories, String defaultIsland) {
+        JsonArray waypointCategoriesJson;
+        try {
+            waypointCategoriesJson = SkyblockMod.GSON.fromJson(waypointCategories, JsonObject.class).getAsJsonArray("categories");
+        } catch (JsonSyntaxException e) {
+            JsonObject waypointCategoryJson = new JsonObject();
+            waypointCategoryJson.addProperty("name", "New Category");
+            waypointCategoryJson.addProperty("island", defaultIsland);
+            waypointCategoryJson.add("waypoints", SkyblockMod.GSON.fromJson(waypointCategories, JsonArray.class));
+            waypointCategoriesJson = new JsonArray();
+            waypointCategoriesJson.add(waypointCategoryJson);
+        }
+        return SKYTILS_CODEC.parse(JsonOps.INSTANCE, waypointCategoriesJson).resultOrPartial(LOGGER::error).orElseThrow();
     }
 
     public static String toSkytilsBase64(List<WaypointCategory> waypointCategories) {
