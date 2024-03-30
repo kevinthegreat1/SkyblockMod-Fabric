@@ -8,8 +8,10 @@ import net.minecraft.client.gui.Selectable;
 import net.minecraft.client.gui.widget.*;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
+import org.apache.commons.lang3.math.NumberUtils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -91,7 +93,7 @@ public class WaypointsListWidget extends ElementListWidget<WaypointsListWidget.A
     }
 
     protected class WaypointCategoryEntry extends AbstractWaypointEntry {
-        private final WaypointCategory category;
+        private WaypointCategory category;
         private final List<ClickableWidget> children;
         private final CheckboxWidget enabled;
         private final TextFieldWidget nameField;
@@ -107,6 +109,7 @@ public class WaypointsListWidget extends ElementListWidget<WaypointsListWidget.A
             enabled = CheckboxWidget.builder(Text.literal(""), client.textRenderer).checked(!category.waypoints().isEmpty() && category.waypoints().stream().allMatch(screen::isEnabled)).callback((checkbox, checked) -> category.waypoints().forEach(waypoint -> screen.enabledChanged(waypoint, checked))).build();
             nameField = new TextFieldWidget(client.textRenderer, 70, 20, Text.literal("Name"));
             nameField.setText(category.name());
+            nameField.setChangedListener(this::updateName);
             buttonNewWaypoint = ButtonWidget.builder(Text.translatable("skyblocker.waypoints.new"), buttonNewWaypoint -> {
                 WaypointEntry waypointEntry = new WaypointEntry(this);
                 int entryIndex;
@@ -142,22 +145,29 @@ public class WaypointsListWidget extends ElementListWidget<WaypointsListWidget.A
             return children;
         }
 
+        private void updateName(String name) {
+            int index = waypoints.indexOf(category);
+            category = category.withName(name);
+            if (index >= 0) {
+                waypoints.set(index, category);
+            }
+        }
+
         @Override
         public void render(DrawContext context, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
             enabled.setPosition(x, y + 1);
             nameField.setPosition(x + 22, y);
             buttonNewWaypoint.setPosition(x + entryWidth - 125, y);
             buttonDelete.setPosition(x + entryWidth - 45, y);
-            enabled.render(context, mouseX, mouseY, tickDelta);
-            nameField.render(context, mouseX, mouseY, tickDelta);
-            buttonNewWaypoint.render(context, mouseX, mouseY, tickDelta);
-            buttonDelete.render(context, mouseX, mouseY, tickDelta);
+            for (ClickableWidget child : children) {
+                child.render(context, mouseX, mouseY, tickDelta);
+            }
         }
     }
 
     protected class WaypointEntry extends AbstractWaypointEntry {
         private final WaypointCategoryEntry category;
-        private final NamedWaypoint waypoint;
+        private NamedWaypoint waypoint;
         private final List<ClickableWidget> children;
         private final CheckboxWidget enabled;
         private final TextFieldWidget nameField;
@@ -177,14 +187,19 @@ public class WaypointsListWidget extends ElementListWidget<WaypointsListWidget.A
             enabled = CheckboxWidget.builder(Text.literal(""), client.textRenderer).checked(screen.isEnabled(waypoint)).callback((checkbox, checked) -> screen.enabledChanged(waypoint, checked)).build();
             nameField = new TextFieldWidget(client.textRenderer, 70, 20, Text.literal("Name"));
             nameField.setText(waypoint.getName().getString());
+            nameField.setChangedListener(this::updateName);
             xField = new TextFieldWidget(client.textRenderer, 26, 20, Text.literal("X"));
             xField.setText(Integer.toString(waypoint.pos.getX()));
+            xField.setChangedListener(this::updateX);
             yField = new TextFieldWidget(client.textRenderer, 26, 20, Text.literal("Y"));
             yField.setText(Integer.toString(waypoint.pos.getY()));
+            yField.setChangedListener(this::updateY);
             zField = new TextFieldWidget(client.textRenderer, 26, 20, Text.literal("Z"));
             zField.setText(Integer.toString(waypoint.pos.getZ()));
+            zField.setChangedListener(this::updateZ);
             colorField = new TextFieldWidget(client.textRenderer, 44, 20, Text.literal("Color"));
             colorField.setText(String.format("%02X%02X%02X", (int) (waypoint.getColorComponents()[0] * 255), (int) (waypoint.getColorComponents()[1] * 255), (int) (waypoint.getColorComponents()[2] * 255)));
+            colorField.setChangedListener(this::updateColor);
             buttonDelete = ButtonWidget.builder(Text.translatable("selectServer.deleteButton"), button -> {
                 category.category.waypoints().remove(waypoint);
                 WaypointsListWidget.this.children().remove(this);
@@ -202,6 +217,62 @@ public class WaypointsListWidget extends ElementListWidget<WaypointsListWidget.A
             return children;
         }
 
+        public void updateName(String name) {
+            if (waypoint.name.getString().equals(name)) return;
+            int index = category.category.waypoints().indexOf(waypoint);
+            waypoint = waypoint.withName(name);
+            if (index >= 0) {
+                category.category.waypoints().set(index, waypoint);
+            }
+        }
+
+        public void updateX(String xString) {
+            if (!NumberUtils.isParsable(xString)) return;
+            int index = category.category.waypoints().indexOf(waypoint);
+            int x = Integer.parseInt(xString);
+            if (waypoint.pos.getX() == x) return;
+            waypoint = waypoint.withX(x);
+            if (index >= 0) {
+                category.category.waypoints().set(index, waypoint);
+            }
+        }
+
+        public void updateY(String yString) {
+            if (!NumberUtils.isParsable(yString)) return;
+            int index = category.category.waypoints().indexOf(waypoint);
+            int y = Integer.parseInt(yString);
+            if (waypoint.pos.getY() == y) return;
+            waypoint = waypoint.withY(y);
+            if (index >= 0) {
+                category.category.waypoints().set(index, waypoint);
+            }
+        }
+
+        public void updateZ(String zString) {
+            if (!NumberUtils.isParsable(zString)) return;
+            int index = category.category.waypoints().indexOf(waypoint);
+            int z = Integer.parseInt(zString);
+            if (waypoint.pos.getZ() == z) return;
+            waypoint = waypoint.withZ(z);
+            if (index >= 0) {
+                category.category.waypoints().set(index, waypoint);
+            }
+        }
+
+        public void updateColor(String colorString) {
+            try {
+                int index = category.category.waypoints().indexOf(waypoint);
+                int colorInt = Integer.parseInt(colorString, 16);
+                float[] colorComponents = {((colorInt & 0x00FF0000) >> 16) / 255f, ((colorInt & 0x0000FF00) >> 8) / 255f, (colorInt & 0x000000FF) / 255f};
+                if (Arrays.equals(waypoint.getColorComponents(), colorComponents)) return;
+                waypoint = waypoint.withColor(colorComponents);
+                if (index >= 0) {
+                    category.category.waypoints().set(index, waypoint);
+                }
+            } catch (NumberFormatException ignored) {
+            }
+        }
+
         @Override
         public void render(DrawContext context, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean hovered, float tickDelta) {
             context.drawTextWithShadow(client.textRenderer, "X:", width / 2 - 51, y + 6, 0xFFFFFF);
@@ -215,13 +286,9 @@ public class WaypointsListWidget extends ElementListWidget<WaypointsListWidget.A
             zField.setPosition(width / 2 + 31, y);
             colorField.setPosition(x + entryWidth - 94, y);
             buttonDelete.setPosition(x + entryWidth - 45, y);
-            enabled.render(context, mouseX, mouseY, tickDelta);
-            nameField.render(context, mouseX, mouseY, tickDelta);
-            xField.render(context, mouseX, mouseY, tickDelta);
-            yField.render(context, mouseX, mouseY, tickDelta);
-            zField.render(context, mouseX, mouseY, tickDelta);
-            colorField.render(context, mouseX, mouseY, tickDelta);
-            buttonDelete.render(context, mouseX, mouseY, tickDelta);
+            for (ClickableWidget child : children) {
+                child.render(context, mouseX, mouseY, tickDelta);
+            }
         }
     }
 }

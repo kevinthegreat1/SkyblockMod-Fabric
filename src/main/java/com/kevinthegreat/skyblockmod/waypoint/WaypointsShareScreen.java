@@ -33,7 +33,7 @@ public class WaypointsShareScreen extends AbstractWaypointsScreen<WaypointsScree
         }).build());
         adder.add(ButtonWidget.builder(Text.translatable("skyblocker.waypoints.importWaypointsSnoopy"), buttonImport -> {}).build());
         adder.add(ButtonWidget.builder(ScreenTexts.BACK, buttonBack -> close()).build());
-        adder.add(ButtonWidget.builder(Text.translatable("skyblocker.waypoints.exportWaypointsSkytils"), buttonExport -> client.keyboard.setClipboard(Waypoints.toSkytilsBase64(waypoints.values().stream().map(WaypointCategory.filter(selectedWaypoints::contains)).filter(waypointCategory -> !waypointCategory.waypoints().isEmpty()).toList()))).build());
+        adder.add(ButtonWidget.builder(Text.translatable("skyblocker.waypoints.exportWaypointsSkytils"), buttonExport -> client.keyboard.setClipboard(Waypoints.toSkytilsBase64(waypoints.values().stream().filter(waypointCategory -> waypointCategory.island().equals(island)).map(WaypointCategory.filter(selectedWaypoints::contains)).filter(waypointCategory -> !waypointCategory.waypoints().isEmpty()).toList()))).build());
         gridWidget.refreshPositions();
         SimplePositioningWidget.setPos(gridWidget, 0, this.height - 64, this.width, 64);
         gridWidget.forEachChild(this::addDrawableChild);

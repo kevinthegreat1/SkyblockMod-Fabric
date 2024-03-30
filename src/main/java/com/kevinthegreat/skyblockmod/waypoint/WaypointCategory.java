@@ -25,13 +25,19 @@ public record WaypointCategory(String name, String island, List<NamedWaypoint> w
         return waypointCategory -> new WaypointCategory(waypointCategory.name(), waypointCategory.island(), waypointCategory.waypoints().stream().filter(predicate).toList());
     }
 
-    public static WaypointCategory deepCopy(WaypointCategory waypointCategory) {
-        return new WaypointCategory(waypointCategory.name(), waypointCategory.island(), waypointCategory.waypoints().stream().map(NamedWaypoint::copy).collect(Collectors.toList()));
+    public WaypointCategory withName(String name) {
+        return new WaypointCategory(name, island(), waypoints());
+    }
+
+    public WaypointCategory deepCopy() {
+        return new WaypointCategory(name(), island(), waypoints().stream().map(NamedWaypoint::copy).collect(Collectors.toList()));
     }
 
     public void render(WorldRenderContext context) {
         for (NamedWaypoint waypoint : waypoints) {
-            waypoint.render(context);
+            if (waypoint.shouldRender()) {
+                waypoint.render(context);
+            }
         }
     }
 }

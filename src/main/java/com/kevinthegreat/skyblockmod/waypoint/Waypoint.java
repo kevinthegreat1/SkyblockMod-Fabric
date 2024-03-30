@@ -57,6 +57,22 @@ public class Waypoint {
         this.shouldRender = shouldRender;
     }
 
+    public Waypoint withX(int x) {
+        return new Waypoint(new BlockPos(x, pos.getY(), pos.getZ()), typeSupplier, getColorComponents(), alpha, lineWidth, throughWalls, shouldRender());
+    }
+
+    public Waypoint withY(int y) {
+        return new Waypoint(pos.withY(y), typeSupplier, getColorComponents(), alpha, lineWidth, throughWalls, shouldRender());
+    }
+
+    public Waypoint withZ(int z) {
+        return new Waypoint(new BlockPos(pos.getX(), pos.getY(), z), typeSupplier, getColorComponents(), alpha, lineWidth, throughWalls, shouldRender());
+    }
+
+    public Waypoint withColor(float[] colorComponents) {
+        return new Waypoint(pos, typeSupplier, colorComponents, alpha, lineWidth, throughWalls, shouldRender());
+    }
+
     public boolean shouldRender() {
         return shouldRender;
     }

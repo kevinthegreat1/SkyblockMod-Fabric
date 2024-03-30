@@ -71,8 +71,32 @@ public class NamedWaypoint extends Waypoint {
         return new NamedWaypoint(pos, name, typeSupplier, colorComponents, shouldRender());
     }
 
+    @Override
+    public NamedWaypoint withX(int x) {
+        return new NamedWaypoint(new BlockPos(x, pos.getY(), pos.getZ()), name, typeSupplier, getColorComponents(), shouldRender());
+    }
+
+    @Override
+    public NamedWaypoint withY(int y) {
+        return new NamedWaypoint(pos.withY(y), name, typeSupplier, getColorComponents(), shouldRender());
+    }
+
+    @Override
+    public NamedWaypoint withZ(int z) {
+        return new NamedWaypoint(new BlockPos(pos.getX(), pos.getY(), z), name, typeSupplier, getColorComponents(), shouldRender());
+    }
+
+    @Override
+    public NamedWaypoint withColor(float[] colorComponents) {
+        return new NamedWaypoint(pos, name, typeSupplier, colorComponents, shouldRender());
+    }
+
     public Text getName() {
         return name;
+    }
+
+    public NamedWaypoint withName(String name) {
+        return new NamedWaypoint(pos, name, typeSupplier, getColorComponents(), shouldRender());
     }
 
     protected boolean shouldRenderName() {
@@ -94,6 +118,6 @@ public class NamedWaypoint extends Waypoint {
 
     @Override
     public boolean equals(Object obj) {
-        return this == obj || obj instanceof NamedWaypoint waypoint && name.equals(waypoint.name);
+        return this == obj || super.equals(obj) && obj instanceof NamedWaypoint waypoint && name.equals(waypoint.name);
     }
 }
