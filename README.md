@@ -132,6 +132,11 @@ Helpful features for Hypixel Skyblock ([Fabric](https://fabricmc.net/) 1.17+)
 - /jungle -> /warp jungle
 - /howl -> /warp howl
 
+### Waypoints
+
+- Custom waypoints on any island with support for skytils waypoints
+- /sbm waypoints: open the waypoints menu
+
 ### Misc
 
 - /sbm options reload: reload options file
