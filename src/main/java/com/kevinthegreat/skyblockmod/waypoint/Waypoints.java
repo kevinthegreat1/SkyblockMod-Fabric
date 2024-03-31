@@ -118,10 +118,12 @@ public class Waypoints {
     }
 
     public static void render(WorldRenderContext context) {
-        Collection<WaypointCategory> categories = waypoints.get(SkyblockMod.skyblockMod.info.locationRaw);
-        for (WaypointCategory category : categories) {
-            if (category != null) {
-                category.render(context);
+        if (SkyblockMod.skyblockMod.options.waypoints.getValue()) {
+            Collection<WaypointCategory> categories = waypoints.get(SkyblockMod.skyblockMod.info.locationRaw);
+            for (WaypointCategory category : categories) {
+                if (category != null) {
+                    category.render(context);
+                }
             }
         }
     }

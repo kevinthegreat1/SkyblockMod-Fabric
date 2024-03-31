@@ -1,12 +1,13 @@
 package com.kevinthegreat.skyblockmod.screen;
 
+import com.kevinthegreat.skyblockmod.waypoint.WaypointsScreen;
 import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.text.Text;
 
 public class FeaturesOptionsScreen extends AbstractSkyblockModOptionsScreen {
     public FeaturesOptionsScreen(Screen parent) {
         super(parent, SkyblockModOptionsScreen.OTHER_FEATURES);
     }
-
 
     @Override
     protected void init() {
@@ -21,6 +22,7 @@ public class FeaturesOptionsScreen extends AbstractSkyblockModOptionsScreen {
         addOptionButton(options.shortcuts);
         addOptionButton(options.waypoints);
         addOptionButton(options.waypointType);
+        addScreenButton(Text.translatable("skyblocker.waypoints.config"), WaypointsScreen::new);
         addGridWidget();
     }
 }
