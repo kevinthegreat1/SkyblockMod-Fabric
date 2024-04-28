@@ -1,5 +1,6 @@
 package com.kevinthegreat.skyblockmod.util;
 
+import de.hysky.skyblocker.utils.scheduler.MessageScheduler;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.text.Text;
 import net.minecraft.util.Pair;
@@ -119,11 +120,15 @@ public class Message {
     }
 
     public void sendMessageAfterCooldown(String message) {
-        if (lastMessage + 200 < System.currentTimeMillis()) {
-            sendMessage(message);
-            lastMessage = System.currentTimeMillis();
+        if (Info.SKYBLOCKER_LOADED) {
+            MessageScheduler.INSTANCE.sendMessageAfterCooldown(message);
         } else {
-            messageQueue.add(new Pair<>(message, 0));
+            if (lastMessage + 200 < System.currentTimeMillis()) {
+                sendMessage(message);
+                lastMessage = System.currentTimeMillis();
+            } else {
+                messageQueue.add(new Pair<>(message, 0));
+            }
         }
     }
 

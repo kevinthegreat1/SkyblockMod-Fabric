@@ -83,6 +83,7 @@ public class SkyblockMod implements ModInitializer {
         mythologicalRitual.init();
         HudRenderCallback.EVENT.register(dungeonMap::render);
         ClientReceiveMessageEvents.ALLOW_GAME.register(this::onChatMessage);
+        ClientReceiveMessageEvents.GAME_CANCELED.register(this::onChatMessage);
         ScreenEvents.AFTER_INIT.register(experiments::start);
         Waypoints.init();
     }

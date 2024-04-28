@@ -4,6 +4,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.kevinthegreat.skyblockmod.SkyblockMod;
 import net.fabricmc.fabric.api.networking.v1.PacketSender;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.client.network.PlayerListEntry;
@@ -15,6 +16,7 @@ import java.util.List;
 
 public class Info implements ChatListener {
     private static final String PROFILE_PREFIX = "§r§e§lProfile: §r§a";
+    public static final boolean SKYBLOCKER_LOADED = FabricLoader.getInstance().isModLoaded("skyblocker");
     public boolean hypixel = false;
     public boolean skyblock = false;
     public boolean catacombs = false;
@@ -109,7 +111,7 @@ public class Info implements ChatListener {
     private void updateLocRaw() {
         if (hypixel) {
             long currentTime = System.currentTimeMillis();
-            if (!sentLocRaw && currentTime > clientWorldJoinTime + 1000 && currentTime > lastLocRaw + 15000) {
+            if (!sentLocRaw && currentTime > clientWorldJoinTime + 1000 && currentTime > lastLocRaw + 15000 && !SKYBLOCKER_LOADED) {
                 SkyblockMod.skyblockMod.message.sendMessageAfterCooldown("/locraw");
                 sentLocRaw = true;
                 lastLocRaw = currentTime;

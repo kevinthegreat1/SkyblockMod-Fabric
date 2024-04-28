@@ -17,13 +17,18 @@ loom {
 }
 
 repositories {
-	// Add repositories to retrieve artifacts from in here.
-	// You should only use this when depending on other mods because
-	// Loom adds the essential maven repositories to download Minecraft and libraries from automatically.
-	// See https://docs.gradle.org/current/userguide/declaring_repositories.html
-	// for more information about repositories.
-
 	maven { url "https://maven.terraformersmc.com/releases/" }
+	exclusiveContent {
+		forRepository {
+			maven {
+				name = "Modrinth"
+				url = "https://api.modrinth.com/maven"
+			}
+		}
+		filter {
+			includeGroup "maven.modrinth"
+		}
+	}
 	maven { url "https://jitpack.io" }
 }
 
@@ -36,12 +41,15 @@ dependencies {
 	// Fabric API.
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
-    include modImplementation("org.eclipse.jgit:org.eclipse.jgit:${project.jgit_version}")
-
 	modImplementation "com.terraformersmc:modmenu:${project.modmenu_version}"
+
+	modCompileOnly "maven.modrinth:skyblocker-liap:v${project.skyblocker_version}+${project.minecraft_version}"
+
 	include modImplementation("com.github.0x3C50:Renderer:${project.renderer_version}") {
 		exclude group: "io.github.ladysnake" exclude module: "satin"
 	}
+
+	include modImplementation("org.eclipse.jgit:org.eclipse.jgit:${project.jgit_version}")
 
 	// Apache Commons Math
 	include implementation("org.apache.commons:commons-math3:${project.commons_math_version}")
