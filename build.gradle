@@ -1,16 +1,15 @@
 plugins {
-	id 'fabric-loom' version '1.5-SNAPSHOT'
+	id 'fabric-loom' version '1.6-SNAPSHOT'
 	id 'maven-publish'
 	id "me.modmuss50.mod-publish-plugin" version "0.5.1"
 }
 
-sourceCompatibility = JavaVersion.VERSION_17
-targetCompatibility = JavaVersion.VERSION_17
-
-// Add minecraft version to the build jar name
-archivesBaseName = project.archives_base_name + '-' + project.minecraft_version
 version = project.mod_version
 group = project.maven_group
+
+base {
+	archivesName = project.archives_base_name + '-' + project.minecraft_version
+}
 
 loom {
 	accessWidenerPath = file("src/main/resources/skyblockmod.accesswidener")
@@ -38,16 +37,12 @@ dependencies {
 	mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
 	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
-	// Fabric API.
+	// Fabric API
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
 	modImplementation "com.terraformersmc:modmenu:${project.modmenu_version}"
 
-	modCompileOnly "maven.modrinth:skyblocker-liap:v${project.skyblocker_version}+${project.minecraft_version}"
-
-	include modImplementation("com.github.0x3C50:Renderer:${project.renderer_version}") {
-		exclude group: "io.github.ladysnake" exclude module: "satin"
-	}
+	modCompileOnly "maven.modrinth:skyblocker-liap:${project.skyblocker_version}"
 
 	include modImplementation("org.eclipse.jgit:org.eclipse.jgit:${project.jgit_version}")
 
@@ -70,8 +65,7 @@ processResources {
 }
 
 tasks.withType(JavaCompile).configureEach {
-	// Minecraft 1.18 (1.18-pre2) upwards uses Java 17.
-	it.options.release = 17
+	it.options.release = 21
 }
 
 java {
@@ -79,18 +73,21 @@ java {
 	// if it is present.
 	// If you remove this line, sources will not be generated.
 	withSourcesJar()
+
+	sourceCompatibility = JavaVersion.VERSION_21
+	targetCompatibility = JavaVersion.VERSION_21
 }
 
 jar {
 	from("LICENSE") {
-		rename { "${it}_${project.archivesBaseName}"}
+		rename { "${it}_${project.base.archivesName.get()}"}
 	}
 }
 
 // configure the maven publication
 publishing {
 	publications {
-		mavenJava(MavenPublication) {
+		create("mavenJava", MavenPublication) {
 			from components.java
 		}
 	}
@@ -115,15 +112,13 @@ publishMods {
 		projectId = "658094"
 		projectSlug = "skyblockmod" // Required for discord webhook
 		accessToken = providers.environmentVariable("CURSEFORGE_TOKEN")
-		minecraftVersions.add("1.20.3")
-		minecraftVersions.add("1.20.4")
+		minecraftVersions.add("1.20.5")
 		requires("fabric-api")
 	}
 	modrinth {
 		projectId = "GTIrlvJk"
 		accessToken = providers.environmentVariable("MODRINTH_TOKEN")
-		minecraftVersions.add("1.20.3")
-		minecraftVersions.add("1.20.4")
+		minecraftVersions.add("1.20.5")
 	}
 	github {
 		repository = "kevinthegreat1/SkyblockMod-Fabric"

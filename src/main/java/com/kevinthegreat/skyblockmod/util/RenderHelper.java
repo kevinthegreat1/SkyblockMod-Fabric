@@ -2,7 +2,6 @@ package com.kevinthegreat.skyblockmod.util;
 
 import com.kevinthegreat.skyblockmod.mixins.accessors.BeaconBlockEntityRendererInvoker;
 import com.mojang.blaze3d.systems.RenderSystem;
-import me.x150.renderer.render.Renderer3d;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
@@ -19,22 +18,34 @@ import org.joml.Matrix4f;
 import org.joml.Vector3f;
 import org.lwjgl.opengl.GL11;
 
-import java.awt.*;
-
 public class RenderHelper {
     public static void renderFilledWithBeaconBeam(WorldRenderContext context, BlockPos pos, float[] colorComponents, float alpha, boolean throughWalls) {
-        renderFilled(context, pos, colorComponents, alpha, throughWalls);
         renderBeaconBeam(context, pos, colorComponents);
+        renderFilled(context, pos, colorComponents, alpha, throughWalls);
     }
 
     public static void renderFilled(WorldRenderContext context, BlockPos pos, float[] colorComponents, float alpha, boolean throughWalls) {
-        if (throughWalls) {
-            Renderer3d.renderThroughWalls();
-        }
-        Renderer3d.renderFilled(context.matrixStack(), new Color(colorComponents[0], colorComponents[1], colorComponents[2], alpha), Vec3d.of(pos), new Vec3d(1, 1, 1));
-        if (throughWalls) {
-            Renderer3d.stopRenderThroughWalls();
-        }
+        MatrixStack matrices = context.matrixStack();
+        Vec3d camera = context.camera().getPos();
+        Tessellator tessellator = RenderSystem.renderThreadTesselator();
+        BufferBuilder buffer = tessellator.getBuffer();
+
+        RenderSystem.enableBlend();
+        RenderSystem.defaultBlendFunc();
+        RenderSystem.disableCull();
+        RenderSystem.enableDepthTest();
+        RenderSystem.depthFunc(throughWalls ? GL11.GL_ALWAYS : GL11.GL_LEQUAL);
+
+        matrices.push();
+        matrices.translate(-camera.getX(), -camera.getY(), -camera.getZ());
+
+        buffer.begin(VertexFormat.DrawMode.TRIANGLE_STRIP, VertexFormats.POSITION_COLOR);
+        WorldRenderer.renderFilledBox(matrices, buffer, pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1, pos.getY() + 1, pos.getZ() + 1, colorComponents[0], colorComponents[1], colorComponents[2], alpha);
+        tessellator.draw();
+
+        matrices.pop();
+
+        RenderSystem.enableCull();
     }
 
     public static void renderBeaconBeam(WorldRenderContext context, BlockPos pos, float[] colorComponents) {

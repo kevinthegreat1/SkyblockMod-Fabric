@@ -26,7 +26,6 @@ public class DropdownWidget<T> extends ElementListWidget<DropdownWidget.Entry<T>
         this.entries = entries;
         this.selectCallback = selectCallback;
         this.selected = selected;
-        setRenderBackground(false);
         setRenderHeader(true, ENTRY_HEIGHT + 4);
         for (T entry : entries) {
             addEntry(new Entry<>(this, entry));
@@ -41,11 +40,6 @@ public class DropdownWidget<T> extends ElementListWidget<DropdownWidget.Entry<T>
     @Override
     public int getRowWidth() {
         return getWidth();
-    }
-
-    @Override
-    protected int getScrollbarPositionX() {
-        return getRowLeft() + getRowWidth();
     }
 
     @Override

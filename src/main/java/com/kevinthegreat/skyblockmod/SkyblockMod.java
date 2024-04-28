@@ -19,7 +19,6 @@ import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientLifecycleEvents;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
-import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
 import net.fabricmc.fabric.api.client.screen.v1.ScreenEvents;
 import net.fabricmc.loader.api.FabricLoader;
@@ -81,7 +80,7 @@ public class SkyblockMod implements ModInitializer {
         ClientTickEvents.END_CLIENT_TICK.register(this::tick);
         WorldRenderEvents.AFTER_TRANSLUCENT.register(fairySouls::render);
         mythologicalRitual.init();
-        HudRenderCallback.EVENT.register(dungeonMap::render);
+        dungeonMap.init();
         ClientReceiveMessageEvents.ALLOW_GAME.register(this::onChatMessage);
         ClientReceiveMessageEvents.GAME_CANCELED.register(this::onChatMessage);
         ScreenEvents.AFTER_INIT.register(experiments::start);

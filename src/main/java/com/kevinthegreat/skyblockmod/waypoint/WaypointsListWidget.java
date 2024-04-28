@@ -32,8 +32,8 @@ public class WaypointsListWidget extends ElementListWidget<WaypointsListWidget.A
     }
 
     @Override
-    protected int getScrollbarPositionX() {
-        return super.getScrollbarPositionX() + 50;
+    protected int getScrollbarX() {
+        return super.getScrollbarX();
     }
 
     Optional<WaypointCategoryEntry> getCategory() {

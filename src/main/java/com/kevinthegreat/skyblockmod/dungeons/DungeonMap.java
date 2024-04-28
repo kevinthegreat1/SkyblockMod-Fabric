@@ -2,38 +2,57 @@ package com.kevinthegreat.skyblockmod.dungeons;
 
 import com.kevinthegreat.skyblockmod.SkyblockMod;
 import com.kevinthegreat.skyblockmod.option.SkyblockModOptions;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
+import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.render.LightmapTextureManager;
 import net.minecraft.client.render.VertexConsumerProvider;
+import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.component.DataComponentTypes;
+import net.minecraft.component.type.MapIdComponent;
 import net.minecraft.item.FilledMapItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.item.map.MapState;
 
-//from skyfabric
 public class DungeonMap {
-    public void render(DrawContext context, float tickDelta) {
+    private final MapIdComponent DEFAULT_MAP_ID_COMPONENT = new MapIdComponent(1024);
+    private MapIdComponent cachedMapIdComponent = null;
+
+    public void init() {
+        HudRenderCallback.EVENT.register((context, tickDelta) -> render(context));
+        ClientPlayConnectionEvents.JOIN.register((handler, sender, client) -> reset());
+    }
+
+    private void render(DrawContext context) {
         SkyblockModOptions options = SkyblockMod.skyblockMod.options;
-        if (options.dungeonMap.getValue() && SkyblockMod.skyblockMod.info.catacombs) {
-            MinecraftClient minecraftClient = MinecraftClient.getInstance();
-            if (minecraftClient == null || minecraftClient.player == null || minecraftClient.world == null) {
-                return;
-            }
-            ItemStack itemStack = minecraftClient.player.getInventory().main.get(8);
-            if (!itemStack.isOf(Items.FILLED_MAP)) {
-                return;
-            }
-            MapState mapState = FilledMapItem.getMapState(FilledMapItem.getMapId(itemStack), minecraftClient.world);
-            if (mapState == null) {
-                return;
-            }
-            VertexConsumerProvider.Immediate vertices = minecraftClient.getBufferBuilders().getEffectVertexConsumers();
-            context.getMatrices().push();
-            context.getMatrices().translate(options.dungeonMapX.getValue(), options.dungeonMapY.getValue(), 0);
-            context.getMatrices().scale(options.dungeonMapScale.getValue().floatValue(), options.dungeonMapScale.getValue().floatValue(), 0);
-            minecraftClient.gameRenderer.getMapRenderer().draw(context.getMatrices(), vertices, FilledMapItem.getMapId(itemStack), mapState, false, 15728880);
-            vertices.draw();
-            context.getMatrices().pop();
-        }
+        if (!options.dungeonMap.getValue() || !SkyblockMod.skyblockMod.info.catacombs) return;
+
+        MinecraftClient client = MinecraftClient.getInstance();
+        if (client.player == null || client.world == null) return;
+
+        MapIdComponent mapId = getMapIdComponent(client.player.getInventory().main.get(8));
+        MapState state = FilledMapItem.getMapState(mapId, client.world);
+        if (state == null) return;
+
+        MatrixStack matrices = context.getMatrices();
+        float scaling = options.dungeonMapScale.getValue().floatValue();
+        VertexConsumerProvider.Immediate vertices = client.getBufferBuilders().getEffectVertexConsumers();
+
+        matrices.push();
+        matrices.translate(options.dungeonMapX.getValue(), options.dungeonMapY.getValue(), 0);
+        matrices.scale(scaling, scaling, 0f);
+        client.gameRenderer.getMapRenderer().draw(matrices, vertices, mapId, state, false, LightmapTextureManager.MAX_LIGHT_COORDINATE);
+        vertices.draw();
+        matrices.pop();
+    }
+
+    public MapIdComponent getMapIdComponent(ItemStack stack) {
+        return stack.isOf(Items.FILLED_MAP) && stack.contains(DataComponentTypes.MAP_ID) ? (cachedMapIdComponent = stack.get(DataComponentTypes.MAP_ID)) : cachedMapIdComponent != null ? cachedMapIdComponent : DEFAULT_MAP_ID_COMPONENT;
+    }
+
+    private void reset() {
+        cachedMapIdComponent = null;
     }
 }
