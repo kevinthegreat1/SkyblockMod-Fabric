@@ -4,11 +4,11 @@ plugins {
 	id "me.modmuss50.mod-publish-plugin" version "0.5.1"
 }
 
-version = project.mod_version
+version = project.mod_version + '+' + project.minecraft_version
 group = project.maven_group
 
 base {
-	archivesName = project.archives_base_name + '-' + project.minecraft_version
+	archivesName = project.archives_base_name
 }
 
 loom {
