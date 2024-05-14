@@ -113,12 +113,14 @@ publishMods {
 		projectSlug = "skyblockmod" // Required for discord webhook
 		accessToken = providers.environmentVariable("CURSEFORGE_TOKEN")
 		minecraftVersions.add("1.20.5")
+		minecraftVersions.add("1.20.6")
 		requires("fabric-api")
 	}
 	modrinth {
 		projectId = "GTIrlvJk"
 		accessToken = providers.environmentVariable("MODRINTH_TOKEN")
 		minecraftVersions.add("1.20.5")
+		minecraftVersions.add("1.20.6")
 	}
 	github {
 		repository = "kevinthegreat1/SkyblockMod-Fabric"
