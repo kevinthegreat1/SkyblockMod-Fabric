@@ -1,6 +1,7 @@
 package com.kevinthegreat.skyblockmod.waypoint;
 
 import com.kevinthegreat.skyblockmod.mixins.CheckboxWidgetAccessor;
+import it.unimi.dsi.fastutil.ints.Int2ObjectFunction;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.Element;
@@ -8,7 +9,6 @@ import net.minecraft.client.gui.Selectable;
 import net.minecraft.client.gui.widget.*;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
-import org.apache.commons.lang3.math.NumberUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -227,35 +227,28 @@ public class WaypointsListWidget extends ElementListWidget<WaypointsListWidget.A
         }
 
         public void updateX(String xString) {
-            if (!NumberUtils.isParsable(xString)) return;
-            int index = category.category.waypoints().indexOf(waypoint);
-            int x = Integer.parseInt(xString);
-            if (waypoint.pos.getX() == x) return;
-            waypoint = waypoint.withX(x);
-            if (index >= 0) {
-                category.category.waypoints().set(index, waypoint);
-            }
+            updateInt(xString, waypoint.pos.getX(), waypoint::withX);
         }
 
         public void updateY(String yString) {
-            if (!NumberUtils.isParsable(yString)) return;
-            int index = category.category.waypoints().indexOf(waypoint);
-            int y = Integer.parseInt(yString);
-            if (waypoint.pos.getY() == y) return;
-            waypoint = waypoint.withY(y);
-            if (index >= 0) {
-                category.category.waypoints().set(index, waypoint);
-            }
+            updateInt(yString, waypoint.pos.getY(), waypoint::withY);
         }
 
         public void updateZ(String zString) {
-            if (!NumberUtils.isParsable(zString)) return;
-            int index = category.category.waypoints().indexOf(waypoint);
-            int z = Integer.parseInt(zString);
-            if (waypoint.pos.getZ() == z) return;
-            waypoint = waypoint.withZ(z);
-            if (index >= 0) {
-                category.category.waypoints().set(index, waypoint);
+            updateInt(zString, waypoint.pos.getZ(), waypoint::withZ);
+        }
+
+        public void updateInt(String newValueString, int currentValue, Int2ObjectFunction<NamedWaypoint> wither) {
+            try {
+                int index = category.category.waypoints().indexOf(waypoint);
+                int newValue = Integer.parseInt(newValueString);
+                if (newValue == currentValue) return;
+                waypoint = wither.apply(newValue);
+                if (index >= 0) {
+                    category.category.waypoints().set(index, waypoint);
+                }
+            } catch (NumberFormatException e) {
+                Waypoints.LOGGER.warn("[Skyblocker Waypoints] Failed to parse integer: {}", newValueString, e);
             }
         }
 
@@ -270,7 +263,8 @@ public class WaypointsListWidget extends ElementListWidget<WaypointsListWidget.A
                 if (index >= 0) {
                     category.category.waypoints().set(index, waypoint);
                 }
-            } catch (NumberFormatException ignored) {
+            } catch (NumberFormatException e) {
+                Waypoints.LOGGER.warn("[Skyblocker Waypoints] Failed to parse color: {}", colorString, e);
             }
         }
 
