@@ -180,7 +180,6 @@ public class RenderHelper {
 
         matrices.push();
         matrices.translate(pos.getX() - camera.getX(), pos.getY() - camera.getY(), pos.getZ() - camera.getZ());
-        matrices.peek().getPositionMatrix().mul(RenderSystem.getModelViewMatrix());
         matrices.multiply(context.camera().getRotation());
         matrices.scale(scale, -scale, scale);
 
