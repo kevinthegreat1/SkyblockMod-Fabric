@@ -10,19 +10,8 @@ public class FeaturesOptionsScreen extends AbstractSkyblockModOptionsScreen {
     }
 
     @Override
-    protected void init() {
-        super.init();
-        addOptionButton(options.experimentChronomatron);
-        addOptionButton(options.experimentSuperpairs);
-        addOptionButton(options.experimentUltrasequencer);
-        addOptionButton(options.fairySouls);
-        addOptionButton(options.fishing);
-        addOptionButton(options.mythologicalRitual);
-        addOptionButton(options.quiver);
-        addOptionButton(options.shortcuts);
-        addOptionButton(options.waypoints);
-        addOptionButton(options.waypointType);
-        addScreenButton(Text.translatable("skyblocker.waypoints.config"), WaypointsScreen::new);
-        addGridWidget();
+    protected void addOptions() {
+        body.addAll(options.experimentChronomatron, options.experimentSuperpairs, options.experimentUltrasequencer, options.fairySouls, options.fishing, options.mythologicalRitual, options.quiver, options.shortcuts, options.waypoints, options.waypointType);
+        body.addWidgetEntry(createScreenButton(Text.translatable("skyblocker.waypoints.config"), WaypointsScreen::new), null);
     }
 }

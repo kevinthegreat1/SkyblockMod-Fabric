@@ -1,7 +1,7 @@
 package com.kevinthegreat.skyblockmod.screen;
 
+import com.kevinthegreat.skyblockmod.util.EmptyButtonWidget;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.widget.EmptyWidget;
 import net.minecraft.text.Text;
 
 public class SkyblockModOptionsScreen extends AbstractSkyblockModOptionsScreen {
@@ -17,13 +17,9 @@ public class SkyblockModOptionsScreen extends AbstractSkyblockModOptionsScreen {
     }
 
     @Override
-    protected void init() {
-        super.init();
-        addScreenButton(DUNGEONS, DungeonsOptionsScreen::new);
-        addScreenButton(OTHER_FEATURES, FeaturesOptionsScreen::new);
-        adder.add(EmptyWidget.ofHeight(20), 2);
-        addButton(Text.translatable("skyblockmod:options.reload"), button -> options.load());
-        addButton(Text.translatable("skyblockmod:options.save"), button -> options.save());
-        addGridWidget();
+    protected void addOptions() {
+        body.addWidgetEntry(createScreenButton(DUNGEONS, DungeonsOptionsScreen::new), createScreenButton(OTHER_FEATURES, FeaturesOptionsScreen::new));
+        body.addWidgetEntry(EmptyButtonWidget.ofHeight(20), null);
+        body.addWidgetEntry(createButton(Text.translatable("skyblockmod:options.reload"), button -> options.load()), createButton(Text.translatable("skyblockmod:options.save"), button -> options.save()));
     }
 }

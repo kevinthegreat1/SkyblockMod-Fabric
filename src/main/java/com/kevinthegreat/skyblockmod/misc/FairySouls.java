@@ -7,6 +7,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.kevinthegreat.skyblockmod.SkyblockMod;
 import com.kevinthegreat.skyblockmod.util.ChatListener;
+import com.kevinthegreat.skyblockmod.util.ColorUtils;
 import com.kevinthegreat.skyblockmod.util.RenderHelper;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext;
 import net.minecraft.client.MinecraftClient;
@@ -97,7 +98,7 @@ public class FairySouls implements ChatListener {
             return;
         }
         for (BlockPos fairySoul : fairySouls.get(SkyblockMod.skyblockMod.info.locationRaw)) {
-            float[] colorComponents = isFairySoulNotFound(fairySoul) ? DyeColor.GREEN.getColorComponents() : DyeColor.RED.getColorComponents();
+            float[] colorComponents = isFairySoulNotFound(fairySoul) ? ColorUtils.getFloatComponents(DyeColor.GREEN) : ColorUtils.getFloatComponents(DyeColor.RED);
             RenderHelper.renderFilledWithBeaconBeam(context, fairySoul, colorComponents, 0.5F, true);
         }
     }

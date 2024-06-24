@@ -1,6 +1,7 @@
 package com.kevinthegreat.skyblockmod.misc;
 
 import com.kevinthegreat.skyblockmod.SkyblockMod;
+import com.kevinthegreat.skyblockmod.util.ColorUtils;
 import com.kevinthegreat.skyblockmod.util.ItemUtils;
 import com.kevinthegreat.skyblockmod.util.RenderHelper;
 import com.kevinthegreat.skyblockmod.waypoint.Waypoint;
@@ -43,7 +44,7 @@ import static net.fabricmc.fabric.api.client.command.v2.ClientCommandManager.lit
 
 public class MythologicalRitual {
     private static final Pattern GRIFFIN_BURROW_DUG = Pattern.compile("(?<message>You dug out a Griffin Burrow!|You finished the Griffin burrow chain!) \\((?<index>\\d)/4\\)");
-    private static final float[] ORANGE_COLOR_COMPONENTS = DyeColor.ORANGE.getColorComponents();
+    private static final float[] ORANGE_COLOR_COMPONENTS = ColorUtils.getFloatComponents(DyeColor.ORANGE);
     private long lastEchoTime;
     private final Map<BlockPos, GriffinBurrow> griffinBurrows = new HashMap<>();
     @Nullable

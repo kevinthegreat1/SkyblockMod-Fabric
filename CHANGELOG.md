@@ -1,3 +1,8 @@
+## Skyblock Mod 1.10.4 for 1.21
+
+Support for 1.21
+
+
 ## Skyblock Mod 1.10.3 for 1.20.6
 
 Fix waypoints crashing when entering some invalid numbers as coordinates.

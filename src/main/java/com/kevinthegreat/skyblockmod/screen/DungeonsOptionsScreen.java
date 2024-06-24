@@ -8,19 +8,7 @@ public class DungeonsOptionsScreen extends AbstractSkyblockModOptionsScreen {
     }
 
     @Override
-    protected void init() {
-        super.init();
-        addOptionButton(options.dungeonMap);
-        addOptionButton(options.dungeonMapScale);
-        addOptionButton(options.dungeonMapX);
-        addOptionButton(options.dungeonMapY);
-        addOptionButton(options.dungeonScore270);
-        addOptionButton(options.dungeonScore270Text);
-        addOptionButton(options.dungeonScore300);
-        addOptionButton(options.dungeonScore300Text);
-        addOptionButton(options.lividColor);
-        addOptionButton(options.lividColorText);
-        addOptionButton(options.reparty);
-        addGridWidget();
+    protected void addOptions() {
+        body.addAll(options.dungeonMap, options.dungeonMapScale, options.dungeonMapX, options.dungeonMapY, options.dungeonScore270, options.dungeonScore270Text, options.dungeonScore300, options.dungeonScore300Text, options.lividColor, options.lividColorText, options.reparty);
     }
 }
