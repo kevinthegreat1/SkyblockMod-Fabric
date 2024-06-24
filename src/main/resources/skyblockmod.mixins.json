@@ -4,7 +4,6 @@
   "package": "com.kevinthegreat.skyblockmod.mixins",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
-    "CheckboxWidgetAccessor"
   ],
   "client": [
     "ChatScreenMixin",
@@ -12,6 +11,7 @@
     "FishingRodItemMixin",
     "HandledScreenMixin",
     "accessors.BeaconBlockEntityRendererInvoker",
+    "accessors.CheckboxWidgetAccessor",
     "accessors.GameOptionsInvoker",
     "accessors.SimpleOptionAccessor"
   ],

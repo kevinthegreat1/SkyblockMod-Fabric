@@ -1,6 +1,6 @@
 package com.kevinthegreat.skyblockmod.waypoint;
 
-import com.kevinthegreat.skyblockmod.mixins.CheckboxWidgetAccessor;
+import com.kevinthegreat.skyblockmod.mixins.accessors.CheckboxWidgetAccessor;
 import it.unimi.dsi.fastutil.ints.Int2ObjectFunction;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;

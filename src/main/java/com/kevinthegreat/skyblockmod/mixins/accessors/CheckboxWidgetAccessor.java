@@ -1,4 +1,4 @@
-package com.kevinthegreat.skyblockmod.mixins;
+package com.kevinthegreat.skyblockmod.mixins.accessors;
 
 import net.minecraft.client.gui.widget.CheckboxWidget;
 import org.spongepowered.asm.mixin.Mixin;
