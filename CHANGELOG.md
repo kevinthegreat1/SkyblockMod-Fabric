@@ -1,6 +1,8 @@
 ## Skyblock Mod 1.10.4 for 1.21
 
-Support for 1.21
+Support for 1.21.  
+Fix waypoints coordinates parsing and add default coordinates.  
+Add scrolling to dropdown.  
 
 
 ## Skyblock Mod 1.10.3 for 1.20.6
