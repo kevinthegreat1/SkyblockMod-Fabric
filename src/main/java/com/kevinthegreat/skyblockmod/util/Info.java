@@ -111,7 +111,7 @@ public class Info implements ChatListener {
     private void updateLocRaw() {
         if (hypixel) {
             long currentTime = System.currentTimeMillis();
-            if (!sentLocRaw && currentTime > clientWorldJoinTime + 1000 && currentTime > lastLocRaw + 15000 && !SKYBLOCKER_LOADED) {
+            if (!sentLocRaw && currentTime > clientWorldJoinTime + 1000 && currentTime > lastLocRaw + 15000) {
                 SkyblockMod.skyblockMod.message.sendMessageAfterCooldown("/locraw");
                 sentLocRaw = true;
                 lastLocRaw = currentTime;

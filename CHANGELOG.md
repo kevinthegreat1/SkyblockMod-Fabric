@@ -1,3 +1,8 @@
+## Skyblock Mod 1.10.5 for 1.21
+
+Prepare for removal of locraw from Skyblocker.
+
+
 ## Skyblock Mod 1.10.4 for 1.21
 
 Support for 1.21.  
