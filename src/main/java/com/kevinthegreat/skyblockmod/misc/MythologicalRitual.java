@@ -26,7 +26,6 @@ import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.DyeColor;
 import net.minecraft.util.Hand;
-import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -36,7 +35,8 @@ import org.apache.commons.math3.stat.regression.SimpleRegression;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 import static net.fabricmc.fabric.api.client.command.v2.ClientCommandManager.argument;
@@ -170,12 +170,12 @@ public class MythologicalRitual {
         return ActionResult.PASS;
     }
 
-    public TypedActionResult<ItemStack> onUseItem(PlayerEntity player, World world, Hand hand) {
+    public ActionResult onUseItem(PlayerEntity player, World world, Hand hand) {
         ItemStack stack = player.getStackInHand(hand);
         if (isActive() && ItemUtils.getItemId(stack).equals("ANCESTRAL_SPADE")) {
             lastEchoTime = System.currentTimeMillis();
         }
-        return TypedActionResult.pass(stack);
+        return ActionResult.PASS;
     }
 
     public void onChatMessage(Text message, boolean overlay) {

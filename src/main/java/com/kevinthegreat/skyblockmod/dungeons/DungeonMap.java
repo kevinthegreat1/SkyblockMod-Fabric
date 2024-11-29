@@ -7,6 +7,7 @@ import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.render.LightmapTextureManager;
+import net.minecraft.client.render.MapRenderState;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.component.DataComponentTypes;
@@ -18,6 +19,7 @@ import net.minecraft.item.map.MapState;
 
 public class DungeonMap {
     private final MapIdComponent DEFAULT_MAP_ID_COMPONENT = new MapIdComponent(1024);
+    private static final MapRenderState MAP_RENDER_STATE = new MapRenderState();
     private MapIdComponent cachedMapIdComponent = null;
 
     public void init() {
@@ -43,7 +45,8 @@ public class DungeonMap {
         matrices.push();
         matrices.translate(options.dungeonMapX.getValue(), options.dungeonMapY.getValue(), 0);
         matrices.scale(scaling, scaling, 0f);
-        client.gameRenderer.getMapRenderer().draw(matrices, vertices, mapId, state, false, LightmapTextureManager.MAX_LIGHT_COORDINATE);
+        client.getMapRenderer().update(mapId, state, MAP_RENDER_STATE);
+        client.getMapRenderer().draw(MAP_RENDER_STATE, matrices, vertices, false, LightmapTextureManager.MAX_LIGHT_COORDINATE);
         vertices.draw();
         matrices.pop();
     }

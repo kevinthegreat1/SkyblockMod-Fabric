@@ -5,6 +5,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
+import net.minecraft.client.gl.ShaderProgramKeys;
 import net.minecraft.client.render.*;
 import net.minecraft.client.render.block.entity.BeaconBlockEntityRenderer;
 import net.minecraft.client.util.BufferAllocator;
@@ -33,6 +34,8 @@ public class RenderHelper {
         Vec3d camera = context.camera().getPos();
         Tessellator tessellator = RenderSystem.renderThreadTesselator();
 
+        RenderSystem.setShader(ShaderProgramKeys.POSITION_COLOR);
+        RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
         RenderSystem.disableCull();
@@ -43,7 +46,7 @@ public class RenderHelper {
         matrices.translate(-camera.getX(), -camera.getY(), -camera.getZ());
 
         BufferBuilder buffer = tessellator.begin(VertexFormat.DrawMode.TRIANGLE_STRIP, VertexFormats.POSITION_COLOR);
-        WorldRenderer.renderFilledBox(matrices, buffer, pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1, pos.getY() + 1, pos.getZ() + 1, colorComponents[0], colorComponents[1], colorComponents[2], alpha);
+        VertexRendering.drawFilledBox(matrices, buffer, pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1, pos.getY() + 1, pos.getZ() + 1, colorComponents[0], colorComponents[1], colorComponents[2], alpha);
         BufferRenderer.drawWithGlobalProgram(buffer.end());
 
         matrices.pop();
@@ -54,7 +57,7 @@ public class RenderHelper {
     public static void renderBeaconBeam(WorldRenderContext context, BlockPos pos, float[] colorComponents) {
         context.matrixStack().push();
         context.matrixStack().translate(pos.getX() - context.camera().getPos().x, pos.getY() - context.camera().getPos().y, pos.getZ() - context.camera().getPos().z);
-        BeaconBlockEntityRendererInvoker.renderBeam(context.matrixStack(), context.consumers(), context.tickCounter().getTickDelta(true), context.world().getTime(), 0, BeaconBlockEntityRenderer.MAX_BEAM_HEIGHT, ColorHelper.Argb.fromFloats(1f, colorComponents[0], colorComponents[1], colorComponents[2]));
+        BeaconBlockEntityRendererInvoker.renderBeam(context.matrixStack(), context.consumers(), context.tickCounter().getTickDelta(true), context.world().getTime(), 0, BeaconBlockEntityRenderer.MAX_BEAM_HEIGHT, ColorHelper.fromFloats(1f, colorComponents[0], colorComponents[1], colorComponents[2]));
         context.matrixStack().pop();
     }
 
@@ -70,7 +73,7 @@ public class RenderHelper {
         Vec3d camera = context.camera().getPos();
         Tessellator tessellator = RenderSystem.renderThreadTesselator();
 
-        RenderSystem.setShader(GameRenderer::getRenderTypeLinesProgram);
+        RenderSystem.setShader(ShaderProgramKeys.RENDERTYPE_LINES);
         RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
         RenderSystem.lineWidth(lineWidth);
         RenderSystem.disableCull();
@@ -81,7 +84,7 @@ public class RenderHelper {
         matrices.translate(-camera.getX(), -camera.getY(), -camera.getZ());
 
         BufferBuilder buffer = tessellator.begin(VertexFormat.DrawMode.LINES, VertexFormats.LINES);
-        WorldRenderer.drawBox(matrices, buffer, box, colorComponents[0], colorComponents[1], colorComponents[2], 1f);
+        VertexRendering.drawBox(matrices, buffer, box, colorComponents[0], colorComponents[1], colorComponents[2], 1f);
         BufferRenderer.drawWithGlobalProgram(buffer.end());
 
         matrices.pop();
@@ -122,7 +125,7 @@ public class RenderHelper {
         GL11.glEnable(GL11.GL_LINE_SMOOTH);
         GL11.glHint(GL11.GL_LINE_SMOOTH_HINT, GL11.GL_NICEST);
 
-        RenderSystem.setShader(GameRenderer::getRenderTypeLinesProgram);
+        RenderSystem.setShader(ShaderProgramKeys.RENDERTYPE_LINES);
         RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
         RenderSystem.lineWidth(lineWidth);
         RenderSystem.enableBlend();

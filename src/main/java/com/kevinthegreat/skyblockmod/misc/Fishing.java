@@ -5,6 +5,9 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.packet.s2c.play.PlaySoundS2CPacket;
+import net.minecraft.registry.entry.RegistryEntry;
+import net.minecraft.sound.SoundEvent;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.math.MathHelper;
@@ -26,8 +29,8 @@ public class Fishing {
 
     public void onSound(PlaySoundS2CPacket packet) {
         MinecraftClient client = MinecraftClient.getInstance();
-        String path = packet.getSound().value().getId().getPath();
-        if (SkyblockMod.skyblockMod.options.fishing.getValue() && startTime != 0 && System.currentTimeMillis() >= startTime + 2000 && ("entity.generic.splash".equals(path) || "entity.player.splash".equals(path))) {
+        RegistryEntry<SoundEvent> sound = packet.getSound();
+        if (SkyblockMod.skyblockMod.options.fishing.getValue() && startTime != 0 && System.currentTimeMillis() >= startTime + 2000 && (sound.matchesId(SoundEvents.ENTITY_GENERIC_SPLASH.id()) || sound.matchesId(SoundEvents.ENTITY_PLAYER_SPLASH.id()))) {
             ClientPlayerEntity player = client.player;
             if (player != null && player.fishHook != null) {
                 Vec3d soundToFishHook = player.fishHook.getPos().subtract(packet.getX(), 0, packet.getZ());
