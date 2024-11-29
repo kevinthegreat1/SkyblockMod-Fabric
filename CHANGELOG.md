@@ -1,6 +1,7 @@
-## Skyblock Mod 1.10.6 for 1.21
+## Skyblock Mod 1.10.6 for 1.21.3
 
 Support for 1.21.3
+
 
 ## Skyblock Mod 1.10.5 for 1.21
 
