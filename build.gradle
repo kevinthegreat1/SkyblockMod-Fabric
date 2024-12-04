@@ -1,5 +1,5 @@
 plugins {
-	id 'fabric-loom' version '1.8-SNAPSHOT'
+	id 'fabric-loom' version '1.9-SNAPSHOT'
 	id 'maven-publish'
 	id "me.modmuss50.mod-publish-plugin" version "0.8.1"
 }
@@ -113,8 +113,8 @@ publishMods {
 		projectSlug = "skyblockmod" // Required for discord webhook
 		accessToken = providers.environmentVariable("CURSEFORGE_TOKEN")
 		minecraftVersionRange {
-			start = "1.21.2"
-			end = "1.21.3"
+			start = "1.21.4"
+			end = "1.21.4"
 		}
 		requires("fabric-api")
 	}
@@ -122,8 +122,8 @@ publishMods {
 		projectId = "GTIrlvJk"
 		accessToken = providers.environmentVariable("MODRINTH_TOKEN")
 		minecraftVersionRange {
-			start = "1.21.2"
-			end = "1.21.3"
+			start = "1.21.4"
+			end = "1.21.4"
 		}
 	}
 	github {
