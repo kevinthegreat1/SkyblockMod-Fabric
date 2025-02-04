@@ -1,3 +1,8 @@
+## Skyblock Mod 1.10.8 for 1.21.4
+
+Compatibility with Skyblocker 5.0.0
+
+
 ## Skyblock Mod 1.10.7 for 1.21.4
 
 Support for 1.21.4
